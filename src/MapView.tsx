@@ -1,0 +1,112 @@
+import * as React from 'react';
+import styled from 'styled-components';
+
+import Map, { Layer, LngLatBoundsLike, MapboxGeoJSONFeature, MapboxMap, MapLayerMouseEvent, Popup, ScaleControl, Source, ViewState, ViewStateChangeEvent } from 'react-map-gl';
+import { ZoomInButton } from './controls/ZoomInButton';
+import { ZoomOutButton } from './controls/ZoomOutButton';
+
+const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
+const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
+const SATELLITE_STYLE = "mapbox://styles/longlineenvironment/clb14ar2y00hw14oh9ii2zp05";
+          
+//
+// Bounds that map panning and zooming will be restricted to.
+//
+const MAX_BOUNDS: LngLatBoundsLike = [
+  [31.62658, -2.36805],    // Southwest (lng/lat)
+  [37.75470,  1.77630]     // Northeast (lng/lat)
+];
+
+interface IState {
+  // MapView keeps track of map's ViewState, which can be used to pass state
+  // to map controls.
+  viewState: ViewState;
+
+  loading: boolean;
+  satellite: boolean;
+  interactiveLayerIds: string[];
+
+  hoverLatitude: number;
+  hoverLongitude: number;
+  hoverFeatures: MapboxGeoJSONFeature[];
+  popup_horizontal: 'left' | 'right';
+  popup_vertical: 'top' | 'bottom';
+}
+
+class MapView extends React.Component<{}, IState> {
+  private loadCount: number = 0;
+  private hovered: MapboxGeoJSONFeature[] = [];
+
+  state: IState = {
+    viewState: {
+      longitude: 34.39412, 
+      latitude: -0.36795, 
+      zoom: 8,
+      bearing: 0,
+      pitch: 0,
+      padding: { top: 0, bottom: 0, right: 0, left: 0 }
+    },
+
+    loading: false,
+    satellite: false,
+    interactiveLayerIds: [],
+
+    hoverLatitude: 0,
+    hoverLongitude: 0,
+    hoverFeatures: [],
+    popup_horizontal: 'left',
+    popup_vertical: 'top',
+  };
+
+  handleLoad = (e: mapboxgl.MapboxEvent) => {
+    this.setState({
+      interactiveLayerIds: [
+        'County boundaries', 'Inshore aquaculture', 'Offshore aquaculture', 
+        'Inshore socioeconomic suitability', 'Offshore socioeconomic suitability',
+        'Tilapia suitability', 'Management areas',
+        'Beach management units', 'Sub-basins', 'Sampling stations' ]
+    });
+  }  
+
+  addLoader = () => {  
+    this.loadCount++;
+    this.setState({ loading: true });
+  }
+
+  removeLoader = () => {
+    this.loadCount--;
+    this.setState({ loading: this.loadCount > 0 });
+  }
+
+  handleMove = (e: ViewStateChangeEvent) => {
+    this.setState({
+      viewState: e.viewState
+    });
+  }
+
+  render = () => {
+    const p = this.props;
+    return (
+      <Map
+        {...this.state.viewState}
+        mapboxAccessToken={ACCESS_TOKEN}
+        style={{width: '100%', height: '100%'}}
+        cursor={this.state.hoverFeatures.length > 0 ? 'pointer' : 'auto'}
+        logoPosition="bottom-left"
+        interactiveLayerIds={this.state.interactiveLayerIds}
+        mapStyle={this.state.satellite ? SATELLITE_STYLE : GREY_STYLE}
+        maxBounds={MAX_BOUNDS}
+        minZoom={8}
+        maxZoom={12}
+        onLoad={this.handleLoad}
+        onMove={this.handleMove}
+      >
+        <ScaleControl position="bottom-left" maxWidth={200}/>
+        <ZoomInButton {...this.state.viewState} anchor={[100,100]} hint={<>Zoom in</>}/>
+        <ZoomOutButton {...this.state.viewState} anchor={[100,150]} hint={<>Zoom out</>}/>
+      </Map>
+    );
+  }
+}
+
+export { MapView }
