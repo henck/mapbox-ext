@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "target": "es5",             // Target ECMAScript 5
+    "module": "es2015",          // Module code generation
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,    
+    "declaration": true,         // Generate corresponding .d.ts file
+    "outDir": "./dist",          // Output directory
+    "jsx": "react",              // Support JSX in .tsx files
+    "noImplicitAny": true,       // Raise error on expressions and declarations with an implied any type
+    "noImplicitReturns": true,   // Raise error when not all code paths in function return a value.
+    "removeComments": false,     // Remove all comments except copyright header comments beginning with /*!
+    "preserveConstEnums": true,  // Do not erase const enum declarations in generated code.
+    "lib": ["es2015", "dom"],
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/controls/**/*",
+    "src/modules/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build"
+  ]
+}
