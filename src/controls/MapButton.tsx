@@ -29,7 +29,9 @@ interface IProps {
 
 const MapButtonBase = (p: IProps & IMapButtonProps) => {
   return <div className={p.className} onClick={p.onClick}>
-    {p.children}
+    <div>
+      {p.children}
+    </div>
     {p.hint && 
       <Hint offset={16} side={p.anchor[0] < 0 ? "right" : "left"}>{p.hint}</Hint>
     }
@@ -65,12 +67,12 @@ const MapButton = styled(MapButtonBase)`
   }
 
   /* SVG sizing */
-  & > svg { 
+  & > div:first-child svg { 
     fill: #cfcfcf;
     transition: fill ease-in-out ${TRANSITION_TIME}s;
     width: ${p => (p.size ? p.size : DEFAULT_SIZE) - 2 * BORDER_SIZE}px;
     height: ${p => (p.size ? p.size : DEFAULT_SIZE) - 2 * BORDER_SIZE}px;
-    padding: 3px;
+    padding: 6px;
     box-sizing: border-box;
   }
 
@@ -78,20 +80,20 @@ const MapButton = styled(MapButtonBase)`
   ${p => p.active && css`
     border-color: #cfcfcf;
     background-color: white;
-    & > svg { fill: #333; }
+    & > div:first-child svg { fill: #333; }
   `}
 
   /* Disabled mode */
   ${p => p.disabled && css`
     border-color: #222222;
-    & > svg { fill: #afafaf; }
+    & > div:first-child svg { fill: #afafaf; }
   `}
 
   /* Hover */
   ${p => !p.disabled && css`
     &:hover {
       border-color: #fff;
-      & > svg {
+      & > div:first-child svg {
         fill: #fff;
       }
       ${Hint} {
