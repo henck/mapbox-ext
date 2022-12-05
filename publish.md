@@ -1,6 +1,6 @@
 # How to publish
 
-1. Optionally clean /dist directory first
+1. Clean /dist directory first!
 
 2. Build TS
 
