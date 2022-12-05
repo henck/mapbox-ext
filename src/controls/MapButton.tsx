@@ -2,9 +2,10 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { Hint } from './Hint';
 
-const DEFAULT_SIZE = 34;
-const TRANSITION_TIME = 0.1;
-const BORDER_SIZE = 2;
+const DEFAULT_SIZE    = 34;   // Button size (px)
+const TRANSITION_TIME = 0.1;  // Transtion time (s)
+const BORDER_SIZE     = 2;    // Border thickness (px)
+const BORDER_RADIUS   = 8;    // Border radius (px)
 
 interface IMapButtonProps {
   /** Button anchor (x,y). Negative values are offsets from the right and 
@@ -56,10 +57,10 @@ const MapButton = styled(MapButtonBase)`
   background-clip: padding-box;
 
   border: ${BORDER_SIZE}px solid #cfcfcf;
-  border-radius: 4px;
+  border-radius: ${BORDER_RADIUS}px;
   background: #333;
   transition: border-color ease-in-out ${TRANSITION_TIME}s;
-  box-shadow: 1px 1px 2px rgb(0,0,0,0.5);
+  box-shadow: 0px 0px 6px rgb(255,255,255,0.5);
 
   /* Hint positioning */
   ${Hint} {
@@ -90,17 +91,18 @@ const MapButton = styled(MapButtonBase)`
   `}
 
   /* Hover */
-  ${p => !p.disabled && css`
-    &:hover {
-      border-color: #fff;
+  &:hover {
+    ${p => !p.disabled && css`border-color: #fff`};
+    ${p => !p.disabled && css`
       & > div:first-child svg {
         fill: #fff;
       }
-      ${Hint} {
-        opacity: 1;
-      }
+    `}
+    ${p => p.disabled && css`cursor: default;`}
+    ${Hint} {
+      opacity: 1;
     }
-  `}
+  }
 `
 
 export { MapButton, IMapButtonProps }
