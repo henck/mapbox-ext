@@ -20,6 +20,10 @@ interface IMapButtonProps {
   hint?: React.ReactNode;
   /** Button size. Defaults to 34. */
   size?: number;
+  /** Is another button attached to the top of this one? */
+  attachedTop?: boolean;
+  /** Is another button attached to the bottom of this one? */
+  attachedBottom?: boolean;
 }
 
 interface IProps {
@@ -29,20 +33,25 @@ interface IProps {
 }
 
 const MapButtonBase = (p: IProps & IMapButtonProps) => {
-  return <div className={p.className} onClick={p.onClick}>
-    <div>
-      {p.children}
-    </div>
-    {p.hint && 
-      <Hint offset={16} side={p.anchor[0] < 0 ? "right" : "left"}>{p.hint}</Hint>
-    }
-  </div>
+  return (
+    <div className={p.className} onClick={p.onClick}>
+      <Button>
+        {p.children}
+      </Button>
+      {p.hint && 
+        <Hint offset={16} side={p.anchor[0] < 0 ? "right" : "left"}>{p.hint}</Hint>
+      }
+    </div>);
 }
+
+const Button = styled('div')`
+`
 
 const MapButton = styled(MapButtonBase)`
   /* Position control */
   position: absolute;
   z-index: 1;
+  box-sizing: border-box;
   ${p => p.anchor[0] >= 0 && css`left: ${p.anchor[0]}px;`}
   ${p => p.anchor[0] < 0 && css`right: ${-p.anchor[0]}px;`}
   ${p => p.anchor[1] >= 0 && css`top: ${p.anchor[1]}px;`}
@@ -52,15 +61,33 @@ const MapButton = styled(MapButtonBase)`
   width: ${p => p.size ? p.size : DEFAULT_SIZE}px;
   height: ${p => p.size ? p.size : DEFAULT_SIZE}px;
 
-  cursor: pointer;
-  box-sizing: border-box;
-  background-clip: padding-box;
+  ${Button} {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-clip: padding-box;
+    border: ${BORDER_SIZE}px solid #cfcfcf;
+    border-radius: ${BORDER_RADIUS}px;
+    ${p => p.attachedBottom && css`
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom-width: 1px;
+      border-bottom-color: #aaa;
+    `}
+    ${p => p.attachedTop && css`
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-top: none;
+    `}  
 
-  border: ${BORDER_SIZE}px solid #cfcfcf;
-  border-radius: ${BORDER_RADIUS}px;
-  background: #333;
-  transition: border-color ease-in-out ${TRANSITION_TIME}s;
-  box-shadow: 0px 0px 6px rgb(255,255,255,0.5);
+    ${p => p.attachedBottom && css`clip-path: inset(-6px -6px  0px -6px);`}
+    ${p => p.attachedTop    && css`clip-path: inset( 0px -6px -6px -6px);`}
+    ${p => p.attachedTop && p.attachedBottom && css`clip-path: inset( 0px -6px 0px -6px);`}
+    background: #333;
+    transition: border-color ease-in-out ${TRANSITION_TIME}s;
+    box-shadow: 0px 0px 6px rgb(255,255,255,0.5);
+  }
 
   /* Hint positioning */
   ${Hint} {
@@ -74,6 +101,8 @@ const MapButton = styled(MapButtonBase)`
     width: ${p => (p.size ? p.size : DEFAULT_SIZE) - 2 * BORDER_SIZE}px;
     height: ${p => (p.size ? p.size : DEFAULT_SIZE) - 2 * BORDER_SIZE}px;
     padding: 6px;
+    // With a border removed, SVG needs to be bumped down a little:
+    ${p => p.attachedBottom && css`padding-bottom: 2px;`}
     box-sizing: border-box;
   }
 
@@ -87,7 +116,7 @@ const MapButton = styled(MapButtonBase)`
   /* Disabled mode */
   ${p => p.disabled && css`
     border-color: #222222;
-    & > div:first-child svg { fill: #afafaf; }
+    & > div:first-child svg { fill: #888888; }
   `}
 
   /* Hover */

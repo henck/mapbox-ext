@@ -103,9 +103,14 @@ class MapView extends React.Component<{}, IState> {
         onMove={this.handleMove}
       >
         <ScaleControl position="bottom-left" maxWidth={200}/>
-        <ZoomInButton {...this.state.viewState} anchor={[100,100]} hint={<>Zoom in</>}/>
-        <ZoomOutButton {...this.state.viewState} anchor={[100,150]} hint={<>Zoom out</>}/>
-        <CompassButton {...this.state.viewState} anchor={[100,200]} hint={<>Reset bearing to north</>} visualizePitch/>
+        <ZoomInButton {...this.state.viewState} attachedBottom anchor={[100,100]} hint={<>Zoom in</>}/>
+        <ZoomOutButton {...this.state.viewState} attachedTop attachedBottom anchor={[100,134]} hint={<>Zoom out</>}/>
+        <CompassButton {...this.state.viewState} attachedTop anchor={[100,168]} hint={<>Reset bearing to north</>} visualizePitch/>
+
+        <ZoomInButton {...this.state.viewState} anchor={[100,300]} hint={<>Zoom in</>}/>
+        <ZoomOutButton {...this.state.viewState} anchor={[100,350]} hint={<>Zoom out</>}/>
+        <CompassButton {...this.state.viewState} anchor={[100,400]} hint={<>Reset bearing to north</>} visualizePitch/>
+
         <NavigationControl visualizePitch showCompass/>
       </Map>
     );
