@@ -9,8 +9,7 @@ const BORDER_RADIUS   = 8;    // Border radius (px)
 
 interface IMapButtonProps {
   /** Button anchor (x,y). Negative values are offsets from the right and 
-   *  bottom. 
-   */
+   *  bottom. */
   anchor: number[];
   /** Is button currently active? */
   active?: boolean;
