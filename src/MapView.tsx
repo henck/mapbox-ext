@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Map, { Layer, LngLatBoundsLike, MapboxGeoJSONFeature, MapboxMap, MapLayerMouseEvent, NavigationControl, Popup, ScaleControl, Source, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 import { ZoomInButton } from './controls/ZoomInButton';
 import { ZoomOutButton } from './controls/ZoomOutButton';
-import { PitchButton } from './controls/PitchButton';
+import { CompassButton } from './controls/CompassButton';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
@@ -105,7 +105,7 @@ class MapView extends React.Component<{}, IState> {
         <ScaleControl position="bottom-left" maxWidth={200}/>
         <ZoomInButton {...this.state.viewState} anchor={[100,100]} hint={<>Zoom in</>}/>
         <ZoomOutButton {...this.state.viewState} anchor={[100,150]} hint={<>Zoom out</>}/>
-        <PitchButton {...this.state.viewState} anchor={[100,200]} hint={<>Reset bearing to north</>} visualizePitch/>
+        <CompassButton {...this.state.viewState} anchor={[100,200]} hint={<>Reset bearing to north</>} visualizePitch/>
         <NavigationControl visualizePitch showCompass/>
       </Map>
     );

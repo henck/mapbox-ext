@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useMap, ViewState } from 'react-map-gl';
 import { IMapButtonProps, MapButton } from './MapButton';
 
-const PitchButton = (p: IMapButtonProps & ViewState & { visualizePitch?: boolean }) => {
+const CompassButton = (p: IMapButtonProps & ViewState & { visualizePitch?: boolean }) => {
   const { current: map } = useMap();
   return (
     <MapButton onClick={() => { map.rotateTo(0); map.resetNorthPitch() }} {...p}>
@@ -16,4 +16,4 @@ const PitchButton = (p: IMapButtonProps & ViewState & { visualizePitch?: boolean
   );
 }
 
-export { PitchButton }
+export { CompassButton }
