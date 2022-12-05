@@ -1,11 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import Map, { Layer, LngLatBoundsLike, MapboxGeoJSONFeature, MapboxMap, MapLayerMouseEvent, NavigationControl, Popup, ScaleControl, Source, ViewState, ViewStateChangeEvent } from 'react-map-gl';
+import Map, { Layer, LngLatBoundsLike, MapboxGeoJSONFeature, MapboxMap, MapLayerMouseEvent, NavigationControl, Popup, Source, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 import { ZoomInButton } from './controls/ZoomInButton';
 import { ZoomOutButton } from './controls/ZoomOutButton';
 import { CompassButton } from './controls/CompassButton';
 import { AnimatedLoader } from './controls/AnimatedLoader';
+import { ScaleControl } from './controls/ScaleControl';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
@@ -97,13 +98,13 @@ class MapView extends React.Component<{}, IState> {
         logoPosition="bottom-left"
         interactiveLayerIds={this.state.interactiveLayerIds}
         mapStyle={this.state.satellite ? SATELLITE_STYLE : GREY_STYLE}
-        maxBounds={MAX_BOUNDS}
-        minZoom={8}
-        maxZoom={12}
+        //maxBounds={MAX_BOUNDS}
+        //minZoom={8}
+        maxZoom={22}
         onLoad={this.handleLoad}
         onMove={this.handleMove}
       >
-        <ScaleControl position="bottom-left" maxWidth={200}/>
+        <ScaleControl {...this.state.viewState} width={200} anchor={[10, -62]}/>
         <ZoomInButton {...this.state.viewState} attachedBottom anchor={[100,100]} hint={<>Zoom in</>}/>
         <ZoomOutButton {...this.state.viewState} attachedTop attachedBottom anchor={[100,134]} hint={<>Zoom out</>}/>
         <CompassButton {...this.state.viewState} attachedTop anchor={[100,168]} hint={<>Reset bearing to north</>} visualizePitch/>

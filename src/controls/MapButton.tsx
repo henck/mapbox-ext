@@ -57,8 +57,8 @@ const MapButton = styled(MapButtonBase)`
   ${p => p.anchor[1] < 0 && css`bottom: ${-p.anchor[1]}px;`}
 
   /* Size control */
-  width: ${p => p.size ? p.size : DEFAULT_SIZE}px;
-  height: ${p => p.size ? p.size : DEFAULT_SIZE}px;
+  width: ${p => p.size ?? DEFAULT_SIZE}px;
+  height: ${p => p.size ?? DEFAULT_SIZE}px;
 
   ${Button} {
     width: 100%;
@@ -97,8 +97,8 @@ const MapButton = styled(MapButtonBase)`
   & > div:first-child svg { 
     fill: #cfcfcf;
     transition: fill ease-in-out ${TRANSITION_TIME}s;
-    width: ${p => (p.size ? p.size : DEFAULT_SIZE) - 2 * BORDER_SIZE}px;
-    height: ${p => (p.size ? p.size : DEFAULT_SIZE) - 2 * BORDER_SIZE}px;
+    width: ${p => (p.size ?? DEFAULT_SIZE) - 2 * BORDER_SIZE}px;
+    height: ${p => (p.size ?? DEFAULT_SIZE) - 2 * BORDER_SIZE}px;
     padding: 6px;
     // With a border removed, SVG needs to be bumped down a little:
     ${p => p.attachedBottom && css`padding-bottom: 2px;`}
