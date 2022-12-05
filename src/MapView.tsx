@@ -5,6 +5,7 @@ import Map, { Layer, LngLatBoundsLike, MapboxGeoJSONFeature, MapboxMap, MapLayer
 import { ZoomInButton } from './controls/ZoomInButton';
 import { ZoomOutButton } from './controls/ZoomOutButton';
 import { CompassButton } from './controls/CompassButton';
+import { AnimatedLoader } from './controls/AnimatedLoader';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
@@ -112,6 +113,8 @@ class MapView extends React.Component<{}, IState> {
         <CompassButton {...this.state.viewState} anchor={[100,400]} hint={<>Reset bearing to north</>} visualizePitch/>
 
         <NavigationControl visualizePitch showCompass/>
+
+        <AnimatedLoader anchor={[-100, -100]} active/>
       </Map>
     );
   }
