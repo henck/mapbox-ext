@@ -15,6 +15,14 @@
   },
   "author": "Alexander van Oostenrijk",
   "license": "Commercial",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henck/mapbox-ext.git"
+  },
+  "bugs": {
+    "url": "https://github.com/henck/mapbox-ext/issues"
+  },
+  "homepage": "https://github.com/henck/mapbox-ext#readme",
   "dependencies": {
     "mapbox-gl": "^2.11.0",
     "react": "^18.2.0",
