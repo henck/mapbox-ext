@@ -1,7 +1,7 @@
 {
-  "name": "mapbox-ext",
+  "name": "@independent-software/mapbox-ext",
   "version": "1.0.0",
-  "description": "Extension for MapboxGL",
+  "description": "Extensions for MapboxGL",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
     "start": "npm run build-debug && node server.js"
   },
   "author": "Alexander van Oostenrijk",
-  "license": "ISC",
+  "license": "Commercial",
   "dependencies": {
     "mapbox-gl": "^2.11.0",
     "react": "^18.2.0",
