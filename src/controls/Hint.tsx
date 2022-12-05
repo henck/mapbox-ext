@@ -1,26 +1,35 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 
-const HEIGHT = 24;
-const DEFAULT_BACKGROUND = "#333";
-const DEFAULT_COLOR = "#fff";
-const DEFAULT_BORDER_RADIUS = 4;
-const TRANSITION_TIME = 0.2;
+const HEIGHT = 24;                     // Hint height (px)
+const DEFAULT_BACKGROUND = "#333";   // Default background color
+const DEFAULT_COLOR = "#fff";        // Default border and text color
+const DEFAULT_BORDER_RADIUS = 4;       // Default border radius (px)
+const TRANSITION_TIME = 0.2;           // Transition time (s)
 
-interface IProps {
+type IProps = {
   /** @ignore */
   className?: string;
   /** @ignore */
   children?: React.ReactNode;
-  /** Hint horizontal offset from center of parent. */
+  /** Hint horizontal offset from center of parent, in pixels. */
   offset: number;
   /** Should Hint appear to left or right of parent? */
   side: 'left' | 'right';
-  /** Optional foreground color. Defaults to #fff. */
+  /** 
+   * Optional foreground color. 
+   * @defaultValue #fff
+   */
   foreground?: string;
-  /** Optional background color. Defaults to #333. */
+  /** 
+   * Optional background color.
+   * @defaultValue #333
+   */
   background?: string;
-  /** Optional border radius. Defaults to 4. */
+  /** 
+   * Optional border radius.
+   * @defaultValue 4
+   */
   borderRadius?: number;
 }
 
@@ -45,8 +54,8 @@ class HintBase extends React.Component<IProps> {
 }
 
 /**
- * A Hint appears next to control, at the specified side (left or right), 
- * with an optional offset.
+ * A Hint appears next to a parent control, at the specified side (left or 
+ * right), with an optional offset.
  */
 const Hint = styled(HintBase)`
   /* Position */
@@ -60,21 +69,21 @@ const Hint = styled(HintBase)`
   margin: 0 12px 0 12px;
 
   /* Border */
-  border: solid 1px ${p => p.foreground ? p.foreground : DEFAULT_COLOR};
+  border: solid 1px ${p => p.foreground ?? DEFAULT_COLOR};
   ${p => p.side == "left" && css`
-    border-top-right-radius: ${p.borderRadius ? p.borderRadius : DEFAULT_BORDER_RADIUS}px;
-    border-bottom-right-radius: ${p.borderRadius ? p.borderRadius : DEFAULT_BORDER_RADIUS}px;
+    border-top-right-radius: ${p.borderRadius ?? DEFAULT_BORDER_RADIUS}px;
+    border-bottom-right-radius: ${p.borderRadius ?? DEFAULT_BORDER_RADIUS}px;
     border-left: none;
   `}
   ${p => p.side == "right" && css`
-    border-top-left-radius: ${p.borderRadius ? p.borderRadius : DEFAULT_BORDER_RADIUS}px;
-    border-bottom-left-radius: ${p.borderRadius ? p.borderRadius : DEFAULT_BORDER_RADIUS}px;
+    border-top-left-radius: ${p.borderRadius ?? DEFAULT_BORDER_RADIUS}px;
+    border-bottom-left-radius: ${p.borderRadius ?? DEFAULT_BORDER_RADIUS}px;
     border-right: none;
   `}  
 
   /* Color */
-  background: ${p => p.background ? p.background : DEFAULT_BACKGROUND};
-  color: ${p => p.foreground ? p.foreground : DEFAULT_COLOR};
+  background: ${p => p.background ?? DEFAULT_BACKGROUND};
+  color: ${p => p.foreground ?? DEFAULT_COLOR};
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
@@ -93,10 +102,10 @@ const Hint = styled(HintBase)`
     transform: scale(${p => p.side == "right" ? -1 : 1});
   }
   svg.fill {
-    fill: ${p => p.background ? p.background : DEFAULT_BACKGROUND};
+    fill: ${p => p.background ?? DEFAULT_BACKGROUND};
   }
   svg.stroke {
-    stroke: ${p => p.foreground ? p.foreground : DEFAULT_COLOR};
+    stroke: ${p => p.foreground ?? DEFAULT_COLOR};
     stroke-width: 1px;
     z-index: 1;
   }

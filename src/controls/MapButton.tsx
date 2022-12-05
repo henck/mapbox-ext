@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
+
 import { Hint } from './Hint';
 
 const DEFAULT_SIZE    = 34;   // Button size (px)
@@ -7,17 +8,20 @@ const TRANSITION_TIME = 0.1;  // Transtion time (s)
 const BORDER_SIZE     = 2;    // Border thickness (px)
 const BORDER_RADIUS   = 8;    // Border radius (px)
 
-interface IMapButtonProps {
-  /** Button anchor (x,y). Negative values are offsets from the right and 
-   *  bottom. */
-  anchor: number[];
+type IMapButtonProps = {
+  /** Horizontal button position. A negative value is an offset from the right. */
+  x: number;
+  /** Vertical button position. A negative value is an offset from the bottom. */
+  y: number;
   /** Is button currently active? */
   active?: boolean;
   /** Is button currently disabled? */
   disabled?: boolean;
   /** Optional Hint to show on hover. */
   hint?: React.ReactNode;
-  /** Button size. Defaults to 34. */
+  /** Button size in pixels. 
+   * @defaultValue 34 
+   */
   size?: number;
   /** Is another button attached to the top of this one? */
   attachedTop?: boolean;
@@ -26,8 +30,11 @@ interface IMapButtonProps {
 }
 
 interface IProps {
+  /** @ignore */
   className?: string;
+  /** @ignore */
   children?: React.ReactNode;
+  /** Fired when map button is clicked. */
   onClick: () => void;
 }
 
@@ -38,7 +45,12 @@ const MapButtonBase = (p: IProps & IMapButtonProps) => {
         {p.children}
       </Button>
       {p.hint && 
-        <Hint foreground={p.disabled ? "#888": "#fff"} offset={16} side={p.anchor[0] < 0 ? "right" : "left"}>{p.hint}</Hint>
+        <Hint 
+          foreground={p.disabled ? "#888": "#fff"} 
+          offset={16} 
+          side={p.x < 0 ? "right" : "left"}>
+          {p.hint}
+        </Hint>
       }
     </div>);
 }
@@ -51,10 +63,10 @@ const MapButton = styled(MapButtonBase)`
   position: absolute;
   z-index: 1;
   box-sizing: border-box;
-  ${p => p.anchor[0] >= 0 && css`left: ${p.anchor[0]}px;`}
-  ${p => p.anchor[0] < 0 && css`right: ${-p.anchor[0]}px;`}
-  ${p => p.anchor[1] >= 0 && css`top: ${p.anchor[1]}px;`}
-  ${p => p.anchor[1] < 0 && css`bottom: ${-p.anchor[1]}px;`}
+  ${p => p.x >= 0 && css`left: ${p.x}px;`}
+  ${p => p.x < 0 && css`right: ${-p.x}px;`}
+  ${p => p.y >= 0 && css`top: ${p.y}px;`}
+  ${p => p.y < 0 && css`bottom: ${-p.y}px;`}
 
   /* Size control */
   width: ${p => p.size ?? DEFAULT_SIZE}px;

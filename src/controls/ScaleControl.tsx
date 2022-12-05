@@ -4,10 +4,21 @@ import styled, { css } from 'styled-components';
 
 const DEFAULT_WIDTH = 100;
 
-interface IProps {
+type IProps = {
+  /** @ignore */
   className?: string;
-  anchor: number[];
-  /** Control's base width (px). Defaults to 100px */
+  /**
+   * Control horizontal position. A negative value means offset from the right.
+   */
+  x: number;
+  /**
+   * Control vertical position. A negative value means offset from the bottom.
+   */
+  y: number;
+  /** 
+   * Control's base width (px). The width may expand to double this.
+   * @defaultValue 100
+   */
   width?: number; 
 }
 
@@ -21,7 +32,7 @@ class ScaleControlBase extends React.Component<IProps & ViewState> {
   //
   // Given a distance in meters, determine a rounded value.
   // 
-  getRoundedMeters = (meters: number) => {
+  private getRoundedMeters = (meters: number) => {
     let current_diff = 999999999;
     let dist = 0;    
     STEPS.forEach(step => {
@@ -34,14 +45,14 @@ class ScaleControlBase extends React.Component<IProps & ViewState> {
     return dist;
   }
 
-  formatNumber = (num: number) => {
+  private formatNumber = (num: number) => {
     return num.toLocaleString(undefined, { useGrouping: true, minimumFractionDigits: 0, maximumFractionDigits: 0 })
   }
 
   //
   // Convert distance in meters to human-readable text (with units).
   //
-  getHumanText = (meters: number) => {
+  private getHumanText = (meters: number) => {
     if(meters >= 1000) {
       return `${this.formatNumber(meters / 1000)}km`;
     } else {
@@ -54,7 +65,7 @@ class ScaleControlBase extends React.Component<IProps & ViewState> {
     const meterspx = 156543.03392 * Math.cos(p.latitude * Math.PI / 180) / Math.pow(2, p.zoom + 1);
 
     let width = p.width ?? DEFAULT_WIDTH;
-    let meters = width * meterspx;
+    const meters = width * meterspx;
     const dist = this.getRoundedMeters(meters);
     width = width * dist / meters;
 
@@ -69,10 +80,10 @@ class ScaleControlBase extends React.Component<IProps & ViewState> {
 const ScaleControlStyled = styled(ScaleControlBase)`
   position: absolute;
   z-index: 1;
-  ${p => p.anchor[0] >= 0 && css`left: ${p.anchor[0]}px;`}
-  ${p => p.anchor[0] < 0 && css`right: ${-p.anchor[0]}px;`}
-  ${p => p.anchor[1] >= 0 && css`top: ${p.anchor[1]}px;`}
-  ${p => p.anchor[1] < 0 && css`bottom: ${-p.anchor[1]}px;`}    
+  ${p => p.x >= 0 && css`left: ${p.x}px;`}
+  ${p => p.x < 0 && css`right: ${-p.x}px;`}
+  ${p => p.y >= 0 && css`top: ${p.y}px;`}
+  ${p => p.y < 0 && css`bottom: ${-p.y}px;`}    
 
   box-sizing: border-box;
   border: solid 2px #333333;
@@ -89,7 +100,10 @@ const ScaleControlStyled = styled(ScaleControlBase)`
 `
 
 /** 
- * Adds a ScaleControl to the map. 
+ * The `ScaleControl` shows a scale in meters per pixel.
+ * 
+ * The control is positioned using `x` and `{y}`. Negative coordinates mean 
+ * offsets from right and bottom.
  */
 class ScaleControl extends React.Component<IProps> {
   render = () => <ScaleControlStyled {...this.props as any}/>

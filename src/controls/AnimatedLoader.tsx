@@ -1,18 +1,27 @@
 import * as React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
-const DEFAULT_SIZE = 40;  // Default control size (px)
+const DEFAULT_SIZE  = 40;      // Default control size (px)
+const DEFAULT_COLOR = "white"; // Default control color
 
-interface IProps {
+type IProps = {
+  /** @ignore */
   className?: string;
-  /** Button anchor (x,y). Negative values are offsets from the right and 
-   *  bottom. */
-  anchor: number[];  
-  /** Optional control size (px).  Defaults to 40. */
+  /** Control x-coordinate. Negative values are offset from the right. */
+  x: number;  
+  /** Control y-coordinate. Negative values are offset from the bottom. */
+  y: number;
+  /** 
+   * Optional control size in pixels. 
+   * @defaultValue 40
+   */
   size?: number;
   /** Should the loader currently be shown? */
   active: boolean;
-  /** SVG color. Defaults to white. */
+  /** 
+   * Optional SVG color. 
+   * @defaultValue white
+   */
   color?: string;
 }
 
@@ -55,12 +64,17 @@ const Svg = styled('svg')`
  */
 const AnimatedLoader = styled(AnimatedLoaderBase)`
   position: absolute;
-  ${p => p.anchor[0] >= 0 && css`left: ${p.anchor[0]}px;`}
-  ${p => p.anchor[0] < 0 && css`right: ${-p.anchor[0]}px;`}
-  ${p => p.anchor[1] >= 0 && css`top: ${p.anchor[1]}px;`}
-  ${p => p.anchor[1] < 0 && css`bottom: ${-p.anchor[1]}px;`}
-  width: ${p => p.size ? p.size : DEFAULT_SIZE}px;
-  height: ${p => p.size ? p.size : DEFAULT_SIZE}px;
+
+  ${p => p.x >= 0 && css`left: ${p.x}px;`}
+  ${p => p.x < 0 && css`right: ${-p.x}px;`}
+  ${p => p.y >= 0 && css`top: ${p.y}px;`}
+  ${p => p.y < 0 && css`bottom: ${-p.y}px;`}
+
+  max-width: 200px;
+  max-height: 200px;
+  width: ${p => p.size ?? DEFAULT_SIZE}px;
+  height: ${p => p.size ?? DEFAULT_SIZE}px;
+
   opacity: 0;
   cursor: grab;
   pointer-events: none;
@@ -68,7 +82,7 @@ const AnimatedLoader = styled(AnimatedLoaderBase)`
   transition: opacity ease-in-out 150ms;
   opacity: ${p => p.active ? 1 : 0};
   ${Svg} {
-    fill: ${p => p.color ?? "#fff"};
+    fill: ${p => p.color ?? DEFAULT_COLOR};
   }
 `
 

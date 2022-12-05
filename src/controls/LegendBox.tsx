@@ -1,8 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-interface IProps {
+type IProps = {
+  /** @ignore */
   className?: string;
+  /** Legend box color, e.g. "green" or "#0f0" */
   color: string;
 }
 
@@ -19,7 +21,7 @@ class LegendBoxBase extends React.Component<IProps> {
 }
 
 const LegendBox = styled(LegendBoxBase)`
-  width: 10px;
+  width:  10px;
   height: 10px;
   border: solid 1px black;
   border-radius: 2px;

@@ -104,16 +104,16 @@ class MapView extends React.Component<{}, IState> {
         onLoad={this.handleLoad}
         onMove={this.handleMove}
       >
-        <ScaleControl {...this.state.viewState} width={200} anchor={[10, -62]}/>
-        <ZoomInButton  {...this.state.viewState} attachedBottom anchor={[100,100]} hint={<>Zoom in</>}/>
-        <ZoomOutButton {...this.state.viewState} attachedTop attachedBottom anchor={[100,134]} hint={<>Zoom out</>}/>
-        <CompassButton {...this.state.viewState} attachedTop anchor={[100,168]} hint={<>Reset bearing to north</>} visualizePitch/>
+        <ScaleControl {...this.state.viewState} width={200} x={10} y={-62}/>
+        <ZoomInButton  {...this.state.viewState} attachedBottom x={100} y={100} hint={<>Zoom in</>}/>
+        <ZoomOutButton {...this.state.viewState} attachedTop attachedBottom x={100} y={134} hint={<>Zoom out</>}/>
+        <CompassButton {...this.state.viewState} attachedTop x={100} y={168} hint={<>Reset bearing to north</>} visualizePitch/>
 
-        <ZoomInButton active {...this.state.viewState} anchor={[100,300]} hint={<>Zoom in</>}/>
-        <ZoomOutButton disabled {...this.state.viewState} anchor={[100,350]} hint={<>Zoom out</>}/>
-        <CompassButton {...this.state.viewState} anchor={[100,400]} hint={<>Reset bearing to north</>} visualizePitch/>
+        <ZoomInButton active {...this.state.viewState} x={100} y={300} hint={<>Zoom in</>}/>
+        <ZoomOutButton disabled {...this.state.viewState} x={100} y={350} hint={<>Zoom out</>}/>
+        <CompassButton {...this.state.viewState} x={100} y={400} hint={<>Reset bearing to north</>} visualizePitch/>
 
-        <AnimatedLoader anchor={[-100, -100]} active/>
+        <AnimatedLoader x={-100} y={-100} active/>
       </Map>
     );
   }
