@@ -38,7 +38,7 @@ const MapButtonBase = (p: IProps & IMapButtonProps) => {
         {p.children}
       </Button>
       {p.hint && 
-        <Hint offset={16} side={p.anchor[0] < 0 ? "right" : "left"}>{p.hint}</Hint>
+        <Hint foreground={p.disabled ? "#888": "#fff"} offset={16} side={p.anchor[0] < 0 ? "right" : "left"}>{p.hint}</Hint>
       }
     </div>);
 }
@@ -66,7 +66,7 @@ const MapButton = styled(MapButtonBase)`
     box-sizing: border-box;
     cursor: pointer;
     background-clip: padding-box;
-    border: ${BORDER_SIZE}px solid #cfcfcf;
+    border: ${BORDER_SIZE}px solid ${p => p.disabled ? "#888" : "#cfcfcf"};
     border-radius: ${BORDER_RADIUS}px;
     ${p => p.attachedBottom && css`
       border-bottom-left-radius: 0;
@@ -107,8 +107,10 @@ const MapButton = styled(MapButtonBase)`
 
   /* Active mode */
   ${p => p.active && css`
-    border-color: #cfcfcf;
-    background-color: white;
+    ${Button} {
+      border-color: #cfcfcf;
+      background-color: white;
+    }
     & > div:first-child svg { fill: #333; }
   `}
 
@@ -120,8 +122,9 @@ const MapButton = styled(MapButtonBase)`
 
   /* Hover */
   &:hover {
-    ${p => !p.disabled && css`border-color: #fff`};
-    ${p => !p.disabled && css`
+    ${p => !p.disabled && css`${Button} {border-color: #fff}`};
+
+    ${p => !p.disabled && !p.active && css`
       & > div:first-child svg {
         fill: #fff;
       }

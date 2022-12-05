@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import Map, { Layer, LngLatBoundsLike, MapboxGeoJSONFeature, MapboxMap, MapLayerMouseEvent, NavigationControl, Popup, Source, ViewState, ViewStateChangeEvent } from 'react-map-gl';
+import Map, { Layer, LngLatBoundsLike, MapboxGeoJSONFeature, MapboxMap, MapLayerMouseEvent, Popup, Source, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 import { ZoomInButton } from './controls/ZoomInButton';
 import { ZoomOutButton } from './controls/ZoomOutButton';
 import { CompassButton } from './controls/CompassButton';
@@ -105,15 +105,13 @@ class MapView extends React.Component<{}, IState> {
         onMove={this.handleMove}
       >
         <ScaleControl {...this.state.viewState} width={200} anchor={[10, -62]}/>
-        <ZoomInButton {...this.state.viewState} attachedBottom anchor={[100,100]} hint={<>Zoom in</>}/>
+        <ZoomInButton  {...this.state.viewState} attachedBottom anchor={[100,100]} hint={<>Zoom in</>}/>
         <ZoomOutButton {...this.state.viewState} attachedTop attachedBottom anchor={[100,134]} hint={<>Zoom out</>}/>
         <CompassButton {...this.state.viewState} attachedTop anchor={[100,168]} hint={<>Reset bearing to north</>} visualizePitch/>
 
-        <ZoomInButton {...this.state.viewState} anchor={[100,300]} hint={<>Zoom in</>}/>
-        <ZoomOutButton {...this.state.viewState} anchor={[100,350]} hint={<>Zoom out</>}/>
+        <ZoomInButton active {...this.state.viewState} anchor={[100,300]} hint={<>Zoom in</>}/>
+        <ZoomOutButton disabled {...this.state.viewState} anchor={[100,350]} hint={<>Zoom out</>}/>
         <CompassButton {...this.state.viewState} anchor={[100,400]} hint={<>Reset bearing to north</>} visualizePitch/>
-
-        <NavigationControl visualizePitch showCompass/>
 
         <AnimatedLoader anchor={[-100, -100]} active/>
       </Map>
