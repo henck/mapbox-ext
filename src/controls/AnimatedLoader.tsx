@@ -4,7 +4,7 @@ import styled, { css, keyframes } from 'styled-components';
 const DEFAULT_SIZE  = 40;      // Default control size (px)
 const DEFAULT_COLOR = "white"; // Default control color
 
-type IProps = {
+interface IProps {
   /** @ignore */
   className?: string;
   /** Control x-coordinate. Negative values are offset from the right. */
@@ -12,23 +12,20 @@ type IProps = {
   /** Control y-coordinate. Negative values are offset from the bottom. */
   y: number;
   /** 
-   * Optional control size in pixels. 
-   * @defaultValue 40
+   * Optional control size in pixels. Defaults to `40`.
    */
   size?: number;
-  /** Should the loader currently be shown? */
+  /** 
+   * Should the loader currently be shown? If false, the loader is not
+   * displayed. If true, the loader is displayed.
+   */
   active: boolean;
   /** 
-   * Optional SVG color. 
-   * @defaultValue white
+   * Optional SVG color. Defaults to `white`.
    */
   color?: string;
 }
 
-/**
- * A loading animation, to be shown when the map is loading. Captures no 
- * pointer events.
- */
 class AnimatedLoaderBase extends React.Component<IProps> {
   render = () => {
     const p = this.props;
@@ -62,7 +59,7 @@ const Svg = styled('svg')`
 /**
  * Shows an animated Loading component when the active prop is true.
  */
-const AnimatedLoader = styled(AnimatedLoaderBase)`
+const AnimatedLoaderstyled = styled(AnimatedLoaderBase)`
   position: absolute;
 
   ${p => p.x >= 0 && css`left: ${p.x}px;`}
@@ -86,4 +83,16 @@ const AnimatedLoader = styled(AnimatedLoaderBase)`
   }
 `
 
-export { AnimatedLoader }
+/**
+ * A loading animation, to be shown when the map is loading. Captures no 
+ * pointer events. Use the `active` prop to show and hide the animation. 
+ * This shows a rotating notched-circle SVG.
+ * 
+ * @example
+ * ```tsx
+ * <AnimatedLoader x={-50} y={50} active color="green"/>
+ * ```
+ */
+const AnimatedLoader = (p: IProps) => <AnimatedLoaderstyled {...p}/>
+
+export { AnimatedLoader, IProps }

@@ -8,7 +8,7 @@ const TRANSITION_TIME = 0.1;  // Transtion time (s)
 const BORDER_SIZE     = 2;    // Border thickness (px)
 const BORDER_RADIUS   = 8;    // Border radius (px)
 
-type IMapButtonProps = {
+interface IMapButtonProps {
   /** Horizontal button position. A negative value is an offset from the right. */
   x: number;
   /** Vertical button position. A negative value is an offset from the bottom. */
@@ -148,4 +148,4 @@ const MapButton = styled(MapButtonBase)`
   }
 `
 
-export { MapButton, IMapButtonProps }
+export { MapButton, IMapButtonProps, IProps }

@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 const DEFAULT_WIDTH = 100;
 
-type IProps = {
+interface IProps {
   /** @ignore */
   className?: string;
   /**
@@ -105,8 +105,6 @@ const ScaleControlStyled = styled(ScaleControlBase)`
  * The control is positioned using `x` and `{y}`. Negative coordinates mean 
  * offsets from right and bottom.
  */
-class ScaleControl extends React.Component<IProps> {
-  render = () => <ScaleControlStyled {...this.props as any}/>
-}
+const ScaleControl = (p: IProps & ViewState) => <ScaleControlStyled {...p}/>
 
-export { ScaleControl }
+export { ScaleControl, IProps }

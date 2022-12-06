@@ -19,7 +19,8 @@
     "theme": "default",
     "excludePrivate": true,
     "excludeExternals": true,
-    "externalPattern": "**/node_modules/**"
+    "externalPattern": "**/node_modules/**",
+    "categorizeByGroup": false
   },
   "include": [
     "src/**/**/*"

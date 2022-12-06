@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 import { IMapButtonProps, MapButton } from './MapButton';
 
-type IProps = {
+interface IProps {
   /** 
    * Should pitch be visualized why tilting the arrow along the z-axis,
    * i.e. away from the viewer?
@@ -17,12 +17,6 @@ type IProps = {
   contrastTip?: boolean | string;
 }
 
-/**
- * The `CompassButton` shows a bearing arrow which points to the north. 
- * It optionally tilts the arrow to reflect the current pitch. 
- * 
- * The current map ViewState must be passed to this control.
- */
 const CompassButtonBase = (p: IMapButtonProps & ViewState & IProps) => {
   const { current: map } = useMap();
   return (
@@ -37,7 +31,7 @@ const CompassButtonBase = (p: IMapButtonProps & ViewState & IProps) => {
   );
 }
 
-const CompassButton = styled(CompassButtonBase)`
+const CompassButtonStyled = styled(CompassButtonBase)`
   /* Add custom tip color if specified. */
   ${p => p.contrastTip && css`
     svg polygon.arrow {
@@ -46,4 +40,13 @@ const CompassButton = styled(CompassButtonBase)`
   }
 `
 
-export { CompassButton }
+/**
+ * The `CompassButton` shows a bearing arrow which points to the north. 
+ * It optionally tilts the arrow to reflect the current pitch. 
+ * 
+ * The current map ViewState must be passed to this control.
+ */
+
+const CompassButton = (p: IMapButtonProps & ViewState & IProps) => <CompassButtonStyled {...p}/>
+
+export { CompassButton, IProps }

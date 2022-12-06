@@ -7,7 +7,7 @@ const DEFAULT_COLOR = "#fff";        // Default border and text color
 const DEFAULT_BORDER_RADIUS = 4;       // Default border radius (px)
 const TRANSITION_TIME = 0.2;           // Transition time (s)
 
-type IProps = {
+interface IProps {
   /** @ignore */
   className?: string;
   /** @ignore */
@@ -111,8 +111,6 @@ const HintStyled = styled(HintBase)`
  * A Hint appears next to a parent control, at the specified side (left or 
  * right), with an optional offset.
  */
-class Hint extends React.Component<IProps> {
-  render = () => <HintStyled {...this.props}/>
-}
+const Hint = (p: IProps) => <HintStyled {...p}/>
 
-export { Hint }
+export { Hint, IProps }
