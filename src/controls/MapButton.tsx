@@ -101,7 +101,7 @@ const MapButton = styled(MapButtonBase)`
   }
 
   /* Hint positioning */
-  ${Hint} {
+  div:nth-child(2) {
     opacity: 0;
   }
 
@@ -142,7 +142,7 @@ const MapButton = styled(MapButtonBase)`
       }
     `}
     ${p => p.disabled && css`cursor: default;`}
-    ${Hint} {
+    div:nth-child(2) {
       opacity: 1;
     }
   }

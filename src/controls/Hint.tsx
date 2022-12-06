@@ -53,11 +53,7 @@ class HintBase extends React.Component<IProps> {
   }
 }
 
-/**
- * A Hint appears next to a parent control, at the specified side (left or 
- * right), with an optional offset.
- */
-const Hint = styled(HintBase)`
+const HintStyled = styled(HintBase)`
   /* Position */
   position: absolute;
   ${p => p.side == "left"  && css`left:  calc(100% + ${p.offset}px);`};
@@ -110,5 +106,13 @@ const Hint = styled(HintBase)`
     z-index: 1;
   }
 `
+
+/**
+ * A Hint appears next to a parent control, at the specified side (left or 
+ * right), with an optional offset.
+ */
+class Hint extends React.Component<IProps> {
+  render = () => <HintStyled {...this.props}/>
+}
 
 export { Hint }
