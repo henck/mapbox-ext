@@ -7,6 +7,7 @@ import { ZoomOutButton } from './controls/ZoomOutButton';
 import { CompassButton } from './controls/CompassButton';
 import { AnimatedLoader } from './controls/AnimatedLoader';
 import { ScaleControl } from './controls/ScaleControl';
+import { Geocoder } from './controls/Geocoder';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
@@ -104,6 +105,7 @@ class MapView extends React.Component<{}, IState> {
         onLoad={this.handleLoad}
         onMove={this.handleMove}
       >
+        <Geocoder access_token={ACCESS_TOKEN}/>
         <ScaleControl {...this.state.viewState} width={200} x={10} y={-62}/>
         <ZoomInButton  {...this.state.viewState} attachedBottom x={100} y={100} hint={<>Zoom in</>}/>
         <ZoomOutButton {...this.state.viewState} attachedTop attachedBottom x={100} y={134} hint={<>Zoom out</>}/>
