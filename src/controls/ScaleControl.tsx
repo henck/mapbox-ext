@@ -22,6 +22,7 @@ interface IProps {
   width?: number; 
 }
 
+// Number display steps, in meters:
 const STEPS = [
   1, 2, 3, 5, 10, 20, 30, 50, 100, 200, 300, 500, 1000, 2000, 3000, 5000, 10000, 
   20000, 30000, 50000, 100000, 200000, 300000, 500000, 1000000, 2000000,
@@ -62,8 +63,8 @@ class ScaleControlBase extends React.Component<IProps & ViewState> {
 
   render = () => {
     const p = this.props;
+    
     const meterspx = 156543.03392 * Math.cos(p.latitude * Math.PI / 180) / Math.pow(2, p.zoom + 1);
-
     let width = p.width ?? DEFAULT_WIDTH;
     const meters = width * meterspx;
     const dist = this.getRoundedMeters(meters);
@@ -78,6 +79,7 @@ class ScaleControlBase extends React.Component<IProps & ViewState> {
 }
 
 const ScaleControlStyled = styled(ScaleControlBase)`
+  /* Position */
   position: absolute;
   z-index: 1;
   ${p => p.x >= 0 && css`left: ${p.x}px;`}
@@ -85,18 +87,22 @@ const ScaleControlStyled = styled(ScaleControlBase)`
   ${p => p.y >= 0 && css`top: ${p.y}px;`}
   ${p => p.y < 0 && css`bottom: ${-p.y}px;`}    
 
+  /* Size */
   box-sizing: border-box;
+  height: 20px;
+  padding-left: 5px;
+
+  /* Appearance */
   border: solid 2px #333333;
   border-top: none;
   user-select: none;
   pointer-events: none;
-  width: 200px;
-  height: 20px;
   background: #C7C7C7;
   font-size: 10px;
   color: #333;
-  padding-left: 5px;
   white-space: nowrap;
+  opacity: 0.8;
+  transition: width ease-in-out 100ms;
 `
 
 /** 
