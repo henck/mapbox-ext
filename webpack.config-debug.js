@@ -1,8 +1,6 @@
 const path               = require('path'),
       webpack            = require('webpack'),
-      HtmlWebpackPlugin  = require('html-webpack-plugin'),
-      SVGSpritemapPlugin = require('svg-spritemap-webpack-plugin'),
-      CopyWebpackPlugin  = require('copy-webpack-plugin');
+      HtmlWebpackPlugin  = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -43,17 +41,6 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'src', 'index.html') }),
-    new webpack.HotModuleReplacementPlugin(),
-    new SVGSpritemapPlugin('svg/**/*.svg', {
-      sprite: {
-        prefix: false,
-        generate: {
-          title: false
-        },
-      },
-      output: {
-        filename: 'sprites.svg'
-      }      
-    })
+    new webpack.HotModuleReplacementPlugin()
   ]
 }
