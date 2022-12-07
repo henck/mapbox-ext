@@ -1,6 +1,7 @@
 /** @module @ignore */
 import * as React from 'react';
 import styled from 'styled-components';
+
 import { DefaultSkin, ISkin } from './Skin';
 
 interface IProps {
@@ -12,12 +13,14 @@ interface IProps {
   searchIcon?: boolean;  
   /** Add clear button? */
   clearable?: boolean;
+  /** Optional skin to apply. */
+  skin?: ISkin;
+  /** Optional placeholder. */
+  placeholder?: string;
   /** Fired when input value changes. */
   onChange: (q: string) => void;
   /** Fired when clear icon is clicked. */
   onClear: () => void;
-  /** Optional skin to apply. */
-  skin?: ISkin;
 }
 
 class GeocoderInputBase extends React.Component<IProps> {
@@ -32,7 +35,7 @@ class GeocoderInputBase extends React.Component<IProps> {
     const p = this.props;
     return (
       <div className={p.className}>
-        <input placeholder="Type to search places" value={p.value} onChange={this.handleChange}/>
+        <input placeholder={p.placeholder ?? "Type to search places"} value={p.value} onChange={this.handleChange}/>
         {/* Search icon */}
         <svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
           <path d="M1216 832q0-185-131.5-316.5t-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5 316.5-131.5 131.5-316.5zm512 832q0 52-38 90t-90 38q-54 0-90-38l-343-342q-179 124-399 124-143 0-273.5-55.5t-225-150-150-225-55.5-273.5 55.5-273.5 150-225 225-150 273.5-55.5 273.5 55.5 225 150 150 225 55.5 273.5q0 220-124 399l343 343q37 37 37 90z"/>

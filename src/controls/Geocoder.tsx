@@ -25,6 +25,8 @@ interface IGeocoderProps {
   access_token: string;
   /** Optional skin to apply. */
   skin?: ISkin;
+  /** Optional placeholder for input box. */
+  placeholder?: string;
 }
 
 const GeocoderBase = (props: IGeocoderProps) => {
@@ -38,7 +40,7 @@ const GeocoderBase = (props: IGeocoderProps) => {
   // Currently retrieved features:
   const [features, setFeatures] = React.useState([]);
   // Offset of currently-selected feature (0-based):
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
 
   //
   // Clear the control, removing any items.
@@ -47,7 +49,7 @@ const GeocoderBase = (props: IGeocoderProps) => {
   const clear = () => {
     setQ("");
     setFeatures([]);
-    setSelectedIndex(0);
+    setSelectedIndex(-1);
     if (wrapperRef) wrapperRef.current.querySelector('input').focus();    
   }
 
@@ -139,12 +141,12 @@ const GeocoderBase = (props: IGeocoderProps) => {
 
   return (
     <div className={props.className} onKeyDown={(e: React.KeyboardEvent) => handleKeyDown(e)} ref={wrapperRef}>
-      {props.y >= 0 && <GeocoderInput skin={props.skin} searchIcon={props.searchIcon} clearable={props.clearable} value={q} onChange={handleChange} onClear={clear}/>}
+      {props.y >= 0 && <GeocoderInput placeholder={props.placeholder} skin={props.skin} searchIcon={props.searchIcon} clearable={props.clearable} value={q} onChange={handleChange} onClear={clear}/>}
       <GeocoderList>
         {features.map((f, idx) => 
           <GeocoderEntry skin={props.skin} key={idx} feature={f} selected={idx == selectedIndex} onClick={() => handleClick(f)}/>)}
       </GeocoderList>
-      {props.y < 0 && <GeocoderInput skin={props.skin} searchIcon={props.searchIcon} clearable={props.clearable} value={q} onChange={handleChange} onClear={clear}/>}
+      {props.y < 0 && <GeocoderInput placeholder={props.placeholder} skin={props.skin} searchIcon={props.searchIcon} clearable={props.clearable} value={q} onChange={handleChange} onClear={clear}/>}
     </div>);
 }
 

@@ -43,14 +43,14 @@ const GeocoderEntry = styled(GeocoderEntryBase).attrs(p => ({
   transition: background-color ease-in-out 150ms, color ease-in-out 150ms;
   ${p => p.selected && css`
     color: ${p.skin.fill};
-    background-color: ${p.skin.hover};
+    background-color: ${p.skin.border};
   `}
   /* ${p => !p.selected && css`&:nth-child(2n+1) {
     background-color: #f4f4f4;
   }`} */
   &:hover {
     color: ${p => p.skin.fill};
-    background-color: ${p => p.skin.hover};
+    background-color: ${p => p.skin.border};
   }
 `
 
