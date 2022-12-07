@@ -22,7 +22,7 @@ const GeocoderList = styled(GeocoderListBase)`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: height ease-in-out 100ms;
+  transition: height ease-in-out 150ms;
   height: ${p => React.Children.count(p.children) * 52}px;
 `
 

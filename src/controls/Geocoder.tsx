@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { GeocoderApi, IGeocoderFeature } from './GeocoderApi';
 import { GeocoderEntry } from './GeocoderEntry';
@@ -7,9 +7,21 @@ import { GeocoderList } from './GeocoderList';
 import { GeocoderInput } from './GeocoderInput';
 import { useMap } from 'react-map-gl';
 
+const DEFAULT_BORDER_RADIUS = 8;
+
 interface IProps {
   /** @ignore */
   className?: string;
+  /** Horizontal button position. A negative value is an offset from the right. */
+  x: number;
+  /** Vertical button position. A negative value is an offset from the bottom. */
+  y: number;  
+  /** Border radius in pixels. Defaults to 8. */
+  borderRadius?: number;
+  /** Show a static search icon? */
+  searchIcon?: boolean;
+  /** Add clear button? */
+  clearable?: boolean;  
   /** Mapbox access token. */
   access_token: string;
 }
@@ -44,7 +56,9 @@ const GeocoderBase = (props: IProps) => {
   const lookup = (q: string) => {
     if(q == "") return;
     GeocoderApi.lookup("mapbox.places", q, props.access_token)
-    .then(res => setFeatures(res.features));
+    .then(res => {
+      setFeatures(res.features);
+    });
   }  
 
   // 
@@ -124,24 +138,35 @@ const GeocoderBase = (props: IProps) => {
 
   return (
     <div className={props.className} onKeyDown={(e: React.KeyboardEvent) => handleKeyDown(e)} ref={wrapperRef}>
+      {props.y >= 0 && <GeocoderInput searchIcon={props.searchIcon} clearable={props.clearable} value={q} onChange={handleChange} onClear={clear}/>}
       <GeocoderList>
         {features.map((f, idx) => 
           <GeocoderEntry key={idx} feature={f} selected={idx == selectedIndex} onClick={() => handleClick(f)}/>)}
       </GeocoderList>
-      <GeocoderInput value={q} onChange={handleChange} onClear={clear}/>
+      {props.y < 0 && <GeocoderInput searchIcon={props.searchIcon} clearable={props.clearable} value={q} onChange={handleChange} onClear={clear}/>}
     </div>);
 }
 
 const Geocoder = styled(GeocoderBase)`
+  /* Location */
   position: absolute;
+  ${p => p.x >= 0 && css`left: ${p.x}px;`}
+  ${p => p.x < 0 && css`right: ${-p.x}px;`}
+  ${p => p.y >= 0 && css`top: ${p.y}px;`}
+  ${p => p.y < 0 && css`bottom: ${-p.y}px;`}
   z-index: 9999;
-  left: 20px;
-  bottom: 40px;
+
+  /* Size */
   width: 300px;
+
+  /* Content */
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+
+  /* Appearance */
   background: #fff;
-  border-radius: 4px;
+  border-radius: ${p => p.borderRadius ?? DEFAULT_BORDER_RADIUS}px;
   border: solid 2px #333333;
   box-shadow: 1px 1px 2px rgb(0,0,0,0.5);
 `

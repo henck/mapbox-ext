@@ -1,11 +1,15 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
 interface IProps {
   /** @ignore */
   className?: string;
   /** Current value of input. */
   value: string;
+  /** Show a static search icon? */
+  searchIcon?: boolean;  
+  /** Add clear button? */
+  clearable?: boolean;
   /** Fired when input value changes. */
   onChange: (q: string) => void;
   /** Fired when clear icon is clicked. */
@@ -41,6 +45,7 @@ class GeocoderInputBase extends React.Component<IProps> {
 const GeocoderInput = styled(GeocoderInputBase)`
   position: relative;
   svg:nth-of-type(1) {
+    display: ${p => p.searchIcon ? 'block' : 'none'};
     position: absolute;
     left: 8px;
     top: 7px;
@@ -49,6 +54,7 @@ const GeocoderInput = styled(GeocoderInputBase)`
     fill: #888;
   }
   svg:nth-of-type(2) {
+    display: ${p => p.clearable ? 'block' : 'none'};
     position: absolute;
     right: 8px;
     top: 7px;
@@ -75,10 +81,10 @@ const GeocoderInput = styled(GeocoderInputBase)`
     padding:          9px 14px;
     
     /* Padding for icon, if there is one: */
-    padding-left: 40px;
+    padding-left:     ${p => p.searchIcon ? 40 : 14}px;
 
     /* Padding for clear icon, if present: */
-    padding-right: 40px;
+    padding-right:    ${p => p.clearable ? 40 : 14}px;
 
     /* Define colors for placeholder text. */
     &::placeholder {
