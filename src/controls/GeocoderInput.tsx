@@ -1,3 +1,4 @@
+/** @hidden */
 import * as React from 'react';
 import styled from 'styled-components';
 import { DefaultSkin, ISkin } from './Skin';
