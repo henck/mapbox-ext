@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
 import Map, { Layer, LngLatBoundsLike, MapboxGeoJSONFeature, MapboxMap, MapLayerMouseEvent, Popup, Source, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 import { ZoomInButton } from './controls/ZoomInButton';
@@ -8,6 +8,7 @@ import { CompassButton } from './controls/CompassButton';
 import { AnimatedLoader } from './controls/AnimatedLoader';
 import { ScaleControl } from './controls/ScaleControl';
 import { Geocoder } from './controls/Geocoder';
+import { DarkSkin } from './controls/Skin';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
@@ -89,7 +90,6 @@ class MapView extends React.Component<{}, IState> {
   }
 
   render = () => {
-    const p = this.props;
     return (
       <Map
         {...this.state.viewState}
@@ -106,14 +106,20 @@ class MapView extends React.Component<{}, IState> {
         onMove={this.handleMove}
       >
         <Geocoder access_token={ACCESS_TOKEN} x={-40} y={40} searchIcon clearable/>
+        <Geocoder skin={DarkSkin} access_token={ACCESS_TOKEN} x={-360} y={40} searchIcon clearable/>
+
         <ScaleControl {...this.state.viewState} width={200} x={10} y={-62}/>
         <ZoomInButton  {...this.state.viewState} attachedBottom x={40} y={40} hint={<>Zoom in</>}/>
         <ZoomOutButton {...this.state.viewState} attachedTop attachedBottom x={40} y={40+34} hint={<>Zoom out</>}/>
         <CompassButton {...this.state.viewState} attachedTop x={40} y={40+34*2} hint={<>Reset bearing to north</>} visualizePitch/>
 
-        <ZoomInButton {...this.state.viewState} x={40} y={200} hint={<>Zoom in</>}/>
+        <ZoomInButton active {...this.state.viewState} x={40} y={200} hint={<>Zoom in</>}/>
         <ZoomOutButton disabled {...this.state.viewState} x={40} y={250} hint={<>Zoom out</>}/>
         <CompassButton {...this.state.viewState} x={40} y={300} hint={<>Reset bearing to north</>} visualizePitch contrastTip/>
+
+        <ZoomInButton skin={DarkSkin} active {...this.state.viewState} x={40} y={400} hint={<>Zoom in</>}/>
+        <ZoomOutButton skin={DarkSkin} disabled {...this.state.viewState} x={40} y={450} hint={<>Zoom out</>}/>
+        <CompassButton skin={DarkSkin} {...this.state.viewState} x={40} y={500} hint={<>Reset bearing to north</>} visualizePitch contrastTip/>
 
         <AnimatedLoader x={-100} y={-100} active/>
       </Map>

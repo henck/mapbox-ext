@@ -3,6 +3,7 @@ import { css } from 'styled-components';
 import styled from 'styled-components';
 
 import { IGeocoderFeature } from './GeocoderApi';
+import { DefaultSkin, ISkin } from './Skin';
 
 interface IProps {
   /** @ignore */
@@ -13,6 +14,8 @@ interface IProps {
   onClick: () => void;
   /** Is entry currently keyboard-selected? */
   selected?: boolean;
+  /** Optional skin to apply. */
+  skin?: ISkin;
 }
 
 class GeocoderEntryBase extends React.Component<IProps> {
@@ -27,23 +30,27 @@ class GeocoderEntryBase extends React.Component<IProps> {
   }
 }
 
-const GeocoderEntry = styled(GeocoderEntryBase)`
+/** @hidden */
+const GeocoderEntry = styled(GeocoderEntryBase).attrs(p => ({
+  skin: p.skin ?? DefaultSkin
+}))`
   box-sizing: border-box;
   cursor: pointer;
   padding-top: 6px;
   padding-bottom: 6px;
-  background-color: #fff;
-  transition: background-color ease-in-out 150ms;
-  &:first-child {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-  }
-  ${p => p.selected && css`background-color: #ddd;`}
-  ${p => !p.selected && css`&:nth-child(2n+1) {
+  color: ${p => p.skin.border};
+  background-color: ${p => p.skin.fill};
+  transition: background-color ease-in-out 150ms, color ease-in-out 150ms;
+  ${p => p.selected && css`
+    color: ${p.skin.fill};
+    background-color: ${p.skin.hover};
+  `}
+  /* ${p => !p.selected && css`&:nth-child(2n+1) {
     background-color: #f4f4f4;
-  }`}
+  }`} */
   &:hover {
-    background-color: #ddd;
+    color: ${p => p.skin.fill};
+    background-color: ${p => p.skin.hover};
   }
 `
 

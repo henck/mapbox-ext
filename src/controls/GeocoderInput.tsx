@@ -1,5 +1,6 @@
 import * as React from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import styled from 'styled-components';
+import { DefaultSkin, ISkin } from './Skin';
 
 interface IProps {
   /** @ignore */
@@ -14,6 +15,8 @@ interface IProps {
   onChange: (q: string) => void;
   /** Fired when clear icon is clicked. */
   onClear: () => void;
+  /** Optional skin to apply. */
+  skin?: ISkin;
 }
 
 class GeocoderInputBase extends React.Component<IProps> {
@@ -42,7 +45,10 @@ class GeocoderInputBase extends React.Component<IProps> {
   }
 }
 
-const GeocoderInput = styled(GeocoderInputBase)`
+/** @hidden */
+const GeocoderInput = styled(GeocoderInputBase).attrs(p => ({
+  skin: p.skin ?? DefaultSkin
+}))`
   position: relative;
   svg:nth-of-type(1) {
     display: ${p => p.searchIcon ? 'block' : 'none'};
@@ -51,7 +57,7 @@ const GeocoderInput = styled(GeocoderInputBase)`
     top: 7px;
     width: 20px;
     height: 20px;
-    fill: #888;
+    fill: ${p => p.skin.disabled};
   }
   svg:nth-of-type(2) {
     display: ${p => p.clearable ? 'block' : 'none'};
@@ -60,12 +66,12 @@ const GeocoderInput = styled(GeocoderInputBase)`
     top: 7px;
     width: 20px;
     height: 20px;
-    fill: #333;
+    fill: ${p => p.skin.disabled};
     opacity: ${p => p.value == "" ? 0 : 1};
     transition: opacity ease-in-out 120ms;
     pointer-events: ${p => p.value == "" ? 'none' : 'all'};
     &:hover {
-      fill: #666;
+      fill: ${p => p.skin.border};
     }
     cursor: pointer;
   }  
@@ -77,7 +83,8 @@ const GeocoderInput = styled(GeocoderInputBase)`
     text-align:       left;
     border:           none;
     outline:          0;
-    background-color: #fff;
+    background-color: ${p => p.skin.fill};
+    color:            ${p => p.skin.border};
     padding:          9px 14px;
     
     /* Padding for icon, if there is one: */
@@ -88,7 +95,7 @@ const GeocoderInput = styled(GeocoderInputBase)`
 
     /* Define colors for placeholder text. */
     &::placeholder {
-      color: #888;
+      color: ${p => p.skin.disabled};
       opacity: 1 !important; /* Firefox applies opacity */
     }
 
@@ -99,7 +106,6 @@ const GeocoderInput = styled(GeocoderInputBase)`
     }
 
     /* Define colors when input has focus. */
-    transition: border-color 150ms ease;
     &:focus {
       &::placeholder {
         color: "#444";

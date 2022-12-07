@@ -6,8 +6,7 @@ import { GeocoderEntry } from './GeocoderEntry';
 import { GeocoderList } from './GeocoderList';
 import { GeocoderInput } from './GeocoderInput';
 import { useMap } from 'react-map-gl';
-
-const DEFAULT_BORDER_RADIUS = 8;
+import { DefaultSkin, ISkin } from './Skin';
 
 interface IProps {
   /** @ignore */
@@ -16,14 +15,16 @@ interface IProps {
   x: number;
   /** Vertical button position. A negative value is an offset from the bottom. */
   y: number;  
-  /** Border radius in pixels. Defaults to 8. */
-  borderRadius?: number;
+  /** Optional control width. Defaults to 300px. */
+  width?: number;
   /** Show a static search icon? */
   searchIcon?: boolean;
   /** Add clear button? */
   clearable?: boolean;  
   /** Mapbox access token. */
   access_token: string;
+  /** Optional skin to apply. */
+  skin?: ISkin;
 }
 
 const GeocoderBase = (props: IProps) => {
@@ -138,16 +139,19 @@ const GeocoderBase = (props: IProps) => {
 
   return (
     <div className={props.className} onKeyDown={(e: React.KeyboardEvent) => handleKeyDown(e)} ref={wrapperRef}>
-      {props.y >= 0 && <GeocoderInput searchIcon={props.searchIcon} clearable={props.clearable} value={q} onChange={handleChange} onClear={clear}/>}
+      {props.y >= 0 && <GeocoderInput skin={props.skin} searchIcon={props.searchIcon} clearable={props.clearable} value={q} onChange={handleChange} onClear={clear}/>}
       <GeocoderList>
         {features.map((f, idx) => 
-          <GeocoderEntry key={idx} feature={f} selected={idx == selectedIndex} onClick={() => handleClick(f)}/>)}
+          <GeocoderEntry skin={props.skin} key={idx} feature={f} selected={idx == selectedIndex} onClick={() => handleClick(f)}/>)}
       </GeocoderList>
-      {props.y < 0 && <GeocoderInput searchIcon={props.searchIcon} clearable={props.clearable} value={q} onChange={handleChange} onClear={clear}/>}
+      {props.y < 0 && <GeocoderInput skin={props.skin} searchIcon={props.searchIcon} clearable={props.clearable} value={q} onChange={handleChange} onClear={clear}/>}
     </div>);
 }
 
-const Geocoder = styled(GeocoderBase)`
+const Geocoder = styled(GeocoderBase).attrs(p => ({
+  skin: p.skin ?? DefaultSkin,
+  width: p.width ?? 300
+}))`
   /* Location */
   position: absolute;
   ${p => p.x >= 0 && css`left: ${p.x}px;`}
@@ -157,7 +161,7 @@ const Geocoder = styled(GeocoderBase)`
   z-index: 9999;
 
   /* Size */
-  width: 300px;
+  width: ${p => p.width}px;
 
   /* Content */
   display: flex;
@@ -166,9 +170,9 @@ const Geocoder = styled(GeocoderBase)`
 
   /* Appearance */
   background: #fff;
-  border-radius: ${p => p.borderRadius ?? DEFAULT_BORDER_RADIUS}px;
-  border: solid 2px #333333;
+  border-radius: ${p => p.skin.radius}px;
+  border: solid 2px ${p => p.skin.border};
   box-shadow: 1px 1px 2px rgb(0,0,0,0.5);
 `
 
-export { Geocoder } 
+export { Geocoder, IProps } 

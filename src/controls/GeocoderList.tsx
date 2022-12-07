@@ -18,6 +18,7 @@ class GeocoderListBase extends React.Component<IProps> {
   }
 }
 
+/** @hidden */
 const GeocoderList = styled(GeocoderListBase)`
   display: flex;
   flex-direction: column;
