@@ -84,7 +84,7 @@ const MapButton = styled(MapButtonBase).attrs(p => ({
     box-sizing: border-box;
     cursor: pointer;
     background-clip: padding-box;
-    border: ${BORDER_SIZE}px solid ${p => p.skin.border};
+    border: ${BORDER_SIZE}px solid ${p => p.active ? p.skin.fill : p.skin.border};
     border-radius: ${p => p.skin.radius}px;
     ${p => p.attachedBottom && css`
       border-bottom-left-radius: 0;
@@ -101,15 +101,12 @@ const MapButton = styled(MapButtonBase).attrs(p => ({
     ${p => p.attachedBottom && css`clip-path: inset(-6px -6px  0px -6px);`}
     ${p => p.attachedTop    && css`clip-path: inset( 0px -6px -6px -6px);`}
     ${p => p.attachedTop && p.attachedBottom && css`clip-path: inset( 0px -6px 0px -6px);`}
-    background: ${p => p.skin.fill};
+    background: ${p => p.active ? p.skin.border : p.skin.fill};
     transition: border-color ease-in-out ${TRANSITION_TIME}s;
     box-shadow: 0px 0px 6px rgb(255,255,255,0.5);
-    ${p => p.active && css`
-      box-shadow: 0px 0px 6px ${p.skin.active};
-    `}
 
     svg {
-      fill: ${p => p.skin.border};
+      fill: ${p => p.active ? p.skin.fill : p.skin.border};
       transition: fill ease-in-out ${TRANSITION_TIME}s;
       width: ${p => p.size - 2 * BORDER_SIZE}px;
       height: ${p => p.size - 2 * BORDER_SIZE}px;
