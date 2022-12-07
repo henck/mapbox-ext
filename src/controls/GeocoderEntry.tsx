@@ -1,4 +1,4 @@
-/** @hidden */
+/** @module @ignore */
 import * as React from 'react';
 import { css } from 'styled-components';
 import styled from 'styled-components';
@@ -31,7 +31,6 @@ class GeocoderEntryBase extends React.Component<IProps> {
   }
 }
 
-/** @hidden */
 const GeocoderEntry = styled(GeocoderEntryBase).attrs(p => ({
   skin: p.skin ?? DefaultSkin
 }))`

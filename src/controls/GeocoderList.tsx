@@ -1,4 +1,4 @@
-/** @hidden */
+/** @module @ignore */
 import * as React from 'react';
 import styled from 'styled-components';
 
@@ -19,7 +19,6 @@ class GeocoderListBase extends React.Component<IProps> {
   }
 }
 
-/** @hidden */
 const GeocoderList = styled(GeocoderListBase)`
   display: flex;
   flex-direction: column;

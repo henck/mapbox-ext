@@ -3,10 +3,9 @@ import styled, { css } from 'styled-components';
 import { DefaultSkin, ISkin } from './Skin';
 
 const HEIGHT = 24;                     // Hint height (px)
-const DEFAULT_BORDER_RADIUS = 4;       // Default border radius (px)
 const TRANSITION_TIME = 0.2;           // Transition time (s)
 
-interface IProps {
+interface IHintProps {
   /** @ignore */
   className?: string;
   /** @ignore */
@@ -21,7 +20,7 @@ interface IProps {
   skin?: ISkin;
 }
 
-class HintBase extends React.Component<IProps> {
+class HintBase extends React.Component<IHintProps> {
   render = () => {
     const p = this.props;
     return (
@@ -101,6 +100,6 @@ const HintStyled = styled(HintBase).attrs(p => ({
  * A Hint appears next to a parent control, at the specified side (left or 
  * right), with an optional offset.
  */
-const Hint = (p: IProps) => <HintStyled {...p}/>
+const Hint = (p: IHintProps) => <HintStyled {...p}/>
 
-export { Hint, IProps }
+export { Hint, IHintProps }

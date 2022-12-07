@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-interface IProps {
+interface ILegendBoxProps {
   /** @ignore */
   className?: string;
   /** Legend box color, e.g. "green" or "#0f0" */
@@ -11,7 +11,7 @@ interface IProps {
 /**
  * A small, colored square box.
  */
-class LegendBoxBase extends React.Component<IProps> {
+class LegendBoxBase extends React.Component<ILegendBoxProps> {
   render = () => {
     const p = this.props;
     return (
@@ -32,6 +32,6 @@ const LegendBoxStyled = styled(LegendBoxBase)`
   }
 `
 
-const LegendBox = (p: IProps) => <LegendBoxStyled {...p}/>
+const LegendBox = (p: ILegendBoxProps) => <LegendBoxStyled {...p}/>
 
-export { LegendBox, IProps }
+export { LegendBox, ILegendBoxProps }

@@ -4,7 +4,7 @@ import styled, { css, keyframes } from 'styled-components';
 const DEFAULT_SIZE  = 40;      // Default control size (px)
 const DEFAULT_COLOR = "white"; // Default control color
 
-interface IProps {
+interface IAnimatedLoaderProps {
   /** @ignore */
   className?: string;
   /** Control x-coordinate. Negative values are offset from the right. */
@@ -26,7 +26,7 @@ interface IProps {
   color?: string;
 }
 
-class AnimatedLoaderBase extends React.Component<IProps> {
+class AnimatedLoaderBase extends React.Component<IAnimatedLoaderProps> {
   render = () => {
     const p = this.props;
     return (
@@ -93,6 +93,6 @@ const AnimatedLoaderstyled = styled(AnimatedLoaderBase)`
  * <AnimatedLoader x={-50} y={50} active color="green"/>
  * ```
  */
-const AnimatedLoader = (p: IProps) => <AnimatedLoaderstyled {...p}/>
+const AnimatedLoader = (p: IAnimatedLoaderProps) => <AnimatedLoaderstyled {...p}/>
 
-export { AnimatedLoader, IProps }
+export { AnimatedLoader, IAnimatedLoaderProps }

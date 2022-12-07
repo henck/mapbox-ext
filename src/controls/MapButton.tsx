@@ -64,9 +64,6 @@ const Button = styled('div')`
 const MapButton = styled(MapButtonBase).attrs(p => ({
   size: p.size ?? DEFAULT_SIZE,
   skin: p.skin ?? DefaultSkin
-  //color: p.invert ? COLORS_INVERTED.fill: COLORS_NORMAL.fill,
-  //borderColor: p.invert ? (p.disabled ? COLORS_INVERTED.disabled : COLORS_INVERTED.border) : (p.disabled ? COLORS_NORMAL.disabled : COLORS_NORMAL.border),
-  //hoverColor: p.invert ? COLORS_INVERTED.hover : COLORS_NORMAL.hover
 }))`
   /* Position control */
   position: absolute;

@@ -7,6 +7,11 @@ import { IMapButtonProps, MapButton } from './MapButton';
  * The `ZoomInButton` zooms the map out when clicked.  It respects the min and 
  * max zoom levels of the map. 
  * The current map ViewState must be passed to this control.
+ * 
+ * @example
+ * ```tsx
+  * <ZoomOutButton disabled {...this.state.viewState} x={40} y={250} hint={<>Zoom out</>}/>
+ * ```
  */
 const ZoomOutButton = (p: IMapButtonProps & ViewState) => {
   const { current: map } = useMap();

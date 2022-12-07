@@ -1,4 +1,4 @@
-/** @hidden */
+/** @module @ignore */
 import { LngLatBoundsLike } from 'mapbox-gl';
 import { Results } from '@mapbox/mapbox-gl-geocoder';
 

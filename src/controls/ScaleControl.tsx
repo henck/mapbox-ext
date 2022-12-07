@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 const DEFAULT_WIDTH = 100;
 
-interface IProps {
+interface IScaleControlProps {
   /** @ignore */
   className?: string;
   /**
@@ -16,8 +16,8 @@ interface IProps {
    */
   y: number;
   /** 
-   * Control's base width (px). The width may expand to double this.
-   * @defaultValue 100
+   * Control's base width (px). The width may expand to double this. 
+   * Defaults to `100`.
    */
   width?: number; 
 }
@@ -29,7 +29,7 @@ const STEPS = [
   3000000, 5000000
 ];
 
-class ScaleControlBase extends React.Component<IProps & ViewState> {
+class ScaleControlBase extends React.Component<IScaleControlProps & ViewState> {
   //
   // Given a distance in meters, determine a rounded value.
   // 
@@ -109,8 +109,14 @@ const ScaleControlStyled = styled(ScaleControlBase)`
  * The `ScaleControl` shows a scale in meters per pixel.
  * 
  * The control is positioned using `x` and `{y}`. Negative coordinates mean 
- * offsets from right and bottom.
+ * offsets from right and bottom. A `width` may be provided, which defaults to 
+ * `100`.
+ * 
+ * @example
+ * ```tsx
+ * <ScaleControl {...this.state.viewState} width={200} x={10} y={-62}/>
+ * ```
  */
-const ScaleControl = (p: IProps & ViewState) => <ScaleControlStyled {...p}/>
+const ScaleControl = (p: IScaleControlProps & ViewState) => <ScaleControlStyled {...p}/>
 
-export { ScaleControl, IProps }
+export { ScaleControl, IScaleControlProps }

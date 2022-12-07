@@ -8,7 +8,7 @@ import { GeocoderInput } from './GeocoderInput';
 import { useMap } from 'react-map-gl';
 import { DefaultSkin, ISkin } from './Skin';
 
-interface IProps {
+interface IGeocoderProps {
   /** @ignore */
   className?: string;
   /** Horizontal button position. A negative value is an offset from the right. */
@@ -27,7 +27,7 @@ interface IProps {
   skin?: ISkin;
 }
 
-const GeocoderBase = (props: IProps) => {
+const GeocoderBase = (props: IGeocoderProps) => {
   const wrapperRef = React.useRef(null);
   const { current: map } = useMap();
 
@@ -148,7 +148,7 @@ const GeocoderBase = (props: IProps) => {
     </div>);
 }
 
-const Geocoder = styled(GeocoderBase).attrs(p => ({
+const GeocoderStyled = styled(GeocoderBase).attrs(p => ({
   skin: p.skin ?? DefaultSkin,
   width: p.width ?? 300
 }))`
@@ -175,4 +175,16 @@ const Geocoder = styled(GeocoderBase).attrs(p => ({
   box-shadow: 1px 1px 2px rgb(0,0,0,0.5);
 `
 
-export { Geocoder, IProps } 
+/** 
+ * The `Geocoder` control displays an input box. Typing into it sends requests
+ * to Mapbox for geocoding (with a debounce), and a list of matches appears.
+ * Clicking a match has the map fly to the selection location. The control 
+ * must be provided with a map `access_token` to work.
+ * 
+ * The input box can be placed using the `x` and `y` props.
+ * 
+ * @remarks This control is skinnable.
+ */
+const Geocoder = (p: IGeocoderProps) => <GeocoderStyled {...p}/>
+
+export { Geocoder, IGeocoderProps } 

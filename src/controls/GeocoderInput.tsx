@@ -1,4 +1,4 @@
-/** @hidden */
+/** @module @ignore */
 import * as React from 'react';
 import styled from 'styled-components';
 import { DefaultSkin, ISkin } from './Skin';
@@ -46,7 +46,6 @@ class GeocoderInputBase extends React.Component<IProps> {
   }
 }
 
-/** @hidden */
 const GeocoderInput = styled(GeocoderInputBase).attrs(p => ({
   skin: p.skin ?? DefaultSkin
 }))`

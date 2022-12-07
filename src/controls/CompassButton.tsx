@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 import { IMapButtonProps, MapButton } from './MapButton';
 
-interface IProps {
+interface ICompassButtonProps {
   /** 
    * Should pitch be visualized why tilting the arrow along the z-axis,
    * i.e. away from the viewer?
@@ -17,7 +17,7 @@ interface IProps {
   contrastTip?: boolean | string;
 }
 
-const CompassButtonBase = (p: IMapButtonProps & ViewState & IProps) => {
+const CompassButtonBase = (p: IMapButtonProps & ViewState & ICompassButtonProps) => {
   const { current: map } = useMap();
   return (
     <MapButton onClick={() => { map.rotateTo(0); map.resetNorthPitch() }} {...p}>
@@ -45,8 +45,15 @@ const CompassButtonStyled = styled(CompassButtonBase)`
  * It optionally tilts the arrow to reflect the current pitch. 
  * 
  * The current map ViewState must be passed to this control.
+ * 
+ * @example
+ * ```tsx
+ * <CompassButton 
+ *   skin={DarkSkin} {...this.state.viewState} x={40} y={500} 
+ *   hint={<>Reset bearing to north</>} visualizePitch contrastTip />
+ * ```
  */
 
-const CompassButton = (p: IMapButtonProps & ViewState & IProps) => <CompassButtonStyled {...p}/>
+const CompassButton = (p: IMapButtonProps & ViewState & ICompassButtonProps) => <CompassButtonStyled {...p}/>
 
-export { CompassButton, IProps }
+export { CompassButton, ICompassButtonProps }
