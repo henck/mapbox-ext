@@ -1,9 +1,8 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
+import { DefaultSkin, ISkin } from './Skin';
 
 const HEIGHT = 24;                     // Hint height (px)
-const DEFAULT_BACKGROUND = "#333";   // Default background color
-const DEFAULT_COLOR = "#fff";        // Default border and text color
 const DEFAULT_BORDER_RADIUS = 4;       // Default border radius (px)
 const TRANSITION_TIME = 0.2;           // Transition time (s)
 
@@ -16,21 +15,10 @@ interface IProps {
   offset: number;
   /** Should Hint appear to left or right of parent? */
   side: 'left' | 'right';
-  /** 
-   * Optional foreground color. 
-   * @defaultValue #fff
-   */
-  foreground?: string;
-  /** 
-   * Optional background color.
-   * @defaultValue #333
-   */
-  background?: string;
-  /** 
-   * Optional border radius.
-   * @defaultValue 4
-   */
-  borderRadius?: number;
+  /** Is parent control disabled? */
+  disabled?: boolean;
+  /** Optional skin to apply. */
+  skin?: ISkin;
 }
 
 class HintBase extends React.Component<IProps> {
@@ -53,7 +41,9 @@ class HintBase extends React.Component<IProps> {
   }
 }
 
-const HintStyled = styled(HintBase)`
+const HintStyled = styled(HintBase).attrs(p => ({
+  skin: p.skin ?? DefaultSkin
+}))`
   /* Position */
   position: absolute;
   ${p => p.side == "left"  && css`left:  calc(100% + ${p.offset}px);`};
@@ -65,21 +55,21 @@ const HintStyled = styled(HintBase)`
   margin: 0 12px 0 12px;
 
   /* Border */
-  border: solid 1px ${p => p.foreground ?? DEFAULT_COLOR};
+  border: solid 2px ${p => p.skin.border};
   ${p => p.side == "left" && css`
-    border-top-right-radius: ${p.borderRadius ?? DEFAULT_BORDER_RADIUS}px;
-    border-bottom-right-radius: ${p.borderRadius ?? DEFAULT_BORDER_RADIUS}px;
+    border-top-right-radius: ${p.skin.radius}px;
+    border-bottom-right-radius: ${p.skin.radius}px;
     border-left: none;
   `}
   ${p => p.side == "right" && css`
-    border-top-left-radius: ${p.borderRadius ?? DEFAULT_BORDER_RADIUS}px;
-    border-bottom-left-radius: ${p.borderRadius ?? DEFAULT_BORDER_RADIUS}px;
+    border-top-left-radius: ${p.skin.radius}px;
+    border-bottom-left-radius: ${p.skin.radius}px;
     border-right: none;
   `}  
 
   /* Color */
-  background: ${p => p.background ?? DEFAULT_BACKGROUND};
-  color: ${p => p.foreground ?? DEFAULT_COLOR};
+  background: ${p => p.skin.fill};
+  color: ${p => p.disabled ? p.skin.disabled : p.skin.border};
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
@@ -90,19 +80,19 @@ const HintStyled = styled(HintBase)`
               opacity ease-in-out ${TRANSITION_TIME}s;
   svg {
     position: absolute;
-    top: 0;
+    top: -1px;
     ${p => p.side == 'right' && css`right: -${HEIGHT/2}px;`}
     ${p => p.side == 'left' && css`left: -${HEIGHT/2}px;`}
-    height: 100%;
+    height: calc(100% + 2px);
     // Mirror SVG depending on side.
     transform: scale(${p => p.side == "right" ? -1 : 1});
   }
   svg.fill {
-    fill: ${p => p.background ?? DEFAULT_BACKGROUND};
+    fill: ${p => p.skin.fill};
   }
   svg.stroke {
-    stroke: ${p => p.foreground ?? DEFAULT_COLOR};
-    stroke-width: 1px;
+    stroke: ${p => p.skin.border};
+    stroke-width: 2px;
     z-index: 1;
   }
 `

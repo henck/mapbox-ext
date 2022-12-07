@@ -2,11 +2,11 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 
 import { Hint } from './Hint';
+import { DefaultSkin, ISkin } from './Skin';
 
 const DEFAULT_SIZE    = 34;   // Button size (px)
 const TRANSITION_TIME = 0.1;  // Transtion time (s)
 const BORDER_SIZE     = 2;    // Border thickness (px)
-const BORDER_RADIUS   = 8;    // Border radius (px)
 
 interface IMapButtonProps {
   /** Horizontal button position. A negative value is an offset from the right. */
@@ -27,6 +27,8 @@ interface IMapButtonProps {
   attachedTop?: boolean;
   /** Is another button attached to the bottom of this one? */
   attachedBottom?: boolean;
+  /** Optional skin to apply. */
+  skin?: ISkin;
 }
 
 interface IProps {
@@ -46,9 +48,10 @@ const MapButtonBase = (p: IProps & IMapButtonProps) => {
       </Button>
       {p.hint && 
         <Hint 
-          foreground={p.disabled ? "#888": "#fff"} 
+          disabled={p.disabled} 
           offset={16} 
-          side={p.x < 0 ? "right" : "left"}>
+          side={p.x < 0 ? "right" : "left"}
+          skin={p.skin}>
           {p.hint}
         </Hint>
       }
@@ -58,7 +61,13 @@ const MapButtonBase = (p: IProps & IMapButtonProps) => {
 const Button = styled('div')`
 `
 
-const MapButton = styled(MapButtonBase)`
+const MapButton = styled(MapButtonBase).attrs(p => ({
+  size: p.size ?? DEFAULT_SIZE,
+  skin: p.skin ?? DefaultSkin
+  //color: p.invert ? COLORS_INVERTED.fill: COLORS_NORMAL.fill,
+  //borderColor: p.invert ? (p.disabled ? COLORS_INVERTED.disabled : COLORS_INVERTED.border) : (p.disabled ? COLORS_NORMAL.disabled : COLORS_NORMAL.border),
+  //hoverColor: p.invert ? COLORS_INVERTED.hover : COLORS_NORMAL.hover
+}))`
   /* Position control */
   position: absolute;
   z-index: 1;
@@ -69,8 +78,8 @@ const MapButton = styled(MapButtonBase)`
   ${p => p.y < 0 && css`bottom: ${-p.y}px;`}
 
   /* Size control */
-  width: ${p => p.size ?? DEFAULT_SIZE}px;
-  height: ${p => p.size ?? DEFAULT_SIZE}px;
+  width: ${p => p.size}px;
+  height: ${p => p.size}px;
 
   ${Button} {
     width: 100%;
@@ -78,8 +87,8 @@ const MapButton = styled(MapButtonBase)`
     box-sizing: border-box;
     cursor: pointer;
     background-clip: padding-box;
-    border: ${BORDER_SIZE}px solid ${p => p.disabled ? "#888" : "#cfcfcf"};
-    border-radius: ${BORDER_RADIUS}px;
+    border: ${BORDER_SIZE}px solid ${p => p.skin.border};
+    border-radius: ${p => p.skin.radius}px;
     ${p => p.attachedBottom && css`
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
@@ -95,9 +104,23 @@ const MapButton = styled(MapButtonBase)`
     ${p => p.attachedBottom && css`clip-path: inset(-6px -6px  0px -6px);`}
     ${p => p.attachedTop    && css`clip-path: inset( 0px -6px -6px -6px);`}
     ${p => p.attachedTop && p.attachedBottom && css`clip-path: inset( 0px -6px 0px -6px);`}
-    background: #333;
+    background: ${p => p.skin.fill};
     transition: border-color ease-in-out ${TRANSITION_TIME}s;
     box-shadow: 0px 0px 6px rgb(255,255,255,0.5);
+    ${p => p.active && css`
+      box-shadow: 0px 0px 6px ${p.skin.active};
+    `}
+
+    svg {
+      fill: ${p => p.skin.border};
+      transition: fill ease-in-out ${TRANSITION_TIME}s;
+      width: ${p => p.size - 2 * BORDER_SIZE}px;
+      height: ${p => p.size - 2 * BORDER_SIZE}px;
+      padding: 6px;
+      // With a border removed, SVG needs to be bumped down a little:
+      ${p => p.attachedBottom && css`padding-bottom: 2px;`}
+      box-sizing: border-box;
+    }
   }
 
   /* Hint positioning */
@@ -105,40 +128,23 @@ const MapButton = styled(MapButtonBase)`
     opacity: 0;
   }
 
-  /* SVG sizing */
-  & > div:first-child svg { 
-    fill: #cfcfcf;
-    transition: fill ease-in-out ${TRANSITION_TIME}s;
-    width: ${p => (p.size ?? DEFAULT_SIZE) - 2 * BORDER_SIZE}px;
-    height: ${p => (p.size ?? DEFAULT_SIZE) - 2 * BORDER_SIZE}px;
-    padding: 6px;
-    // With a border removed, SVG needs to be bumped down a little:
-    ${p => p.attachedBottom && css`padding-bottom: 2px;`}
-    box-sizing: border-box;
-  }
-
-  /* Active mode */
-  ${p => p.active && css`
-    ${Button} {
-      border-color: #cfcfcf;
-      background-color: white;
-    }
-    & > div:first-child svg { fill: #333; }
-  `}
-
   /* Disabled mode */
   ${p => p.disabled && css`
-    border-color: #222222;
-    & > div:first-child svg { fill: #888888; }
+    ${Button} { 
+      border-color: #222;
+      svg { fill: #888; }
+    }
   `}
 
   /* Hover */
   &:hover {
-    ${p => !p.disabled && css`${Button} {border-color: #fff}`};
+    ${p => !p.disabled && css`${Button} {border-color: ${p.skin.hover}}`};
 
     ${p => !p.disabled && !p.active && css`
-      & > div:first-child svg {
-        fill: #fff;
+      ${Button} {
+        svg {
+          fill: ${p.skin.hover};
+        }
       }
     `}
     ${p => p.disabled && css`cursor: default;`}
