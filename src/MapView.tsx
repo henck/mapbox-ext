@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 
-import Map, { Layer, LngLatBoundsLike, MapboxGeoJSONFeature, MapboxMap, MapLayerMouseEvent, Popup, Source, ViewState, ViewStateChangeEvent } from 'react-map-gl';
+import Map, { Layer, LngLat, LngLatBoundsLike, LngLatLike, MapboxGeoJSONFeature, MapboxMap, MapLayerMouseEvent, Popup, Source, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 import { ZoomInButton } from './controls/ZoomInButton';
 import { ZoomOutButton } from './controls/ZoomOutButton';
 import { CompassButton } from './controls/CompassButton';
@@ -9,6 +9,8 @@ import { AnimatedLoader } from './controls/AnimatedLoader';
 import { ScaleControl } from './controls/ScaleControl';
 import { Geocoder } from './controls/Geocoder';
 import { DarkSkin } from './controls/Skin';
+import { Graticule } from './controls/Graticule';
+import { Debug } from './controls/Debug';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
@@ -26,6 +28,9 @@ interface IState {
   // MapView keeps track of map's ViewState, which can be used to pass state
   // to map controls.
   viewState: ViewState;
+
+  mouseLat: number;
+  mouseLng: number;
 
   loading: boolean;
   satellite: boolean;
@@ -52,6 +57,9 @@ class MapView extends React.Component<{}, IState> {
       padding: { top: 0, bottom: 0, right: 0, left: 0 }
     },
 
+    mouseLat: 0,
+    mouseLng: 0,
+
     loading: false,
     satellite: false,
     interactiveLayerIds: [],
@@ -64,13 +72,13 @@ class MapView extends React.Component<{}, IState> {
   };
 
   handleLoad = (e: mapboxgl.MapboxEvent) => {
-    this.setState({
+    /* this.setState({
       interactiveLayerIds: [
         'County boundaries', 'Inshore aquaculture', 'Offshore aquaculture', 
         'Inshore socioeconomic suitability', 'Offshore socioeconomic suitability',
         'Tilapia suitability', 'Management areas',
         'Beach management units', 'Sub-basins', 'Sampling stations' ]
-    });
+    }); */
   }  
 
   addLoader = () => {  
@@ -89,6 +97,13 @@ class MapView extends React.Component<{}, IState> {
     });
   }
 
+  handleMouseMove = (e: MapLayerMouseEvent) => {
+    this.setState({
+      mouseLat: e.lngLat.lat,
+      mouseLng: e.lngLat.lng
+    });
+  }
+
   render = () => {
     return (
       <Map
@@ -104,6 +119,7 @@ class MapView extends React.Component<{}, IState> {
         maxZoom={22}
         onLoad={this.handleLoad}
         onMove={this.handleMove}
+        onMouseMove={this.handleMouseMove}
       >
         <Geocoder access_token={ACCESS_TOKEN} x={-40} y={40} searchIcon clearable/>
         <Geocoder skin={DarkSkin} access_token={ACCESS_TOKEN} x={-360} y={40} searchIcon clearable/>
@@ -122,6 +138,9 @@ class MapView extends React.Component<{}, IState> {
         <CompassButton skin={DarkSkin} {...this.state.viewState} x={40} y={500} hint={<>Reset bearing to north</>} visualizePitch/>
 
         <AnimatedLoader x={-100} y={-100} active/>
+
+        <Graticule degrees={90} {...this.state.viewState}/>
+        <Debug {...this.state.viewState} x={-40} y={-40} mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng}/>
       </Map>
     );
   }
