@@ -44,6 +44,7 @@ const Debug = styled(DebugBase)`
   color: black;
   border-radius: 8px;
   pointer-events: none;
+  user-select: none;
   padding: 10px 16px 10px 16px;
   box-shadow: 2px 2px 2px rgb(0,0,0,0.5);
 
