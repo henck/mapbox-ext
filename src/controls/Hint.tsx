@@ -3,7 +3,7 @@ import styled, { css, keyframes } from 'styled-components';
 import { DefaultSkin, ISkin } from './Skin';
 
 const HEIGHT = 24;                     // Hint height (px)
-const TRANSITION_TIME = 0.5;           // Transition time (s)
+const TRANSITION_TIME = 0.25;          // Transition time (s)
 
 interface IHintProps {
   /** @ignore */
