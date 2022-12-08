@@ -3,9 +3,23 @@ import * as React from 'react';
 import { Layer, Source, useMap, ViewState } from 'react-map-gl';
 
 interface IDegreesGridProps {
+  /**
+   * Drag a graticule line every `n` degrees.
+   */
   degrees: number;
-  /** Graticule color. */
+  /** 
+   * Optional graticule color. 
+   */
   color?: string;
+  /** 
+   * An adaptive Graticule adds subdivisions as the map zoom level increases,
+   * while a non-adaptive Graticule keeps the same grid at all zoom levels.
+   */
+  adaptive?: boolean;
+  /**
+   * Show labels?
+   */
+  labels?: boolean;
 }
 
 const Graticule = (props: IDegreesGridProps & ViewState) => {
@@ -63,13 +77,13 @@ const Graticule = (props: IDegreesGridProps & ViewState) => {
   }  
 
   const buildGrid = (): FeatureCollection => {
-    const step = props.degrees / Math.pow(2, Math.ceil(props.zoom - 1));
+    const step = props.adaptive ? props.degrees / Math.pow(2, Math.ceil(props.zoom - 1)) : props.degrees;
 
     const bounds = getBounds();
     
     const features: Feature[] = [];
     let count = 0;
-    for (let lng = -180 + step; lng <= 180; lng += step) {
+    for (let lng = -180; lng <= 180; lng += step) {
       if(!(lng > bounds.west && lng < bounds.east)) continue;
       features.push({
         type: 'Feature',
@@ -78,7 +92,7 @@ const Graticule = (props: IDegreesGridProps & ViewState) => {
       });
       count++;
     }
-    for (let lat = -80 + step; lat <= 80; lat += step) {
+    for (let lat = -90; lat <= 90; lat += step) {
       if(!(lat < bounds.north && lat > bounds.south)) continue;
       features.push({
         type: 'Feature',
@@ -90,7 +104,7 @@ const Graticule = (props: IDegreesGridProps & ViewState) => {
 
     for (let lng = -180 + step; lng <= 180; lng += step) {
       if(!(lng > bounds.west && lng < bounds.east)) continue;
-      for (let lat = -80 + step; lat <= 80; lat += step) {
+      for (let lat = -90 + step; lat <= 90; lat += step) {
         if(!(lat < bounds.north && lat > bounds.south)) continue;
         features.push({
           type: 'Feature',
@@ -124,10 +138,11 @@ const Graticule = (props: IDegreesGridProps & ViewState) => {
           filter={['==', ["geometry-type"], 'LineString']}
           paint={{ 
             "line-color": props.color ?? "lightblue",
-            "line-width": 1
+            "line-width": 0.5,
+            "line-dasharray": [ 5, 5 ]
           }}
         />
-        <Layer
+        {props.labels && <Layer
           type="symbol"
           filter={['==', ["geometry-type"], 'Point']}
           layout={{
@@ -141,7 +156,7 @@ const Graticule = (props: IDegreesGridProps & ViewState) => {
             'text-halo-blur': 0,
             'text-halo-color': '#333',
           }}
-        />
+        />}
       </Source>
     </>
   );

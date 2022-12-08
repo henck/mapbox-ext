@@ -139,7 +139,7 @@ class MapView extends React.Component<{}, IState> {
 
         <AnimatedLoader x={-100} y={-100} active/>
 
-        <Graticule degrees={90} {...this.state.viewState}/>
+        <Graticule adaptive degrees={90} {...this.state.viewState}/>
         <Debug {...this.state.viewState} x={-40} y={-40} mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng}/>
       </Map>
     );
