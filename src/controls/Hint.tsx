@@ -1,9 +1,9 @@
 import * as React from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { DefaultSkin, ISkin } from './Skin';
 
 const HEIGHT = 24;                     // Hint height (px)
-const TRANSITION_TIME = 0.2;           // Transition time (s)
+const TRANSITION_TIME = 0.5;           // Transition time (s)
 
 interface IHintProps {
   /** @ignore */
@@ -18,6 +18,8 @@ interface IHintProps {
   disabled?: boolean;
   /** Optional skin to apply. */
   skin?: ISkin;
+  /** Enable wobble effect? */
+  wobble?: boolean;
 }
 
 class HintBase extends React.Component<IHintProps> {
@@ -25,20 +27,35 @@ class HintBase extends React.Component<IHintProps> {
     const p = this.props;
     return (
       <div className={p.className}>
-        {p.children}
-        {/* Solid arrow */}
-        <svg className="fill" viewBox="0 0 50 100">
-          <polygon points="50,0, 0,50, 50, 100, 50, 0"/>
-        </svg>
-        {/* Arrow stroke */}
-        <svg className="stroke" viewBox="0 0 50 100">
-          <line x1="50" y1="0" x2="0" y2="50" vectorEffect="non-scaling-stroke"/>
-          <line x1="0" y1="50" x2="50" y2="100" vectorEffect="non-scaling-stroke"/>
+        <Content>
+          {p.children}
+        </Content>
+        <svg viewBox="-4 -4 54 108">
+          <polygon points="50,-4, -4,50, 50, 104, 50, -4"/>
+          <line x1="0"  y1="50"  x2="40" y2="0"   vectorEffect="non-scaling-stroke" style={{ strokeLinecap: "round", strokeLinejoin: "round", strokeMiterlimit: 10}} />
+          <line x1="40" y1="0"   x2="50" y2="0"   vectorEffect="non-scaling-stroke" style={{ strokeLinecap: "round", strokeLinejoin: "round", strokeMiterlimit: 10}} />
+          <line x1="0"  y1="50"  x2="40" y2="100" vectorEffect="non-scaling-stroke" style={{ strokeLinecap: "round", strokeLinejoin: "round", strokeMiterlimit: 10}} />
+          <line x1="40" y1="100" x2="50" y2="100" vectorEffect="non-scaling-stroke" style={{ strokeLinecap: "round", strokeLinejoin: "round", strokeMiterlimit: 10}} />
         </svg>
       </div>
     );
   }
 }
+
+const wobbleLeft = keyframes`
+  0%   { margin-left: 12px; }
+  50%  { margin-left: 0px; }
+  100% { margin-left: 12px; }
+`;
+
+const wobbleRight = keyframes`
+  0%   { margin-right: 12px; }
+  50%  { margin-right: 0px; }
+  100% { margin-right: 12px; }
+`;
+
+const Content = styled('div')`
+`
 
 const HintStyled = styled(HintBase).attrs(p => ({
   skin: p.skin ?? DefaultSkin
@@ -51,20 +68,21 @@ const HintStyled = styled(HintBase).attrs(p => ({
   height: ${HEIGHT}px;
   line-height: ${HEIGHT}px;
   padding: 0 12px 0 6px;
-  margin: 0 12px 0 12px;
+  margin: 0 12 0 12px;
+  ${p => p.wobble && css`
+    animation: ${p.side == "left" ? wobbleLeft : wobbleRight} 2s ease-in-out alternate infinite;
+  `}
+  /* Mirror hint depending on side. */
+  transform: scaleX(${p => p.side == "right" ? -1 : 1});
+  ${Content} {
+    transform: scaleX(${p => p.side == "right" ? -1 : 1});
+  }
 
   /* Border */
   border: solid 2px ${p => p.skin.border};
-  ${p => p.side == "left" && css`
-    border-top-right-radius: ${p.skin.radius}px;
-    border-bottom-right-radius: ${p.skin.radius}px;
-    border-left: none;
-  `}
-  ${p => p.side == "right" && css`
-    border-top-left-radius: ${p.skin.radius}px;
-    border-bottom-left-radius: ${p.skin.radius}px;
-    border-right: none;
-  `}  
+  border-top-right-radius: ${p => p.skin.radius}px;
+  border-bottom-right-radius: ${p => p.skin.radius}px;
+  border-left: none;
 
   /* Color */
   background: ${p => p.skin.fill};
@@ -73,23 +91,18 @@ const HintStyled = styled(HintBase).attrs(p => ({
   pointer-events: none;
   user-select: none;
 
-  transform: scale(1);
   opacity: 1;
-  transition: transform ease-in-out ${TRANSITION_TIME}s,
-              opacity ease-in-out ${TRANSITION_TIME}s;
+  transition: opacity ease-in-out ${TRANSITION_TIME}s;
   svg {
     position: absolute;
-    top: -1px;
-    ${p => p.side == 'right' && css`right: -${HEIGHT/2}px;`}
-    ${p => p.side == 'left' && css`left: -${HEIGHT/2}px;`}
-    height: calc(100% + 2px);
-    // Mirror SVG depending on side.
-    transform: scale(${p => p.side == "right" ? -1 : 1});
+    top: -2px;
+    left: -${HEIGHT/2}px;
+    height: calc(100% + 4px);
   }
-  svg.fill {
+  svg polygon {
     fill: ${p => p.skin.fill};
   }
-  svg.stroke {
+  svg line {
     stroke: ${p => p.skin.border};
     stroke-width: 2px;
     z-index: 1;

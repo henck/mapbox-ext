@@ -50,6 +50,7 @@ const MapButtonBase = (p: IProps & IMapButtonProps) => {
         <Hint 
           disabled={p.disabled} 
           offset={16} 
+          wobble
           side={p.x < 0 ? "right" : "left"}
           skin={p.skin}>
           {p.hint}

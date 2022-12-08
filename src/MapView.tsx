@@ -114,6 +114,7 @@ class MapView extends React.Component<{}, IState> {
         <CompassButton {...this.state.viewState} attachedTop x={40} y={40+34*2} hint={<>Reset bearing to north</>} visualizePitch/>
 
         <ZoomInButton active {...this.state.viewState} x={40} y={200} hint={<>Zoom in</>}/>
+        <ZoomInButton active {...this.state.viewState} x={-40} y={200} hint={<>Zoom in</>}/>
         <ZoomOutButton disabled {...this.state.viewState} x={40} y={250} hint={<>Zoom out</>}/>
         <CompassButton {...this.state.viewState} x={40} y={300} hint={<>Reset bearing to north</>} visualizePitch contrastTip/>
 
