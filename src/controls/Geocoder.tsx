@@ -160,7 +160,7 @@ const GeocoderStyled = styled(GeocoderBase).attrs(p => ({
   ${p => p.x < 0 && css`right: ${-p.x}px;`}
   ${p => p.y >= 0 && css`top: ${p.y}px;`}
   ${p => p.y < 0 && css`bottom: ${-p.y}px;`}
-  z-index: 9999;
+  z-index: 100;
 
   /* Size */
   width: ${p => p.width}px;

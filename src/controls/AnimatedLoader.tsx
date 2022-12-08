@@ -61,6 +61,7 @@ const Svg = styled('svg')`
  */
 const AnimatedLoaderstyled = styled(AnimatedLoaderBase)`
   position: absolute;
+  z-index: 100;
 
   ${p => p.x >= 0 && css`left: ${p.x}px;`}
   ${p => p.x < 0 && css`right: ${-p.x}px;`}

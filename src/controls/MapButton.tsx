@@ -68,7 +68,7 @@ const MapButton = styled(MapButtonBase).attrs(p => ({
 }))`
   /* Position control */
   position: absolute;
-  z-index: 1;
+  z-index: 100;
   box-sizing: border-box;
   ${p => p.x >= 0 && css`left: ${p.x}px;`}
   ${p => p.x < 0 && css`right: ${-p.x}px;`}
