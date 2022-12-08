@@ -114,13 +114,12 @@ class MapView extends React.Component<{}, IState> {
         <CompassButton {...this.state.viewState} attachedTop x={40} y={40+34*2} hint={<>Reset bearing to north</>} visualizePitch/>
 
         <ZoomInButton active {...this.state.viewState} x={40} y={200} hint={<>Zoom in</>}/>
-        <ZoomInButton active {...this.state.viewState} x={-40} y={200} hint={<>Zoom in</>}/>
         <ZoomOutButton disabled {...this.state.viewState} x={40} y={250} hint={<>Zoom out</>}/>
-        <CompassButton {...this.state.viewState} x={40} y={300} hint={<>Reset bearing to north</>} visualizePitch contrastTip/>
+        <CompassButton {...this.state.viewState} x={40} y={300} hint={<>Reset bearing to north</>} visualizePitch/>
 
         <ZoomInButton skin={DarkSkin} active {...this.state.viewState} x={40} y={400} hint={<>Zoom in</>}/>
         <ZoomOutButton skin={DarkSkin} disabled {...this.state.viewState} x={40} y={450} hint={<>Zoom out</>}/>
-        <CompassButton skin={DarkSkin} {...this.state.viewState} x={40} y={500} hint={<>Reset bearing to north</>} visualizePitch contrastTip/>
+        <CompassButton skin={DarkSkin} {...this.state.viewState} x={40} y={500} hint={<>Reset bearing to north</>} visualizePitch/>
 
         <AnimatedLoader x={-100} y={-100} active/>
       </Map>
