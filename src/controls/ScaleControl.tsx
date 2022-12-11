@@ -82,10 +82,10 @@ const ScaleControlStyled = styled(ScaleControlBase)`
   /* Position */
   position: absolute;
   z-index: 100;
-  ${p => p.x >= 0 && css`left: ${p.x}px;`}
-  ${p => p.x < 0 && css`right: ${-p.x}px;`}
-  ${p => p.y >= 0 && css`top: ${p.y}px;`}
-  ${p => p.y < 0 && css`bottom: ${-p.y}px;`}    
+  ${p => p.x >= 0 && css`left:   ${ p.x}px;`}
+  ${p => p.x < 0  && css`right:  ${-p.x}px;`}
+  ${p => p.y >= 0 && css`top:    ${ p.y}px;`}
+  ${p => p.y < 0  && css`bottom: ${-p.y}px;`}  
 
   /* Size */
   box-sizing: border-box;

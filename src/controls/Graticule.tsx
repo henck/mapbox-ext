@@ -2,7 +2,7 @@ import { FeatureCollection, Feature } from 'geojson';
 import * as React from 'react';
 import { Layer, Source, useMap, ViewState } from 'react-map-gl';
 
-interface IDegreesGridProps {
+interface IGraticuleProps {
   /**
    * Drag a graticule line every `n` degrees.
    */
@@ -22,7 +22,15 @@ interface IDegreesGridProps {
   labels?: boolean;
 }
 
-const Graticule = (props: IDegreesGridProps & ViewState) => {
+/** 
+ * The `Graticule` component draws a graticule over the map. The caller 
+ * specifies at which degree intervals lines must be drawn. 
+ * 
+ * The Graticule can be static (lines are fixed at the the intervals set) or 
+ * `adaptive` (line density increases by a factor of two for each zoom level). 
+ * `labels` can be shown or hidden.
+ */
+const Graticule = (props: IGraticuleProps & ViewState) => {
   const { current: map } = useMap();
 
   const getBounds = () => {
@@ -162,4 +170,4 @@ const Graticule = (props: IDegreesGridProps & ViewState) => {
   );
 }
 
-export { Graticule }
+export { Graticule, IGraticuleProps }
