@@ -20,6 +20,11 @@ interface IGraticuleProps {
    * Show labels?
    */
   labels?: boolean;
+  /**
+   * In a decimal representation, coordinates are not shown as degrees, minutes
+   * and seconds, but as fractional numbers.
+   */
+  decimal?: boolean;
 }
 
 /** 
@@ -59,6 +64,13 @@ const Graticule = (props: IGraticuleProps & ViewState) => {
 
     return { north, east, south, west };
   }
+
+  const formatNumber = (x: number, decimals: number): string => {
+    return x.toLocaleString(undefined, { 
+      useGrouping: true, 
+      minimumFractionDigits: decimals, 
+      maximumFractionDigits: decimals });    
+  }  
 
   const toDMS = (value: number): number[] => {
     value = Math.abs(value);
@@ -117,12 +129,12 @@ const Graticule = (props: IGraticuleProps & ViewState) => {
         features.push({
           type: 'Feature',
           geometry: { type: 'Point', coordinates: [lng + step / 2, lat] },
-          properties: { x: formatLatitude(lat)}
+          properties: { x: props.decimal ? formatNumber(lat,3) : formatLatitude(lat)}
         });
         features.push({
           type: 'Feature',
           geometry: { type: 'Point', coordinates: [lng, lat + step / 2] },
-          properties: { x: formatLongitude(lng)}
+          properties: { x: props.decimal ? formatNumber(lng,3) : formatLongitude(lng)}
         });
         count += 2;
       }
