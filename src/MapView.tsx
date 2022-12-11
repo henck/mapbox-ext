@@ -11,6 +11,7 @@ import { Geocoder } from './controls/Geocoder';
 import { DarkSkin } from './controls/Skin';
 import { Graticule } from './controls/Graticule';
 import { Debug } from './controls/Debug';
+import { Rose } from './controls/Rose';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
@@ -121,8 +122,8 @@ class MapView extends React.Component<{}, IState> {
         onMove={this.handleMove}
         onMouseMove={this.handleMouseMove}
       >
-        <Geocoder access_token={ACCESS_TOKEN} x={-40} y={40} searchIcon clearable/>
-        <Geocoder skin={DarkSkin} access_token={ACCESS_TOKEN} x={-360} y={40} searchIcon clearable/>
+        <Geocoder access_token={ACCESS_TOKEN} x={-200} y={40} searchIcon clearable/>
+        <Geocoder skin={DarkSkin} access_token={ACCESS_TOKEN} x={-520} y={40} searchIcon clearable/>
 
         <ScaleControl {...this.state.viewState} width={200} x={10} y={-62}/>
         <ZoomInButton  {...this.state.viewState} attachedBottom x={40} y={40} hint={<>Zoom in</>}/>
@@ -139,8 +140,10 @@ class MapView extends React.Component<{}, IState> {
 
         <AnimatedLoader x={-100} y={-100} active/>
 
-        <Graticule adaptive degrees={90} {...this.state.viewState}/>
+        <Graticule adaptive labels degrees={90} {...this.state.viewState}/>
         <Debug {...this.state.viewState} x={-40} y={-40} mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng}/>
+
+        <Rose {...this.state.viewState} x={-20} y={20} visualizePitch/>
       </Map>
     );
   }
