@@ -4,16 +4,16 @@ import { Layer, MapLayerMouseEvent, Source, useMap } from 'react-map-gl';
 
 import { IPoint, PointCollection } from '../../types/Types';
 import { Polygon } from '../../functions/Polygon';
-import { POINTS_LAYER, POLYGON_LAYER } from './Config';
+import { POINTS_LAYER, POLYGON_CIRCLE_COLOR, POLYGON_CIRCLE_STROKE_COLOR, POLYGON_LAYER, POLYGON_LINE_COLOR_INVALID, POLYGON_LINE_COLOR_VALID } from './Config';
 
-interface IProps {
+interface IPolygonBuilderProps {
   /** Fired when polygon builder is cancelled. */
   onCancel: () => void;
   /** Fired when polygon builder completes. */
   onComplete: (points: PointCollection) => void;
 }
 
-const PolygonBuilder = (props: IProps) => {
+const PolygonBuilder = (props: IPolygonBuilderProps) => {
   const { current: map } = useMap();
   const [points, setPoints] = React.useState([] as IPoint[]);
   const [cursor, setCursor] = React.useState({ lat: 0, lng: 0 });
@@ -115,8 +115,8 @@ const PolygonBuilder = (props: IProps) => {
           interactive
           type="circle"
           paint={{
-            "circle-color": "orange",
-            "circle-stroke-color": "white",
+            "circle-color": POLYGON_CIRCLE_COLOR,
+            "circle-stroke-color": POLYGON_CIRCLE_STROKE_COLOR,
             "circle-radius": 3,
             "circle-stroke-width": 2
           }}
@@ -127,7 +127,7 @@ const PolygonBuilder = (props: IProps) => {
           id={POLYGON_LAYER}
           type='line'
           paint={{
-            "line-color": Polygon.isValid(points) ? "orange": "red",
+            "line-color": Polygon.isValid(points) ? POLYGON_LINE_COLOR_VALID : POLYGON_LINE_COLOR_INVALID,
             "line-width": 1.5,
             "line-dasharray": [ 2, 1 ]
           }}
