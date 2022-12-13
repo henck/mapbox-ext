@@ -1,9 +1,32 @@
 import { IPoint } from "../types/Types";
 
+const TO_RAD = Math.PI / 180;
+const EARTH_RADIUS = 6378137;   // Radius of earth in meters
+
 /**
  * The Polygon class provides some simple geometric analysis tools.
  */
 class Polygon {
+  static toRadians = (degrees: number) => TO_RAD * degrees;
+
+  static distance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+    var dLat = lat2 * TO_RAD - lat1 * TO_RAD;
+    var dLon = lon2 * TO_RAD - lon1 * TO_RAD;
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * TO_RAD) * Math.cos(lat2 * TO_RAD) *
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = EARTH_RADIUS * c;
+    return d; // meters
+  }
+
+  static addMeters = (lng: number, lat: number, dx: number, dy: number) => {
+    return {
+      lng: lng + (dx / EARTH_RADIUS) * (180 / Math.PI) / Math.cos(lat * TO_RAD),
+      lat: lat + (dy / EARTH_RADIUS) * (180 / Math.PI)
+    }
+  }
+
   private static turn = (p1: IPoint, p2: IPoint, p3: IPoint) => {
     const a = p1.lng; const b = p1.lat; 
     const c = p2.lng; const d = p2.lat;

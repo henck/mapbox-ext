@@ -14,3 +14,5 @@ export const POLYGON_LINE_COLOR_INVALID = "red";
 export const POLYGON_CIRCLE_COLOR = "orange";
 export const POLYGON_CIRCLE_STROKE_COLOR = "white";
 export const POLYGON_SCALER_COLOR = "white";
+
+export const NUM_CIRCLE_POINTS = 36;

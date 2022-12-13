@@ -14,7 +14,12 @@ import { Rose } from './controls/Rose';
 import { PolygonEditor } from './controls/PolygonEditor/PolygonEditor';
 import { MapButton } from './controls/MapButton';
 import { PolygonBuilder } from './controls/PolygonEditor/PolygonBuilder';
-import { PointCollection } from './types/Types';
+import { IPoint, PointCollection } from './types/Types';
+import { CircleBuilder } from './controls/CirleEditor/CircleBuilder';
+import { FeatureCollection } from 'geojson';
+import { NUM_CIRCLE_POINTS } from './controls/PolygonEditor/Config';
+import { Polygon } from './functions/Polygon';
+import { CircleEditor } from './controls/CirleEditor/CircleEditor';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
@@ -29,7 +34,10 @@ const MAX_BOUNDS: LngLatBoundsLike = [
 ];
 
 interface ICage {
-  points: PointCollection
+  type: 'circle' | 'polygon';
+  points?: PointCollection
+  point?: IPoint;
+  radius?: number;
 }
 
 interface IState {
@@ -40,8 +48,8 @@ interface IState {
   interactiveLayerIds: string[];
 
   cages: ICage[];
-  selectedCage: number;
-  isAdding: boolean;
+  selectedCage: ICage;
+  add?: 'circle' | 'polygon';
 }
 
 class MapView extends React.Component<{}, IState> {
@@ -58,7 +66,7 @@ class MapView extends React.Component<{}, IState> {
     interactiveLayerIds: [],
     cages: [],
     selectedCage: null,
-    isAdding: false
+    add: null
   };
 
   handleLoad = (e: mapboxgl.MapboxEvent) => {
@@ -78,24 +86,32 @@ class MapView extends React.Component<{}, IState> {
     const feature = e.features[0];
     if(feature.layer.id != 'polys') return;
     this.setState({
-      selectedCage: feature.id as number
+      selectedCage: this.state.cages[feature.id as number]
     });
   }
 
-  handleBeginAddCage = () => {
-    this.setState({ isAdding: true, selectedCage: null });
+  handleBeginAddCage = (type: 'polygon' | 'circle') => {
+    this.setState({ add: type, selectedCage: null });
   }
 
   handleCancelAddCage = () => {
-    this.setState({ isAdding: false });
+    this.setState({ add: null });
   }
 
-  handleDoAddCage = (points: PointCollection) => {
-    const cage = { points: points };
+  handleDoAddPolygonCage = (points: PointCollection) => {
+    const cage: ICage = { type: 'polygon', points: points };
     this.setState({ 
-      isAdding: false,
+      add: null,
       cages: [...this.state.cages, cage ]
     });
+  }
+
+  handleDoAddCircleCage = (point: IPoint, radius: number) => {
+    const cage: ICage = { type: 'circle', point: point, radius: radius };
+    this.setState({ 
+      add: null,
+      cages: [...this.state.cages, cage ]
+    });    
   }
 
   handleCancelEditCage = () => {
@@ -104,19 +120,61 @@ class MapView extends React.Component<{}, IState> {
     });
   }
 
-  handleEditCage = (points: PointCollection) => {
-    this.state.cages[this.state.selectedCage].points = points;
+  handleEditPolygonCage = (points: PointCollection) => {
+    this.state.selectedCage.points = points;
     this.setState({
       cages: this.state.cages
     });
   }
 
+  handleEditCircleCage = (point: IPoint, radius: number) => {
+    this.state.selectedCage.point = point;
+    this.state.selectedCage.radius = radius;
+    this.setState({
+      cages: this.state.cages
+    });    
+  }
+
   handleDeleteCage = () => {
-    this.state.cages.splice(this.state.selectedCage, 1);
+    this.state.cages.splice(this.state.cages.indexOf(this.state.selectedCage), 1);
     this.setState({
       selectedCage: null,
       cages: this.state.cages
     });
+  }
+
+  cageToCoords = (cage: ICage) => {
+    if(cage.type == 'polygon') {
+      return [[...cage.points.map(p => [ p.lng, p.lat]), [cage.points[0].lng, cage.points[0].lat]]];
+    } else {
+      const points: IPoint[] = [];
+      for(let i = 0; i < NUM_CIRCLE_POINTS; i++) {
+        const degrees = i * (360 / NUM_CIRCLE_POINTS);
+        const rad = Polygon.toRadians(degrees);
+        const dx = Math.cos(rad) * cage.radius;
+        const dy = Math.sin(rad) * cage.radius;
+        points.push(Polygon.addMeters(cage.point.lng, cage.point.lat, dx, dy));
+      }
+      return [[...points.map(p => [ p.lng, p.lat]), [points[0].lng, points[0].lat]]];
+    }
+  }
+
+  getJSON = (): FeatureCollection => {
+    return {
+      type: 'FeatureCollection',
+      features: this.state.cages
+                .filter((cage) => cage != this.state.selectedCage)
+                .map((cage, idx) => { return { 
+          id: idx,
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: "Polygon",
+            coordinates: this.cageToCoords(cage)
+          }
+        }
+      })
+    }
   }
 
   render = () => {
@@ -159,7 +217,7 @@ class MapView extends React.Component<{}, IState> {
 
         <Rose {...this.state.viewState} x={-20} y={20} visualizePitch/>
 
-        <MapButton skin={DarkSkin} active={this.state.isAdding} x={40} y={-200} onClick={this.handleBeginAddCage}>
+        <MapButton skin={DarkSkin} active={this.state.add == 'polygon'} x={40} y={-200} onClick={() => this.handleBeginAddCage('polygon')}>
           <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 87 87">
           <path d="M24.4,2.3c-3.6,0-6.4,2.9-6.4,6.4c0,3.6,2.9,6.4,6.4,6.4c3.6,0,6.4-2.9,6.4-6.4C30.8,5.2,27.9,2.3,24.4,2.3
               z M24.4,12.4c-2,0-3.6-1.6-3.6-3.6c0-2,1.6-3.6,3.6-3.6c2,0,3.6,1.6,3.6,3.6C28,10.7,26.4,12.4,24.4,12.4z"/>
@@ -184,21 +242,32 @@ class MapView extends React.Component<{}, IState> {
           </svg>
         </MapButton>
 
-        <Source generateId type="geojson" data={{
-          type: 'FeatureCollection',
-          features: this.state.cages
-                    .filter((cage, idx) => idx != this.state.selectedCage)
-                    .map((cage, idx) => { return { 
-              id: idx,
-              type: 'Feature',
-              properties: {},
-              geometry: {
-                type: "Polygon",
-                coordinates: [[...cage.points.map(p => [ p.lng, p.lat]), [cage.points[0].lng, cage.points[0].lat]]]
-              }
-            }
-          })
-        }}>
+        <MapButton skin={DarkSkin} active={this.state.add == 'circle'} x={40} y={-160} onClick={() => this.handleBeginAddCage('circle')}>
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 87 87">
+          <path d="M24.4,2.3c-3.6,0-6.4,2.9-6.4,6.4c0,3.6,2.9,6.4,6.4,6.4c3.6,0,6.4-2.9,6.4-6.4C30.8,5.2,27.9,2.3,24.4,2.3
+              z M24.4,12.4c-2,0-3.6-1.6-3.6-3.6c0-2,1.6-3.6,3.6-3.6c2,0,3.6,1.6,3.6,3.6C28,10.7,26.4,12.4,24.4,12.4z"/>
+            <path d="M63.9,9.9c-3.6,0-6.4,2.9-6.4,6.4s2.9,6.4,6.4,6.4c3.6,0,6.4-2.9,6.4-6.4S67.5,9.9,63.9,9.9z M63.9,20
+              c-2,0-3.6-1.6-3.6-3.6s1.6-3.6,3.6-3.6c2,0,3.6,1.6,3.6,3.6S65.9,20,63.9,20z"/>
+            <path d="M79.2,59.8c-3.6,0-6.4,2.9-6.4,6.4c0,3.6,2.9,6.4,6.4,6.4s6.4-2.9,6.4-6.4C85.6,62.7,82.7,59.8,79.2,59.8z
+              M79.2,69.9c-2,0-3.6-1.6-3.6-3.6c0-2,1.6-3.6,3.6-3.6s3.6,1.6,3.6,3.6C82.8,68.3,81.2,69.9,79.2,69.9z"/>
+            <path d="M39,72.7c-3.6,0-6.4,2.9-6.4,6.4c0,3.6,2.9,6.4,6.4,6.4c3.6,0,6.4-2.9,6.4-6.4C45.5,75.6,42.6,72.7,39,72.7
+              z M39,82.8c-2,0-3.6-1.6-3.6-3.6s1.6-3.6,3.6-3.6s3.6,1.6,3.6,3.6S41,82.8,39,82.8z"/>
+            <path d="M9.1,45.7c-3.6,0-6.4,2.9-6.4,6.4s2.9,6.4,6.4,6.4c3.6,0,6.4-2.9,6.4-6.4S12.7,45.7,9.1,45.7z M9.1,55.8
+              c-2,0-3.6-1.6-3.6-3.6s1.6-3.6,3.6-3.6s3.6,1.6,3.6,3.6S11.1,55.8,9.1,55.8z"/>
+            <path d="M60.9,41.9v4.5c0,0.6-0.2,1.2-0.7,1.6c-0.4,0.4-1,0.7-1.6,0.7h-9.7v9.7
+              c0,0.6-0.2,1.2-0.7,1.6c-0.4,0.4-1,0.7-1.6,0.7h-4.5c-0.6,0-1.2-0.2-1.6-0.7c-0.4-0.4-0.7-1-0.7-1.6v-9.7h-9.7
+              c-0.6,0-1.2-0.2-1.6-0.7c-0.4-0.4-0.7-1-0.7-1.6v-4.5c0-0.6,0.2-1.2,0.7-1.6c0.4-0.4,1-0.7,1.6-0.7h9.7v-9.7c0-0.6,0.2-1.2,0.7-1.6
+              c0.4-0.4,1-0.7,1.6-0.7h4.5c0.6,0,1.2,0.2,1.6,0.7c0.4,0.4,0.7,1,0.7,1.6v9.7h9.7c0.6,0,1.2,0.2,1.6,0.7
+              C60.7,40.7,60.9,41.3,60.9,41.9z"/>
+            <rect x="14.7" y="12.5" transform="matrix(0.9455 0.3257 -0.3257 0.9455 10.7421 -3.7892)"  width="4" height="35.3"/>
+            <rect x="8.6"  y="64"   transform="matrix(0.7229 0.6909 -0.6909 0.7229 52.1121 2.0746)"   width="29.7" height="4"/>
+            <rect x="56.9" y="56.7" transform="matrix(0.2803 0.9599 -0.9599 0.2803 112.2371 -4.1819)" width="4" height="32.1"/>
+            <rect x="50.6" y="39.6" transform="matrix(0.2903 0.9569 -0.9569 0.2903 90.653 -39.1022)"  width="42.2" height="4"/>
+            <rect x="28.4" y="11.1" transform="matrix(0.9906 0.1366 -0.1366 0.9906 2.1981 -5.8497)"   width="30.6" height="4"/>
+          </svg>
+        </MapButton>        
+
+        <Source generateId type="geojson" data={this.getJSON()}>
           <Layer 
             id="polys" 
             type="fill"
@@ -216,17 +285,31 @@ class MapView extends React.Component<{}, IState> {
             />
         </Source>
 
-        {this.state.selectedCage !== null && 
+        {this.state.selectedCage !== null && this.state.selectedCage.type == 'polygon' && 
           <PolygonEditor 
-            points={this.state.cages[this.state.selectedCage].points}
-            onChange={this.handleEditCage}
+            points={this.state.selectedCage.points}
+            onChange={this.handleEditPolygonCage}
             onCancel={this.handleCancelEditCage}
             onDelete={this.handleDeleteCage}
           />}
 
-        {this.state.isAdding && <PolygonBuilder
+         {this.state.selectedCage !== null && this.state.selectedCage.type == 'circle' && 
+          <CircleEditor 
+            point={this.state.selectedCage.point}
+            radius={this.state.selectedCage.radius}
+            onChange={this.handleEditCircleCage}
+            onCancel={this.handleCancelEditCage}
+            onDelete={this.handleDeleteCage}
+          />}
+
+        {this.state.add == 'polygon' && <PolygonBuilder
           onCancel={this.handleCancelAddCage}
-          onComplete={this.handleDoAddCage}
+          onComplete={this.handleDoAddPolygonCage}
+        />}
+
+        {this.state.add == 'circle' && <CircleBuilder
+          onCancel={this.handleCancelAddCage}
+          onComplete={this.handleDoAddCircleCage}
         />}
       </Map>
     );

@@ -7,7 +7,7 @@ import { PolygonEditorPoints } from './PolygonEditorPoints';
 import { PolygonEditorExtenders } from './PolygonEditorExtenders';
 import { PolygonEditorScaler } from './PolygonEditorScaler';
 
-interface IEditablePolygonProps {
+interface IPolygonEditorProps {
   /** 
    * Points of polygon being drawn. The first point must not be duplicated
    * as the last point.
@@ -23,7 +23,7 @@ interface IEditablePolygonProps {
   allowScaling?: boolean;
 }
 
-const PolygonEditor = (props: IEditablePolygonProps) => {
+const PolygonEditor = (props: IPolygonEditorProps) => {
   const { current: map } = useMap();
 
   const [points, setPoints] = React.useState(props.points);
@@ -85,4 +85,4 @@ const PolygonEditor = (props: IEditablePolygonProps) => {
   );
 }
 
-export { PolygonEditor, IEditablePolygonProps, IPoint }
+export { PolygonEditor, IPolygonEditorProps }
