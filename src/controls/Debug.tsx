@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ViewState } from 'react-map-gl';
+import { MapLayerMouseEvent, useMap, ViewState } from 'react-map-gl';
 import styled, { css } from 'styled-components';
 
 interface IDebugProps {
@@ -9,19 +9,39 @@ interface IDebugProps {
   x: number;
   /** Vertical debug position. A negative value is an offset from the bottom. */
   y: number;
-  /** Current mouse latitude */
-  mouseLat: number;
-  /** Current mouse longitude */
-  mouseLng: number;
 }
 
 const DebugBase = (props: IDebugProps & ViewState) => {
+  const { current: map } = useMap();
+  const [ mouseLat, setMouseLat ] = React.useState(0);
+  const [ mouseLng, setMouseLng ] = React.useState(0);
+
   const format = (x: number, decimals: number): string => {
     return x.toLocaleString(undefined, { 
       useGrouping: true, 
       minimumFractionDigits: decimals, 
       maximumFractionDigits: decimals });    
   }
+
+  const handleMouseMove = (e: MapLayerMouseEvent) => {
+    setMouseLng(e.lngLat.lng);
+    setMouseLat(e.lngLat.lat);
+  }
+
+  const mount = () => {
+    map.on('mousemove', handleMouseMove);
+  }
+
+  const unmount = () => {
+    map.off('mousemove', handleMouseMove);
+  }
+
+  // Mounting/unmounting must only happen once.
+  React.useEffect(() => {
+    mount();
+    return unmount
+  }, []);    
+
   return (
     <div className={props.className}>
       <table>
@@ -29,8 +49,8 @@ const DebugBase = (props: IDebugProps & ViewState) => {
           <tr><td>Zoom            </td><td>{format(props.zoom, 2)}</td></tr>
           <tr><td>Map latitude    </td><td>{format(props.latitude, 4)}</td></tr>
           <tr><td>Map longitude   </td><td>{format(props.longitude, 4)}</td></tr>
-          <tr><td>Mouse latitude  </td><td>{format(props.mouseLat, 4)}</td></tr>
-          <tr><td>Mouse longitude </td><td>{format(props.mouseLng, 4)}</td></tr>
+          <tr><td>Mouse latitude  </td><td>{format(mouseLat, 4)}</td></tr>
+          <tr><td>Mouse longitude </td><td>{format(mouseLng, 4)}</td></tr>
         </tbody>
       </table>
     </div>

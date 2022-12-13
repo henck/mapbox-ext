@@ -18,7 +18,8 @@
   },
   "include": [
     "src/controls/**/*",
-    "src/modules/**/*"
+    "src/functions/**/*",
+    "src/types/**/*"
   ],
   "exclude": [
     "node_modules",

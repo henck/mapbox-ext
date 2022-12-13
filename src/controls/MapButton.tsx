@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 
 import { Hint } from './Hint';
-import { DefaultSkin, ISkin } from './Skin';
+import { DefaultSkin, ISkin } from '../types/Skin';
 
 const DEFAULT_SIZE    = 34;   // Button size (px)
 const TRANSITION_TIME = 0.1;  // Transtion time (s)

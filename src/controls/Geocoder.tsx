@@ -6,7 +6,7 @@ import { GeocoderEntry } from './GeocoderEntry';
 import { GeocoderList } from './GeocoderList';
 import { GeocoderInput } from './GeocoderInput';
 import { useMap } from 'react-map-gl';
-import { DefaultSkin, ISkin } from './Skin';
+import { DefaultSkin, ISkin } from '../types/Skin';
 
 interface IGeocoderProps {
   /** @ignore */
