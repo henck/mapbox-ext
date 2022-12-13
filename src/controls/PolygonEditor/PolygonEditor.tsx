@@ -5,6 +5,7 @@ import { IPoint, PointCollection } from '../../types/Types';
 import { PolygonEditorSurface } from './PolygonEditorSurface';
 import { PolygonEditorPoints } from './PolygonEditorPoints';
 import { PolygonEditorExtenders } from './PolygonEditorExtenders';
+import { PolygonEditorScaler } from './PolygonEditorScaler';
 
 interface IEditablePolygonProps {
   /** 
@@ -18,6 +19,8 @@ interface IEditablePolygonProps {
   onDelete: () => void;
   /** Fired when drawing mode is canceled. */
   onCancel: () => void;
+  /** Can polygon be scaled? This will add a scaling box around the polygon. */
+  allowScaling?: boolean;
 }
 
 const PolygonEditor = (props: IEditablePolygonProps) => {
@@ -77,6 +80,7 @@ const PolygonEditor = (props: IEditablePolygonProps) => {
       <PolygonEditorSurface   points={points} onChange={handleChange} />
       <PolygonEditorPoints    points={points} onChange={handleChange}/>
       <PolygonEditorExtenders points={points} onChange={handleChange}/>
+      {props.allowScaling && <PolygonEditorScaler points={points} onChange={handleChange}/>}
     </>
   );
 }
