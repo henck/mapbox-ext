@@ -111,7 +111,7 @@ const MapButton = styled(MapButtonBase).attrs(p => ({
       transition: fill ease-in-out ${TRANSITION_TIME}s;
       width: ${p => p.size - 2 * BORDER_SIZE}px;
       height: ${p => p.size - 2 * BORDER_SIZE}px;
-      padding: 8px;
+      padding: 6px;
       // With a border removed, SVG needs to be bumped down a little:
       ${p => p.attachedBottom && css`padding-bottom: 5px;`}
       box-sizing: border-box;
