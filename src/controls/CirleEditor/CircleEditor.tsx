@@ -62,20 +62,16 @@ const CircleEditor = (props: ICircleEditorProps) => {
     return unmount
   }, []);
 
-  const handleChangePoint = (newPoint: IPoint) => {
+  const handleChange = (newPoint: IPoint, newRadius: number) => {
     setPoint(newPoint);
-    props.onChange(newPoint, radius);
-  }
-
-  const handleChangeRadius = (newRadius: number) => {
     setRadius(newRadius);
-    props.onChange(point, newRadius);
+    props.onChange(newPoint, newRadius);
   }
 
   return (
     <>
-      <CircleEditorSurface  point={point} radius={radius} onChange={handleChangePoint} />
-      <CircleEditorPoint    point={point} radius={radius} onChange={handleChangeRadius}/>
+      <CircleEditorSurface  point={point} radius={radius} onChange={handleChange} />
+      <CircleEditorPoint    point={point} radius={radius} onChange={handleChange}/>
     </>
   );
 }

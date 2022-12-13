@@ -11,9 +11,10 @@ interface ICircleEditorSurfaceProps {
   point: IPoint;
   radius: number;
   /** Fired when points change. */
-  onChange: (point: IPoint) => void;
+  onChange: (point: IPoint, radius: number) => void;
 }
 
+let radius: number;
 let startDragPoint: IPoint;
 
 const CircleEditorSurface = (props: ICircleEditorSurfaceProps) => {
@@ -50,7 +51,7 @@ const CircleEditorSurface = (props: ICircleEditorSurfaceProps) => {
       lat: currentdragPoint.lat + dLat,
       lng: currentdragPoint.lng + dLng
     }
-    props.onChange(newPoint);
+    props.onChange(newPoint, radius);
   }
 
   const handleClick = (e: MapLayerMouseEvent) => {
@@ -85,17 +86,18 @@ const CircleEditorSurface = (props: ICircleEditorSurfaceProps) => {
   // startDragPoints must be updated every time the props points are updated.
   React.useEffect(() => {
     startDragPoint = props.point;
+    radius = props.radius;
   }, [props.point, props.radius]);
   
   const getCircleJSON = (): FeatureCollection => {
     // Radius is in meters.
-    const points: IPoint[] = [];
+    const circle_points: IPoint[] = [];
     for(let i = 0; i < NUM_CIRCLE_POINTS; i++) {
       const degrees = i * (360 / NUM_CIRCLE_POINTS);
       const rad = Polygon.toRadians(degrees);
       const dx = Math.cos(rad) * props.radius;
       const dy = Math.sin(rad) * props.radius;
-      points.push(Polygon.addMeters(props.point.lng, props.point.lat, dx, dy));
+      circle_points.push(Polygon.addMeters(props.point.lng, props.point.lat, dx, dy));
     }
 
     return {
@@ -105,7 +107,7 @@ const CircleEditorSurface = (props: ICircleEditorSurfaceProps) => {
         properties: {},
         geometry: {
           type: 'Polygon',
-          coordinates: [points.map(p => [p.lng, p.lat]).concat([[points[0].lng, points[0].lat]])]
+          coordinates: [circle_points.map(p => [p.lng, p.lat]).concat([[circle_points[0].lng, circle_points[0].lat]])]
         }
       }]
     }

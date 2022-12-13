@@ -10,7 +10,7 @@ interface ICircleEditorPointProps {
   point: IPoint;
   radius: number;
   /** Fired when points change. */
-  onChange: (radius: number) => void;
+  onChange: (point: IPoint, radius: number) => void;
 }
 
 let point: IPoint = null;
@@ -43,7 +43,7 @@ const CircleEditorPoint = (props: ICircleEditorPointProps) => {
   const handleMouseMove = (e: MapLayerMouseEvent) => {
     if(!dragging) return;
     let newRadius = Polygon.distance(point.lat, point.lng, e.lngLat.lat, e.lngLat.lng);
-    props.onChange(newRadius);
+    props.onChange(point, newRadius);
   }
 
   const handleClick = (e: MapLayerMouseEvent) => {
@@ -65,7 +65,7 @@ const CircleEditorPoint = (props: ICircleEditorPointProps) => {
     map.off('mouseleave', POINTS_LAYER, handleMouseLeave);
     map.off('mouseenter', POINTS_LAYER, handleMouseEnter);
     map.off('mousedown', POINTS_LAYER, handleMouseDown);
-    map.on('mouseup', handleMouseUp);
+    map.off('mouseup', handleMouseUp);
     map.off('mousemove', handleMouseMove);
     map.off('click', POINTS_LAYER, handleClick);
   }
@@ -78,7 +78,7 @@ const CircleEditorPoint = (props: ICircleEditorPointProps) => {
 
   // Force the control to update when points change:
   React.useEffect(() => {
-    point = props.point;
+    point = { ...props.point };
     radius = props.radius;
   }, [props.point, props.radius]);
 
