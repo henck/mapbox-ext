@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Map, { Layer, LngLat, LngLatBoundsLike, MapLayerMouseEvent, Source, ViewState, ViewStateChangeEvent } from 'react-map-gl';
+import Map, { LngLatBoundsLike, MapLayerMouseEvent, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 import { ZoomInButton } from './controls/ZoomInButton';
 import { ZoomOutButton } from './controls/ZoomOutButton';
 import { CompassButton } from './controls/CompassButton';
@@ -16,15 +16,14 @@ import { MapButton } from './controls/MapButton';
 import { PolygonBuilder } from './controls/PolygonEditor/PolygonBuilder';
 import { IPoint, PointCollection } from './types/Types';
 import { CircleBuilder } from './controls/CirleEditor/CircleBuilder';
-import { FeatureCollection } from 'geojson';
-import { NUM_CIRCLE_POINTS } from './controls/PolygonEditor/Config';
-import { Polygon } from './functions/Polygon';
 import { CircleEditor } from './controls/CirleEditor/CircleEditor';
+import { CagesSource } from './CagesSource';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
 const SATELLITE_STYLE = "mapbox://styles/longlineenvironment/clb14ar2y00hw14oh9ii2zp05";
-          
+const NUM_CAGES = 5000;
+
 //
 // Bounds that map panning and zooming will be restricted to.
 //
@@ -33,7 +32,7 @@ const MAX_BOUNDS: LngLatBoundsLike = [
   [37.75470,  1.77630]     // Northeast (lng/lat)
 ];
 
-interface ICage {
+export interface ICage {
   type: 'circle' | 'polygon';
   points?: PointCollection
   point?: IPoint;
@@ -53,6 +52,19 @@ interface IState {
 }
 
 class MapView extends React.Component<{}, IState> {
+  generateCages = () => {
+    const cages = [];
+    for(let i = 0; i < NUM_CAGES; i++) {
+      const cage: ICage = {
+        type: 'circle',
+        point: { lng: Math.random() * 10 - 5 + 34.0, lat: Math.random() * 10 - 5 + 0 },
+        radius: Math.random() * 5000 + 1000
+      }
+      cages.push(cage);
+    }
+    return cages;
+  }
+
   state: IState = {
     viewState: {
       longitude: 34.39412, 
@@ -64,7 +76,7 @@ class MapView extends React.Component<{}, IState> {
     },
 
     interactiveLayerIds: [],
-    cages: [],
+    cages: this.generateCages(),
     selectedCage: null,
     add: null
   };
@@ -143,40 +155,6 @@ class MapView extends React.Component<{}, IState> {
     });
   }
 
-  cageToCoords = (cage: ICage) => {
-    if(cage.type == 'polygon') {
-      return [[...cage.points.map(p => [ p.lng, p.lat]), [cage.points[0].lng, cage.points[0].lat]]];
-    } else {
-      const points: IPoint[] = [];
-      for(let i = 0; i < NUM_CIRCLE_POINTS; i++) {
-        const degrees = i * (360 / NUM_CIRCLE_POINTS);
-        const rad = Polygon.toRadians(degrees);
-        const dx = Math.cos(rad) * cage.radius;
-        const dy = Math.sin(rad) * cage.radius;
-        points.push(Polygon.addMeters(cage.point.lng, cage.point.lat, dx, dy));
-      }
-      return [[...points.map(p => [ p.lng, p.lat]), [points[0].lng, points[0].lat]]];
-    }
-  }
-
-  getJSON = (): FeatureCollection => {
-    return {
-      type: 'FeatureCollection',
-      features: this.state.cages
-                .filter((cage) => cage != this.state.selectedCage)
-                .map((cage, idx) => { return { 
-          id: idx,
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: "Polygon",
-            coordinates: this.cageToCoords(cage)
-          }
-        }
-      })
-    }
-  }
-
   render = () => {
     return (
       <Map
@@ -212,7 +190,7 @@ class MapView extends React.Component<{}, IState> {
 
         <AnimatedLoader x={-100} y={-100} active/>
 
-        <Graticule decimal adaptive labels degrees={90} {...this.state.viewState}/>
+        <Graticule adaptive labels degrees={90} {...this.state.viewState}/>
         <Debug {...this.state.viewState} x={-40} y={-40}/>
 
         <Rose {...this.state.viewState} x={-20} y={20} visualizePitch/>
@@ -240,23 +218,7 @@ class MapView extends React.Component<{}, IState> {
           </svg>
         </MapButton>        
 
-        <Source generateId type="geojson" data={this.getJSON()}>
-          <Layer 
-            id="polys" 
-            type="fill"
-            paint={{
-              'fill-color': 'darkgreen',
-              'fill-opacity': 0.5
-            }}
-            />
-          <Layer 
-            type="line"
-            paint={{
-              'line-color': 'black',
-              'line-width': 1
-            }}
-            />
-        </Source>
+        <CagesSource cages={this.state.cages} selectedCage={this.state.selectedCage}/>
 
         {this.state.selectedCage !== null && this.state.selectedCage.type == 'polygon' && 
           <PolygonEditor 
@@ -264,6 +226,7 @@ class MapView extends React.Component<{}, IState> {
             onChange={this.handleEditPolygonCage}
             onCancel={this.handleCancelEditCage}
             onDelete={this.handleDeleteCage}
+            allowScaling
           />}
 
          {this.state.selectedCage !== null && this.state.selectedCage.type == 'circle' && 
