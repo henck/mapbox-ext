@@ -1,3 +1,5 @@
+/** @module @ignore */
+
 /**
  * Common settings for Polygon and Circle editors.
  */
