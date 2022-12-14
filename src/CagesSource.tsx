@@ -1,7 +1,7 @@
 import { FeatureCollection } from 'geojson';
 import * as React from 'react';
 import { Layer, Source } from 'react-map-gl';
-import { NUM_CIRCLE_POINTS } from './controls/PolygonEditor/Config';
+import { NUM_CIRCLE_POINTS } from './types/EditorConfig';
 import { Polygon } from './functions/Polygon';
 import { ICage } from './MapView';
 import { IPoint } from './types/Types';

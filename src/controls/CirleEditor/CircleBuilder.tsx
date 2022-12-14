@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FeatureCollection } from 'geojson';
 import { Layer, MapLayerMouseEvent, Source, useMap } from 'react-map-gl';
 
-import { NUM_CIRCLE_POINTS, POLYGON_FILL_COLOR_VALID, POLYGON_LINE_COLOR_VALID } from '../PolygonEditor/Config';
+import { NUM_CIRCLE_POINTS, POLYGON_FILL_COLOR_VALID, POLYGON_LINE_COLOR_VALID } from '../../types/EditorConfig';
 import { IPoint } from '../../types/Types';
 import { Polygon } from '../../functions/Polygon';
 

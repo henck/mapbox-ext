@@ -4,7 +4,7 @@ import { Layer, MapLayerMouseEvent, Source, useMap } from 'react-map-gl';
 
 import { IPoint, PointCollection } from '../../types/Types';
 import { Polygon } from '../../functions/Polygon';
-import { POINTS_LAYER, POLYGON_CIRCLE_COLOR, POLYGON_CIRCLE_STROKE_COLOR, POLYGON_LAYER, POLYGON_LINE_COLOR_INVALID, POLYGON_LINE_COLOR_VALID } from './Config';
+import { POINTS_LAYER, POLYGON_CIRCLE_COLOR, POLYGON_CIRCLE_STROKE_COLOR, POLYGON_LAYER, POLYGON_LINE_COLOR_INVALID, POLYGON_LINE_COLOR_VALID } from '../../types/EditorConfig';
 
 interface IPolygonBuilderProps {
   /** Fired when polygon builder is cancelled. */

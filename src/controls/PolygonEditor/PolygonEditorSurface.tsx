@@ -4,7 +4,7 @@ import { Layer, LngLat, MapboxGeoJSONFeature, MapLayerMouseEvent, Source, useMap
 
 import { PointCollection } from '../../types/Types';
 import { Polygon } from '../../functions/Polygon';
-import { POINTS_LAYER, POLYGON_FILL_COLOR_INVALID, POLYGON_FILL_COLOR_VALID, POLYGON_LAYER, POLYGON_LINE_COLOR_VALID } from './Config';
+import { POINTS_LAYER, POLYGON_FILL_COLOR_INVALID, POLYGON_FILL_COLOR_VALID, POLYGON_LAYER, POLYGON_LINE_COLOR_VALID } from '../../types/EditorConfig';
 
 interface IPolygonEditorSurfaceProps {
   /** Polygon points. */

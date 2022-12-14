@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Layer, MapboxGeoJSONFeature, MapLayerMouseEvent, Source, useMap } from 'react-map-gl';
 import { Polygon } from '../../functions/Polygon';
 import { IPoint } from '../../types/Types';
-import { NUM_CIRCLE_POINTS, POINTS_LAYER, POLYGON_CIRCLE_COLOR, POLYGON_CIRCLE_STROKE_COLOR, POLYGON_FILL_COLOR_VALID, POLYGON_LAYER, POLYGON_LINE_COLOR_VALID } from '../PolygonEditor/Config';
+import { NUM_CIRCLE_POINTS, POINTS_LAYER, POLYGON_CIRCLE_COLOR, POLYGON_CIRCLE_STROKE_COLOR, POLYGON_FILL_COLOR_VALID, POLYGON_LAYER, POLYGON_LINE_COLOR_VALID } from '../../types/EditorConfig';
 import { CircleEditorPoint } from './CircleEditorPoint';
 import { CircleEditorSurface } from './CircleEditorSurface';
 
