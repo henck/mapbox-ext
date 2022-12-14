@@ -161,7 +161,7 @@ class MapView extends React.Component<{}, IState> {
         {...this.state.viewState}
         mapboxAccessToken={ACCESS_TOKEN}
         style={{width: '100%', height: '100%'}}
-        cursor={'auto'}
+        
         logoPosition="bottom-left"
         interactiveLayerIds={this.state.interactiveLayerIds}
         mapStyle={GREY_STYLE}

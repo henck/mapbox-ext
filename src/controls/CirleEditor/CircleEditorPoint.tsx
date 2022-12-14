@@ -36,7 +36,7 @@ const CircleEditorPoint = (props: ICircleEditorPointProps) => {
 
   const handleMouseUp = (e: MapLayerMouseEvent) => {
     dragging = false;
-    map.getCanvas().style.cursor = 'pointer';
+    map.getCanvas().style.cursor = '';
     map.getMap().dragPan.enable();
   }
 

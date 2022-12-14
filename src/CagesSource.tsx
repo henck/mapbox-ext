@@ -30,7 +30,6 @@ const CagesSource = (props: IProps) => {
   }
 
   const getJSON = React.useMemo((): FeatureCollection => {
-    console.log("JSON");
     return {
       type: 'FeatureCollection',
       features: props.cages
