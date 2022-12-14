@@ -1,3 +1,4 @@
+/** @module @ignore */
 import * as React from 'react';
 import { FeatureCollection, Point } from 'geojson';
 import { Layer, MapLayerMouseEvent, Source, useMap } from 'react-map-gl';

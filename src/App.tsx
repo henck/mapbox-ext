@@ -1,3 +1,4 @@
+/** @module @ignore */
 import * as React from 'react';
 import styled from 'styled-components';
 import { createRoot } from 'react-dom/client';

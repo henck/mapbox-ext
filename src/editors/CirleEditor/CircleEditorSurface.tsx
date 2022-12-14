@@ -1,3 +1,4 @@
+/** @module @ignore */
 import * as React from 'react';
 import { FeatureCollection } from 'geojson';
 import { Layer, LngLat, MapboxGeoJSONFeature, MapLayerMouseEvent, Source, useMap } from 'react-map-gl';

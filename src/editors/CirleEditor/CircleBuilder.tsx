@@ -139,4 +139,4 @@ const CircleBuilder = (props: ICircleBuilderProps) => {
   );
 }
 
-export { CircleBuilder }
+export { CircleBuilder, ICircleBuilderProps }

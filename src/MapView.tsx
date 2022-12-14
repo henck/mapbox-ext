@@ -1,3 +1,4 @@
+/** @module @ignore */
 import * as React from 'react';
 import Map, { LngLatBoundsLike, MapLayerMouseEvent, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 
@@ -17,7 +18,7 @@ import { CircleBuilder, CircleEditor } from './editors/CirleEditor';
 import { IPoint, PointCollection } from './types/Types';
 import { CagesSource } from './CagesSource';
 import { Legend } from './controls/Legend';
-import { LegendBox } from './controls/LegendBox';
+import { LegendBox } from './controls/Legend/LegendBox';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";

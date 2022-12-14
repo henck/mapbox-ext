@@ -68,9 +68,10 @@
   },
   "typedocOptions": {
     "entryPointStrategy": "expand",
-    "entryPoints": ["src/controls/*", "src/modules/*"],
+    "entryPoints": ["src/*"],
     "out": "docs",
-    "theme": "default",
+    "plugin": ["typedoc-theme-hierarchy"],
+    "theme": "hierarchy",
     "excludePrivate": true,
     "excludeExternals": true,
     "externalPattern": "**/node_modules/**",

@@ -76,4 +76,4 @@ class Polygon {
   }
 }
 
-export { Polygon, IPoint }
+export { Polygon }

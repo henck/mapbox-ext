@@ -1,14 +1,14 @@
-import { FeatureCollection } from 'geojson';
 import * as React from 'react';
-import { Layer, MapboxGeoJSONFeature, MapLayerMouseEvent, Source, useMap } from 'react-map-gl';
-import { Polygon } from '../../functions/Polygon';
+import { MapLayerMouseEvent, useMap } from 'react-map-gl';
+
 import { IPoint } from '../../types/Types';
-import { NUM_CIRCLE_POINTS, POINTS_LAYER, POLYGON_CIRCLE_COLOR, POLYGON_CIRCLE_STROKE_COLOR, POLYGON_FILL_COLOR_VALID, POLYGON_LAYER, POLYGON_LINE_COLOR_VALID } from '../EditorConfig';
 import { CircleEditorPoint } from './CircleEditorPoint';
 import { CircleEditorSurface } from './CircleEditorSurface';
 
 interface ICircleEditorProps {
+  /** Circle center point */
   point: IPoint;
+  /** Circle radius (meters) */
   radius: number;
   /** Fired when polygon's points change. */
   onChange: (point: IPoint, radius: number) => void;

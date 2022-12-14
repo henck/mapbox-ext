@@ -137,4 +137,4 @@ const PolygonBuilder = (props: IPolygonBuilderProps) => {
   );
 }
 
-export { PolygonBuilder }
+export { PolygonBuilder, IPolygonBuilderProps }

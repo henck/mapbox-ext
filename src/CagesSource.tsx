@@ -1,6 +1,8 @@
-import { FeatureCollection } from 'geojson';
+/** @module @ignore */
 import * as React from 'react';
 import { Layer, Source } from 'react-map-gl';
+import { FeatureCollection } from 'geojson';
+
 import { NUM_CIRCLE_POINTS } from './editors/EditorConfig';
 import { Polygon } from './functions/Polygon';
 import { ICage } from './MapView';
