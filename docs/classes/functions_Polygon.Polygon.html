@@ -29,7 +29,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">Polygon</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/henck/mapbox-ext/blob/a1fd690/src/functions/Polygon.ts#L12">src/functions/Polygon.ts:12</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/henck/mapbox-ext/blob/d3b2e4c/src/functions/Polygon.ts#L12">src/functions/Polygon.ts:12</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -62,7 +62,8 @@
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="addMeters.addMeters-1">add<wbr/>Meters<span class="tsd-signature-symbol">(</span>point<span class="tsd-signature-symbol">: </span><a href="../interfaces/types_Types.IPoint.html" class="tsd-signature-type" data-tsd-kind="Interface">IPoint</a>, dx<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, dy<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/types_Types.IPoint.html" class="tsd-signature-type" data-tsd-kind="Interface">IPoint</a><a href="#addMeters.addMeters-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Given a point <code>(lng, lat)</code>, add <code>(dx, dy)</code> meters to its location.</p>
+<div class="tsd-comment tsd-typography"><p>Given a point <code>(lng, lat)</code>, add <code>(dx, dy)</code> meters to its location. Negative
+values are subtracted.</p>
 
 <h3>Returns</h3><p>Returns new point.</p>
 </div>
@@ -83,7 +84,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="../interfaces/types_Types.IPoint.html" class="tsd-signature-type" data-tsd-kind="Interface">IPoint</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/henck/mapbox-ext/blob/a1fd690/src/functions/Polygon.ts#L52">src/functions/Polygon.ts:52</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/henck/mapbox-ext/blob/d3b2e4c/src/functions/Polygon.ts#L54">src/functions/Polygon.ts:54</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="distance" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>distance</span><a href="#distance" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -110,7 +111,7 @@ formula</a>.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/henck/mapbox-ext/blob/a1fd690/src/functions/Polygon.ts#L34">src/functions/Polygon.ts:34</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/henck/mapbox-ext/blob/d3b2e4c/src/functions/Polygon.ts#L34">src/functions/Polygon.ts:34</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="isIntersect" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>is<wbr/>Intersect</span><a href="#isIntersect" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -118,7 +119,8 @@ formula</a>.</p>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Does the line (p1,p2) intersect with line (p3,p4)?</p>
 
-<h3>Returns</h3><p><code>true</code> if the lines intersect, <code>false</code> if not.</p>
+<h3>Returns</h3><p><code>true</code> if the lines intersect, <code>false</code> if the lines do <em>not</em> 
+intersect.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -133,7 +135,7 @@ formula</a>.</p>
 <h5>p4: <a href="../interfaces/types_Types.IPoint.html" class="tsd-signature-type" data-tsd-kind="Interface">IPoint</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/henck/mapbox-ext/blob/a1fd690/src/functions/Polygon.ts#L79">src/functions/Polygon.ts:79</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/henck/mapbox-ext/blob/d3b2e4c/src/functions/Polygon.ts#L82">src/functions/Polygon.ts:82</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="isValid" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>is<wbr/>Valid</span><a href="#isValid" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -143,7 +145,7 @@ formula</a>.</p>
 self-intersect?</p>
 
 <h3>Returns</h3><p><code>true</code> if the polygon is valid (does not self-intersect),
-<code>false</code> if not.</p>
+<code>false</code> if the polygon is <em>invalid</em> (has self-intersections).</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -154,7 +156,7 @@ self-intersect?</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/henck/mapbox-ext/blob/a1fd690/src/functions/Polygon.ts#L91">src/functions/Polygon.ts:91</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/henck/mapbox-ext/blob/d3b2e4c/src/functions/Polygon.ts#L94">src/functions/Polygon.ts:94</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="toRadians" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>to<wbr/>Radians</span><a href="#toRadians" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -173,7 +175,7 @@ self-intersect?</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/henck/mapbox-ext/blob/a1fd690/src/functions/Polygon.ts#L18">src/functions/Polygon.ts:18</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/henck/mapbox-ext/blob/d3b2e4c/src/functions/Polygon.ts#L18">src/functions/Polygon.ts:18</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tree">
 <div class="tree-settings">
@@ -305,21 +307,7 @@ self-intersect?</p>
 <li><a class="category__link js-category-link category__link--ts" href="../modules/editors_PolygonEditor_PolygonEditor.html" data-id="/modules/editors_PolygonEditor_PolygonEditor.html">PolygonEditor.tsx</a>
 <ul>
 <li class="tsd-kind-interface tsd-parent-kind-module"><a class="category__link js-category-link" href="../interfaces/editors_PolygonEditor_PolygonEditor.IPolygonEditorProps.html" data-id="/interfaces/editors_PolygonEditor_PolygonEditor.IPolygonEditorProps.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>IPolygonEditorProps</a></li>
-<li class="tsd-kind-function tsd-parent-kind-module"><a class="category__link js-category-link" href="../functions/editors_PolygonEditor_PolygonEditor.PolygonEditor.html" data-id="/functions/editors_PolygonEditor_PolygonEditor.PolygonEditor.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>PolygonEditor</a></li></ul></li></ul></li>
-<li><a class="category__link js-category-link category__link--ts" href="../modules/editors_EditorConfig.html" data-id="/modules/editors_EditorConfig.html">EditorConfig.ts</a>
-<ul>
-<li class="tsd-kind-variable tsd-parent-kind-module"><a class="category__link js-category-link" href="../variables/editors_EditorConfig.EXTENDERS_LAYER.html" data-id="/variables/editors_EditorConfig.EXTENDERS_LAYER.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>EXTENDERS_LAYER</a></li>
-<li class="tsd-kind-variable tsd-parent-kind-module"><a class="category__link js-category-link" href="../variables/editors_EditorConfig.NUM_CIRCLE_POINTS.html" data-id="/variables/editors_EditorConfig.NUM_CIRCLE_POINTS.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>NUM_CIRCLE_POINTS</a></li>
-<li class="tsd-kind-variable tsd-parent-kind-module"><a class="category__link js-category-link" href="../variables/editors_EditorConfig.POINTS_LAYER.html" data-id="/variables/editors_EditorConfig.POINTS_LAYER.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>POINTS_LAYER</a></li>
-<li class="tsd-kind-variable tsd-parent-kind-module"><a class="category__link js-category-link" href="../variables/editors_EditorConfig.POLYGON_CIRCLE_COLOR.html" data-id="/variables/editors_EditorConfig.POLYGON_CIRCLE_COLOR.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>POLYGON_CIRCLE_COLOR</a></li>
-<li class="tsd-kind-variable tsd-parent-kind-module"><a class="category__link js-category-link" href="../variables/editors_EditorConfig.POLYGON_CIRCLE_STROKE_COLOR.html" data-id="/variables/editors_EditorConfig.POLYGON_CIRCLE_STROKE_COLOR.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>POLYGON_CIRCLE_STROKE_COLOR</a></li>
-<li class="tsd-kind-variable tsd-parent-kind-module"><a class="category__link js-category-link" href="../variables/editors_EditorConfig.POLYGON_FILL_COLOR_INVALID.html" data-id="/variables/editors_EditorConfig.POLYGON_FILL_COLOR_INVALID.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>POLYGON_FILL_COLOR_INVALID</a></li>
-<li class="tsd-kind-variable tsd-parent-kind-module"><a class="category__link js-category-link" href="../variables/editors_EditorConfig.POLYGON_FILL_COLOR_VALID.html" data-id="/variables/editors_EditorConfig.POLYGON_FILL_COLOR_VALID.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>POLYGON_FILL_COLOR_VALID</a></li>
-<li class="tsd-kind-variable tsd-parent-kind-module"><a class="category__link js-category-link" href="../variables/editors_EditorConfig.POLYGON_LAYER.html" data-id="/variables/editors_EditorConfig.POLYGON_LAYER.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>POLYGON_LAYER</a></li>
-<li class="tsd-kind-variable tsd-parent-kind-module"><a class="category__link js-category-link" href="../variables/editors_EditorConfig.POLYGON_LINE_COLOR_INVALID.html" data-id="/variables/editors_EditorConfig.POLYGON_LINE_COLOR_INVALID.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>POLYGON_LINE_COLOR_INVALID</a></li>
-<li class="tsd-kind-variable tsd-parent-kind-module"><a class="category__link js-category-link" href="../variables/editors_EditorConfig.POLYGON_LINE_COLOR_VALID.html" data-id="/variables/editors_EditorConfig.POLYGON_LINE_COLOR_VALID.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>POLYGON_LINE_COLOR_VALID</a></li>
-<li class="tsd-kind-variable tsd-parent-kind-module"><a class="category__link js-category-link" href="../variables/editors_EditorConfig.POLYGON_SCALER_COLOR.html" data-id="/variables/editors_EditorConfig.POLYGON_SCALER_COLOR.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>POLYGON_SCALER_COLOR</a></li>
-<li class="tsd-kind-variable tsd-parent-kind-module"><a class="category__link js-category-link" href="../variables/editors_EditorConfig.SCALER_LAYER.html" data-id="/variables/editors_EditorConfig.SCALER_LAYER.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>SCALER_LAYER</a></li></ul></li></ul></li>
+<li class="tsd-kind-function tsd-parent-kind-module"><a class="category__link js-category-link" href="../functions/editors_PolygonEditor_PolygonEditor.PolygonEditor.html" data-id="/functions/editors_PolygonEditor_PolygonEditor.PolygonEditor.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>PolygonEditor</a></li></ul></li></ul></li></ul></li>
 <li><span class="js-category-title category__title" data-id="root-src-functions">
 <div class="category__folder" data-id="root-src-functions"></div>functions</span>
 <ul class="js-category-list category" data-id="root-src-functions">
