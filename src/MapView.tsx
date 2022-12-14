@@ -16,6 +16,8 @@ import { PolygonBuilder, PolygonEditor } from './editors/PolygonEditor';
 import { CircleBuilder, CircleEditor } from './editors/CirleEditor';
 import { IPoint, PointCollection } from './types/Types';
 import { CagesSource } from './CagesSource';
+import { Legend } from './controls/Legend';
+import { LegendBox } from './controls/LegendBox';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
@@ -189,9 +191,19 @@ class MapView extends React.Component<{}, IState> {
         <AnimatedLoader x={-100} y={-100} active/>
 
         <Graticule adaptive labels degrees={90} {...this.state.viewState}/>
-        <Debug {...this.state.viewState} x={-40} y={-40}/>
+        {/* <Debug {...this.state.viewState} x={-40} y={-40}/> */}
 
         <Rose {...this.state.viewState} x={-20} y={20} visualizePitch/>
+
+        <Legend x={-100} y={-120}>
+          <LegendBox color="green" label="a bloody long line of text"/>
+          <LegendBox color="red" label="this text is also not short by any means"/>
+        </Legend>
+
+        <Legend x={-100} y={-80} skin={DarkSkin}>
+          <LegendBox color="green" label="a bloody long line of text"/>
+          <LegendBox color="red" label="this text is also not short by any means"/>
+        </Legend>
 
         <MapButton skin={DarkSkin} active={this.state.add == 'polygon'} x={40} y={-200} onClick={() => this.handleBeginAddCage('polygon')}>
           <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 100 100">
