@@ -25,7 +25,7 @@ const CagesSource = (props: ICagesSourceProps) => {
         const rad = Polygon.toRadians(degrees);
         const dx = Math.cos(rad) * cage.radius;
         const dy = Math.sin(rad) * cage.radius;
-        points.push(Polygon.addMeters(cage.point.lng, cage.point.lat, dx, dy));
+        points.push(Polygon.addMeters(cage.point, dx, dy));
       }
       return [[...points.map(p => [ p.lng, p.lat]), [points[0].lng, points[0].lat]]];
     }

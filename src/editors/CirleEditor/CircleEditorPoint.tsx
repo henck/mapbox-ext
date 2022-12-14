@@ -43,7 +43,7 @@ const CircleEditorPoint = (props: ICircleEditorPointProps) => {
 
   const handleMouseMove = (e: MapLayerMouseEvent) => {
     if(!dragging) return;
-    let newRadius = Polygon.distance(point.lat, point.lng, e.lngLat.lat, e.lngLat.lng);
+    let newRadius = Polygon.distance(point, e.lngLat);
     props.onChange(point, newRadius);
   }
 

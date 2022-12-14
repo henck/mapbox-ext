@@ -34,7 +34,7 @@ const CircleBuilder = (props: ICircleBuilderProps) => {
 
   const handleMouseMove = (e: MapLayerMouseEvent) => {
     if(point === null) return;
-    _radius = Polygon.distance(e.lngLat.lat, e.lngLat.lng, point.lat, point.lng);
+    _radius = Polygon.distance(point, e.lngLat);
     setRadius(_radius);
   }
 
@@ -85,7 +85,7 @@ const CircleBuilder = (props: ICircleBuilderProps) => {
       const rad = Polygon.toRadians(degrees);
       const dx = Math.cos(rad) * radius;
       const dy = Math.sin(rad) * radius;
-      points.push(Polygon.addMeters(point.lng, point.lat, dx, dy));
+      points.push(Polygon.addMeters(point, dx, dy));
     }
 
     return {

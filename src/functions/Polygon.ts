@@ -4,26 +4,57 @@ const TO_RAD = Math.PI / 180;
 const EARTH_RADIUS = 6378137;   // Radius of earth in meters
 
 /**
- * The Polygon class provides some simple geometric analysis tools.
+ * The Polygon class provides some simple geometric analysis tools: 
+ * * Haversine distance
+ * * Add meters to a (lat, lng)
+ * * Polygon self-intersection check
  */
 class Polygon {
+  /**
+   * Convert angle degrees to radians.
+   * @param degrees Degrees value
+   * @returns Radians
+   */
   static toRadians = (degrees: number) => TO_RAD * degrees;
 
-  static distance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
-    var dLat = lat2 * TO_RAD - lat1 * TO_RAD;
-    var dLon = lon2 * TO_RAD - lon1 * TO_RAD;
+
+  /**
+   * Calculates the distance between two points in meters using the [Haversine
+   * formula](https://en.wikipedia.org/wiki/Haversine_formula).
+   * 
+   * @param point1 Source point.
+   * @param point2 Destination point.
+   * @returns Distance between point 1 and point 2 in meters.
+   * 
+   * @example
+   * ```ts
+   * const dist = Polygon.distance({ lng: 0, lat: 0 }, { lng: 1, lat: 0 });
+   * ```
+   */
+  static distance = (point1: IPoint, point2: IPoint) => {
+    var dLat = point2.lat * TO_RAD - point1.lat * TO_RAD;
+    var dLon = point2.lng * TO_RAD - point1.lng * TO_RAD;
     var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(lat1 * TO_RAD) * Math.cos(lat2 * TO_RAD) *
+    Math.cos(point1.lat * TO_RAD) * Math.cos(point2.lat * TO_RAD) *
     Math.sin(dLon/2) * Math.sin(dLon/2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     var d = EARTH_RADIUS * c;
     return d; // meters
   }
 
-  static addMeters = (lng: number, lat: number, dx: number, dy: number) => {
+  /**
+   * Given a point `(lng, lat)`, add `(dx, dy)` meters to its location. Negative
+   * values are subtracted.
+   * 
+   * @param point Source point.
+   * @param dx Longitude meters to add.
+   * @param dy Latitude meters to add.
+   * @returns Returns new point.
+   */
+  static addMeters = (point: IPoint, dx: number, dy: number): IPoint => {
     return {
-      lng: lng + (dx / EARTH_RADIUS) * (180 / Math.PI) / Math.cos(lat * TO_RAD),
-      lat: lat + (dy / EARTH_RADIUS) * (180 / Math.PI)
+      lng: point.lng + (dx / EARTH_RADIUS) * (180 / Math.PI) / Math.cos(point.lat * TO_RAD),
+      lat: point.lat + (dy / EARTH_RADIUS) * (180 / Math.PI)
     }
   }
 
@@ -45,7 +76,8 @@ class Polygon {
   /**
    * Does the line (p1,p2) intersect with line (p3,p4)?
    * 
-   * @returns `true` if the lines intersect, `false` if not.
+   * @returns `true` if the lines intersect, `false` if the lines do _not_ 
+   * intersect.
    */
   static isIntersect = (p1: IPoint, p2: IPoint, p3: IPoint, p4: IPoint) => {
     return (Polygon.turn(p1, p3, p4) != Polygon.turn(p2, p3, p4)) && (Polygon.turn(p1, p2, p3) != Polygon.turn(p1, p2, p4));
@@ -57,7 +89,7 @@ class Polygon {
    * 
    * @param points Polygon points. Do not duplicate the last point.
    * @returns `true` if the polygon is valid (does not self-intersect),
-   * `false` if not.
+   * `false` if the polygon is _invalid_ (has self-intersections).
    */
   static isValid = (points: IPoint[]) => {
     // For each edge:

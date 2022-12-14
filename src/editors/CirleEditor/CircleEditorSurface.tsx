@@ -98,7 +98,7 @@ const CircleEditorSurface = (props: ICircleEditorSurfaceProps) => {
       const rad = Polygon.toRadians(degrees);
       const dx = Math.cos(rad) * props.radius;
       const dy = Math.sin(rad) * props.radius;
-      circle_points.push(Polygon.addMeters(props.point.lng, props.point.lat, dx, dy));
+      circle_points.push(Polygon.addMeters(props.point, dx, dy));
     }
 
     return {
