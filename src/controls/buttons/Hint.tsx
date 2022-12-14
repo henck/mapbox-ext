@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled, { css, keyframes } from 'styled-components';
-import { DefaultSkin, ISkin } from '../types/Skin';
+import { DefaultSkin, ISkin } from '../../types/Skin';
 
 const HEIGHT = 24;                     // Hint height (px)
 const TRANSITION_TIME = 0.25;          // Transition time (s)

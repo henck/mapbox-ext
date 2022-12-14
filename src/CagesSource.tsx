@@ -1,17 +1,17 @@
 import { FeatureCollection } from 'geojson';
 import * as React from 'react';
 import { Layer, Source } from 'react-map-gl';
-import { NUM_CIRCLE_POINTS } from './types/EditorConfig';
+import { NUM_CIRCLE_POINTS } from './editors/EditorConfig';
 import { Polygon } from './functions/Polygon';
 import { ICage } from './MapView';
 import { IPoint } from './types/Types';
 
-interface IProps {
+interface ICagesSourceProps {
   cages: ICage[];
   selectedCage: ICage;
 }
 
-const CagesSource = (props: IProps) => {
+const CagesSource = (props: ICagesSourceProps) => {
 
   const cageToCoords = (cage: ICage) => {
     if(cage.type == 'polygon') {
@@ -68,4 +68,4 @@ const CagesSource = (props: IProps) => {
   );
 }
 
-export { CagesSource }
+export { CagesSource, ICagesSourceProps }

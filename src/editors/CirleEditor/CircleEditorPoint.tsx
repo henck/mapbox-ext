@@ -2,46 +2,26 @@ import * as React from 'react';
 import { FeatureCollection } from 'geojson';
 import { Layer, MapboxGeoJSONFeature, MapLayerMouseEvent, Source, useMap } from 'react-map-gl';
 
-import { PointCollection } from '../../types/Types';
-import { POINTS_LAYER, POLYGON_CIRCLE_COLOR, POLYGON_CIRCLE_STROKE_COLOR, POLYGON_FILL_COLOR_VALID } from '../../types/EditorConfig';
+import { IPoint, PointCollection } from '../../types/Types';
+import { POINTS_LAYER, POLYGON_CIRCLE_COLOR, POLYGON_CIRCLE_STROKE_COLOR, POLYGON_FILL_COLOR_VALID } from '../EditorConfig';
+import { Polygon } from '../../functions/Polygon';
 
-interface IPolygonEditorPointsProps {
-  /** Polygon points. */
-  points: PointCollection;
+interface ICircleEditorPointProps {
+  point: IPoint;
+  radius: number;
   /** Fired when points change. */
-  onChange: (points: PointCollection) => void;
+  onChange: (point: IPoint, radius: number) => void;
 }
 
-let points: PointCollection = [];
+let point: IPoint = null;
+let radius: number = null;
 
-const PolygonEditorPoints = (props: IPolygonEditorPointsProps) => {
+const CircleEditorPoint = (props: ICircleEditorPointProps) => {
   const { current: map } = useMap();
-  let selectedPoint: MapboxGeoJSONFeature = null;
   let dragging: boolean = false;
-  let pointIndex: number = null;
-
-  const handleKeydown = (e: KeyboardEvent) => {
-    switch(e.code) {
-      case 'NumpadDecimal':
-      case 'Backspace':
-        if(pointIndex !== null) {
-          e.preventDefault();
-          deleteCurrentPoint();
-        }
-        break;
-    }
-  }  
-
-  const deleteCurrentPoint = () => {
-    if(pointIndex == null) return;
-    const newPoints = points.slice();
-    newPoints.splice(pointIndex, 1);
-    // Warning: this may leave fewer than 3 points!
-    props.onChange(newPoints);    
-  }
 
   const handleMouseEnter = (e: MapLayerMouseEvent) => {
-    if(!dragging) map.getCanvas().style.cursor = 'pointer';
+    if(!dragging) map.getCanvas().style.cursor = 'nesw-resize';
   }
 
   const handleMouseLeave = (e: MapLayerMouseEvent) => {
@@ -49,10 +29,6 @@ const PolygonEditorPoints = (props: IPolygonEditorPointsProps) => {
   }
 
   const handleMouseDown = (e: MapLayerMouseEvent) => {
-    pointIndex = e.features[0].id as number;
-    if(selectedPoint) map.setFeatureState(selectedPoint, { selected: false });
-    map.setFeatureState(e.features[0], { selected: true });
-    selectedPoint = e.features[0];
     dragging = true;
     map.getCanvas().style.cursor = 'move';
     map.getMap().dragPan.disable();
@@ -60,17 +36,14 @@ const PolygonEditorPoints = (props: IPolygonEditorPointsProps) => {
 
   const handleMouseUp = (e: MapLayerMouseEvent) => {
     dragging = false;
-    map.getCanvas().style.cursor = 'pointer';
+    map.getCanvas().style.cursor = '';
     map.getMap().dragPan.enable();
   }
 
   const handleMouseMove = (e: MapLayerMouseEvent) => {
     if(!dragging) return;
-    if(pointIndex === null) return;
-    let newPoints = points.slice();
-    newPoints[pointIndex].lng = e.lngLat.lng;
-    newPoints[pointIndex].lat = e.lngLat.lat;
-    props.onChange(newPoints);
+    let newRadius = Polygon.distance(point.lat, point.lng, e.lngLat.lat, e.lngLat.lng);
+    props.onChange(point, newRadius);
   }
 
   const handleClick = (e: MapLayerMouseEvent) => {
@@ -78,25 +51,21 @@ const PolygonEditorPoints = (props: IPolygonEditorPointsProps) => {
   }
 
   const mount = () => {
-    // Start listening to keyboard:
-    document.addEventListener('keydown', handleKeydown);        
     // Register for clicks and moves:
     map.on('mouseenter', POINTS_LAYER, handleMouseEnter);
     map.on('mouseleave', POINTS_LAYER, handleMouseLeave);
     map.on('mousedown', POINTS_LAYER, handleMouseDown);
-    map.on('mouseup', POINTS_LAYER, handleMouseUp);
+    map.on('mouseup', handleMouseUp);
     map.on('mousemove', handleMouseMove);
     map.on('click', POINTS_LAYER, handleClick);
   }
 
   const unmount = () => {
-    // Stop listing to keyboard:
-    document.removeEventListener('keydown', handleKeydown);    
     // Unregister for clicks and moves:
     map.off('mouseleave', POINTS_LAYER, handleMouseLeave);
     map.off('mouseenter', POINTS_LAYER, handleMouseEnter);
     map.off('mousedown', POINTS_LAYER, handleMouseDown);
-    map.on('mouseup', POINTS_LAYER, handleMouseUp);
+    map.off('mouseup', handleMouseUp);
     map.off('mousemove', handleMouseMove);
     map.off('click', POINTS_LAYER, handleClick);
   }
@@ -109,24 +78,24 @@ const PolygonEditorPoints = (props: IPolygonEditorPointsProps) => {
 
   // Force the control to update when points change:
   React.useEffect(() => {
-    points = props.points.slice();
-  }, [props.points]);
+    point = { ...props.point };
+    radius = props.radius;
+  }, [props.point, props.radius]);
 
-  // Convert points to a FeatureCollection:
   const getJSON = (): FeatureCollection => {
+    const lng = props.point.lng + (props.radius / 6371000) * (180 / Math.PI) / Math.cos(props.point.lat * Math.PI/180);
     return {
       type: 'FeatureCollection',
-      features: props.points.map((p, idx) => { return {
+      features: [{
         type: 'Feature',
-        id: idx,
         properties: {},
         geometry: {
           type: 'Point',
-          coordinates: [p.lng, p.lat]
+          coordinates: [lng, props.point.lat]
         }
-      }})
+      }]
     }
-  }
+  }  
 
   return (
     <Source type="geojson" data={getJSON()}>
@@ -137,12 +106,7 @@ const PolygonEditorPoints = (props: IPolygonEditorPointsProps) => {
         paint={{
           "circle-color": POLYGON_CIRCLE_COLOR,
           "circle-stroke-color": POLYGON_CIRCLE_STROKE_COLOR,
-          "circle-radius": [
-            'case',
-            ['boolean', ['feature-state', 'selected'], false],
-            5,
-            3
-          ],
+          "circle-radius": 5,
           "circle-stroke-width": 2
         }}
       />
@@ -150,5 +114,5 @@ const PolygonEditorPoints = (props: IPolygonEditorPointsProps) => {
   );
 }
 
-export { PolygonEditorPoints }
+export { CircleEditorPoint }
 

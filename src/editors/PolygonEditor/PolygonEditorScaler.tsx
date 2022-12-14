@@ -3,7 +3,7 @@ import { FeatureCollection } from 'geojson';
 import { Layer, LngLat, MapLayerMouseEvent, Source, useMap } from 'react-map-gl';
 
 import { PointCollection } from '../../types/Types';
-import { POLYGON_SCALER_COLOR, SCALER_LAYER } from '../../types/EditorConfig';
+import { POLYGON_SCALER_COLOR, SCALER_LAYER } from '../EditorConfig';
 
 interface IPolygonEditorScalerProps {
   /** Polygon points. */

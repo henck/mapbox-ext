@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useMap, ViewState } from 'react-map-gl';
 
-import { IMapButtonProps, MapButton } from './MapButton';
+import { IMapButtonProps, MapButton } from '../MapButton';
 
 /**
  * The `ZoomInButton` zooms the map out when clicked.  It respects the min and 

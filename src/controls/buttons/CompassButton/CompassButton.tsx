@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useMap, ViewState } from 'react-map-gl';
 import styled, { css } from 'styled-components';
 
-import { IMapButtonProps, MapButton } from './MapButton';
+import { IMapButtonProps, MapButton } from '../MapButton';
 
 interface ICompassButtonProps {
   /** 

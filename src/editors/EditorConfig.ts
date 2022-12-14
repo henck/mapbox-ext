@@ -1,5 +1,5 @@
 /**
- * Common settings for polygon and circle editors.
+ * Common settings for Polygon and Circle editors.
  */
 
 // Polygon builder/editor share a few layers that must have known IDs:

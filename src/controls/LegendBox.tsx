@@ -8,21 +8,15 @@ interface ILegendBoxProps {
   color: string;
 }
 
-/**
- * A small, colored square box.
- */
-class LegendBoxBase extends React.Component<ILegendBoxProps> {
-  render = () => {
-    const p = this.props;
-    return (
-      <div className={p.className}></div>
-    );
-  }
+const LegendBoxBase = (props: ILegendBoxProps) => {
+  return <div className={props.className}></div>
 }
 
 const LegendBoxStyled = styled(LegendBoxBase)`
+  /* Size */
   width:  10px;
   height: 10px;
+  /* Appearance */
   border: solid 1px black;
   border-radius: 2px;
   background-color: ${p => p.color};
@@ -32,6 +26,9 @@ const LegendBoxStyled = styled(LegendBoxBase)`
   }
 `
 
+/**
+ * A small, colored square box.
+ */
 const LegendBox = (p: ILegendBoxProps) => <LegendBoxStyled {...p}/>
 
 export { LegendBox, ILegendBoxProps }

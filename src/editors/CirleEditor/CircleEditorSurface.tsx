@@ -4,8 +4,8 @@ import { Layer, LngLat, MapboxGeoJSONFeature, MapLayerMouseEvent, Source, useMap
 
 import { IPoint, PointCollection } from '../../types/Types';
 import { Polygon } from '../../functions/Polygon';
-import { POINTS_LAYER, POLYGON_FILL_COLOR_INVALID, POLYGON_FILL_COLOR_VALID, POLYGON_LAYER, POLYGON_LINE_COLOR_VALID } from '../../types/EditorConfig';
-import { NUM_CIRCLE_POINTS } from '../../types/EditorConfig';
+import { POINTS_LAYER, POLYGON_FILL_COLOR_INVALID, POLYGON_FILL_COLOR_VALID, POLYGON_LAYER, POLYGON_LINE_COLOR_VALID } from '../EditorConfig';
+import { NUM_CIRCLE_POINTS } from '../EditorConfig';
 
 interface ICircleEditorSurfaceProps {
   point: IPoint;

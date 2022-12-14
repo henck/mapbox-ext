@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 
 import { Hint } from './Hint';
-import { DefaultSkin, ISkin } from '../types/Skin';
+import { DefaultSkin, ISkin } from '../../types/Skin';
 
 const DEFAULT_SIZE    = 34;   // Button size (px)
 const TRANSITION_TIME = 0.1;  // Transtion time (s)
@@ -62,7 +62,7 @@ const MapButtonBase = (p: IProps & IMapButtonProps) => {
 const Button = styled('div')`
 `
 
-const MapButton = styled(MapButtonBase).attrs(p => ({
+const MapButton: any = styled(MapButtonBase).attrs(p => ({
   size: p.size ?? DEFAULT_SIZE,
   skin: p.skin ?? DefaultSkin
 }))`

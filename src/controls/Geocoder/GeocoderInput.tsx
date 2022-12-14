@@ -2,7 +2,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { DefaultSkin, ISkin } from '../types/Skin';
+import { DefaultSkin, ISkin } from '../../types/Skin';
 
 interface IProps {
   /** @ignore */

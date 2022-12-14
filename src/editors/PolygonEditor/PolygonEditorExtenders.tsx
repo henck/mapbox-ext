@@ -3,7 +3,7 @@ import { FeatureCollection, Point } from 'geojson';
 import { Layer, MapLayerMouseEvent, Source, useMap } from 'react-map-gl';
 
 import { PointCollection } from '../../types/Types';
-import { EXTENDERS_LAYER, POLYGON_LINE_COLOR_VALID } from '../../types/EditorConfig';
+import { EXTENDERS_LAYER, POLYGON_LINE_COLOR_VALID } from '../EditorConfig';
 
 interface IPolygonEditorExtendersProps {
   /** Points from which to derive extender points. */

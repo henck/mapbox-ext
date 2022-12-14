@@ -18,6 +18,7 @@
   },
   "include": [
     "src/controls/**/*",
+    "src/editors/**/*",
     "src/functions/**/*",
     "src/types/**/*"
   ],

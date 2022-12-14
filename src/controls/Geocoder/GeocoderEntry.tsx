@@ -4,7 +4,7 @@ import { css } from 'styled-components';
 import styled from 'styled-components';
 
 import { IGeocoderFeature } from './GeocoderApi';
-import { DefaultSkin, ISkin } from '../types/Skin';
+import { DefaultSkin, ISkin } from '../../types/Skin';
 
 interface IProps {
   /** @ignore */

@@ -1,9 +1,9 @@
 import * as React from 'react';
-
 import Map, { LngLatBoundsLike, MapLayerMouseEvent, ViewState, ViewStateChangeEvent } from 'react-map-gl';
-import { ZoomInButton } from './controls/ZoomInButton';
-import { ZoomOutButton } from './controls/ZoomOutButton';
-import { CompassButton } from './controls/CompassButton';
+
+import { ZoomInButton } from './controls/buttons/ZoomInButton';
+import { ZoomOutButton } from './controls/buttons/ZoomOutButton';
+import { CompassButton } from './controls/buttons/CompassButton';
 import { AnimatedLoader } from './controls/AnimatedLoader';
 import { ScaleControl } from './controls/ScaleControl';
 import { Geocoder } from './controls/Geocoder';
@@ -11,12 +11,10 @@ import { DarkSkin } from './types/Skin';
 import { Graticule } from './controls/Graticule';
 import { Debug } from './controls/Debug';
 import { Rose } from './controls/Rose';
-import { PolygonEditor } from './controls/PolygonEditor/PolygonEditor';
-import { MapButton } from './controls/MapButton';
-import { PolygonBuilder } from './controls/PolygonEditor/PolygonBuilder';
+import { MapButton } from './controls/buttons/MapButton';
+import { PolygonBuilder, PolygonEditor } from './editors/PolygonEditor';
+import { CircleBuilder, CircleEditor } from './editors/CirleEditor';
 import { IPoint, PointCollection } from './types/Types';
-import { CircleBuilder } from './controls/CirleEditor/CircleBuilder';
-import { CircleEditor } from './controls/CirleEditor/CircleEditor';
 import { CagesSource } from './CagesSource';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
