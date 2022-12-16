@@ -19,6 +19,7 @@ import { IPoint, PointCollection } from './types/Types';
 import { CagesSource } from './CagesSource';
 import { Legend } from './controls/Legend';
 import { LegendBox } from './controls/Legend/LegendBox';
+import { Curve } from './controls/Curve';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
@@ -191,19 +192,14 @@ class MapView extends React.Component<{}, IState> {
 
         <AnimatedLoader x={-100} y={-100} active/>
 
-        <Graticule adaptive labels degrees={90} {...this.state.viewState}/>
+        {/*<Graticule adaptive labels degrees={90} {...this.state.viewState}/>*/}
         {/* <Debug {...this.state.viewState} x={-40} y={-40}/> */}
 
         <Rose {...this.state.viewState} x={-20} y={20} visualizePitch/>
 
         <Legend x={-100} y={-120}>
-          <LegendBox color="green" label="a bloody long line of text"/>
-          <LegendBox color="red" label="this text is also not short by any means"/>
-        </Legend>
-
-        <Legend x={-100} y={-80} skin={DarkSkin}>
-          <LegendBox color="green" label="a bloody long line of text"/>
-          <LegendBox color="red" label="this text is also not short by any means"/>
+          <LegendBox color="green" label="long line of text"/>
+          <LegendBox color="red" label="long line of text"/>
         </Legend>
 
         <MapButton skin={DarkSkin} active={this.state.add == 'polygon'} x={40} y={-200} onClick={() => this.handleBeginAddCage('polygon')}>
@@ -228,6 +224,18 @@ class MapView extends React.Component<{}, IState> {
               c1.2,0,2.1,0.4,3,1.2s1.2,1.8,1.2,3v18.1h18.1c1.2,0,2.1,0.4,3,1.2C80.2,43.7,80.6,44.6,80.6,45.8z"/>
           </svg>
         </MapButton>        
+
+        {/* top-left to bottom-right */}
+        <Curve x1={200} y1={200} x2={400} y2={400} arrow arrowSize={15}/>
+
+        {/* bottom-left to top-right */}
+        <Curve x1={500} y1={400} x2={700} y2={200} dashed arrow color="gold"/>
+
+        {/* top-right to bottom-left */ }
+        <Curve x1={400} y1={500} x2={200} y2={700} factor={0.3} color="pink"/>
+
+        {/* bottom-right to top-left */ }
+        <Curve x1={700} y1={700} x2={500} y2={500} factor={0.8} thickness={3} arrow arrowSize={12} color="gold"/>
 
         <CagesSource cages={this.state.cages} selectedCage={this.state.selectedCage}/>
 
