@@ -93,16 +93,16 @@ const HintStyled = styled(HintBase).attrs(p => ({
 
   opacity: 1;
   transition: opacity ease-in-out ${TRANSITION_TIME}s;
-  svg {
+  & > svg {
     position: absolute;
     top: -2px;
     left: -${HEIGHT/2}px;
     height: calc(100% + 4px);
   }
-  svg polygon {
+  & > svg polygon {
     fill: ${p => p.skin.fill};
   }
-  svg line {
+  & > svg line {
     stroke: ${p => p.skin.border};
     stroke-width: 2px;
     z-index: 1;
