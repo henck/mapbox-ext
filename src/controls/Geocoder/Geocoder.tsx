@@ -171,7 +171,7 @@ const GeocoderStyled = styled(GeocoderBase).attrs(p => ({
   overflow: hidden;
 
   /* Appearance */
-  background: #fff;
+  background: ${p => p.skin.fill};
   border-radius: ${p => p.skin.radius}px;
   border: solid 2px ${p => p.skin.border};
   box-shadow: 1px 1px 2px rgb(0,0,0,0.5);
