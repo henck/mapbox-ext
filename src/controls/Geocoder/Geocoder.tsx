@@ -61,6 +61,7 @@ const GeocoderBase = (props: IGeocoderProps) => {
     GeocoderApi.lookup("mapbox.places", q, props.access_token)
     .then(res => {
       setFeatures(res.features);
+      if(res.features.length > 0) setSelectedIndex(0);
     });
   }  
 
