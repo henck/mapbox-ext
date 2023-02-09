@@ -109,6 +109,7 @@ const GeocoderBase = (props: IGeocoderProps) => {
   }  
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    console.log(e.code);
     switch(e.code) {
       case 'ArrowDown':
       case 'Numpad2':
@@ -121,6 +122,7 @@ const GeocoderBase = (props: IGeocoderProps) => {
         setSelectedIndex(Math.max(selectedIndex - 1, 0 ));
         break;
       case 'Enter':
+      case 'NumpadEnter':
         e.preventDefault();
         handleClick(features[selectedIndex]);
         break;
