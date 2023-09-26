@@ -1,6 +1,6 @@
 /** @module @ignore */
 import * as React from 'react';
-import Map, { LngLatBoundsLike, MapLayerMouseEvent, ViewState, ViewStateChangeEvent } from 'react-map-gl';
+import Map, { LngLatBoundsLike, MapboxGeoJSONFeature, MapboxMap, MapLayerMouseEvent, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 
 import { ZoomInButton } from './controls/buttons/ZoomInButton';
 import { ZoomOutButton } from './controls/buttons/ZoomOutButton';
@@ -19,7 +19,9 @@ import { IPoint, PointCollection } from './types/Types';
 import { CagesSource } from './CagesSource';
 import { Legend } from './controls/Legend';
 import { LegendBox } from './controls/Legend/LegendBox';
-import { Curve } from './controls/Curve';
+import { CurvePopup } from './controls/popups/CurvePopup/CurvePopup';
+import { PopupBody } from './controls/popups/CurvePopup/PopupBody';
+import { FullscreenButton } from './controls/buttons/FullscreenButton';
 
 const ACCESS_TOKEN = "pk.eyJ1IjoibG9uZ2xpbmVlbnZpcm9ubWVudCIsImEiOiJjbGF0cHF1ZWUwM2l0M3FwcDcyN3B1YXpmIn0.snFi9yTPEZ5lfQxE3h3Epg";
 const GREY_STYLE = "mapbox://styles/longlineenvironment/clatpsjsl003r15okdwsdclmi";
@@ -46,6 +48,10 @@ interface IState {
   // to map controls.
   viewState: ViewState;
 
+  mouseLongitude: number;
+  mouseLatitude: number;
+  hover: boolean;
+
   interactiveLayerIds: string[];
 
   cages: ICage[];
@@ -54,6 +60,9 @@ interface IState {
 }
 
 class MapView extends React.Component<{}, IState> {
+  private map: MapboxMap = null;
+  private hovered: MapboxGeoJSONFeature = null;
+
   generateCages = () => {
     const cages = [];
     for(let i = 0; i < NUM_CAGES; i++) {
@@ -77,6 +86,10 @@ class MapView extends React.Component<{}, IState> {
       padding: { top: 0, bottom: 0, right: 0, left: 0 }
     },
 
+    mouseLongitude: 0,
+    mouseLatitude: 0,
+    hover: false,
+
     interactiveLayerIds: [],
     cages: this.generateCages(),
     selectedCage: null,
@@ -84,8 +97,9 @@ class MapView extends React.Component<{}, IState> {
   };
 
   handleLoad = (e: mapboxgl.MapboxEvent) => {
+    this.map = e.target;
     this.setState({
-      interactiveLayerIds: [ 'polys' ]
+      interactiveLayerIds: [ 'cages' ]
     });
   }  
 
@@ -95,10 +109,32 @@ class MapView extends React.Component<{}, IState> {
     });
   }
 
+  handleMouseMove = (e: MapLayerMouseEvent) => {
+    this.setState({ hover: false });
+    if(!e.features) return;
+
+    if(this.hovered) {
+      this.map.setFeatureState(this.hovered, { hover: false });
+    }
+
+    const features = e.features.filter(f => f.layer.id == "cages");
+    if(features.length == 0) return;
+
+    this.hovered = features[0];
+    this.map.setFeatureState(this.hovered, { hover: true });
+
+    this.setState({
+      hover: true,
+      mouseLongitude: e.lngLat.lng,
+      mouseLatitude:  e.lngLat.lat
+    });
+  }
+
+
   handleClick = (e: MapLayerMouseEvent) => {
     if(e.features.length == 0) return;
     const feature = e.features[0];
-    if(feature.layer.id != 'polys') return;
+    if(feature.layer.id != 'cages') return;
     this.setState({
       selectedCage: this.state.cages[feature.id as number]
     });
@@ -173,7 +209,10 @@ class MapView extends React.Component<{}, IState> {
         onLoad={this.handleLoad}
         onMove={this.handleMove}
         onClick={this.handleClick}
+        onMouseMove={this.handleMouseMove}
       >
+        <CagesSource cages={this.state.cages} selectedCage={this.state.selectedCage}/>
+
         <Geocoder access_token={ACCESS_TOKEN} x={-200} y={40} searchIcon clearable/>
         <Geocoder skin={DarkSkin} access_token={ACCESS_TOKEN} x={-520} y={40} searchIcon clearable/>
 
@@ -189,6 +228,7 @@ class MapView extends React.Component<{}, IState> {
         <ZoomInButton skin={DarkSkin} active {...this.state.viewState} x={40} y={400} hint={<>Zoom in</>}/>
         <ZoomOutButton skin={DarkSkin} disabled {...this.state.viewState} x={40} y={450} hint={<>Zoom out</>}/>
         <CompassButton skin={DarkSkin} {...this.state.viewState} x={40} y={500} hint={<>Reset bearing to north</>} visualizePitch/>
+        <FullscreenButton skin={DarkSkin} {...this.state.viewState} x={40} y={550} hint={<>Toggle full screen</>}/>
 
         <AnimatedLoader x={-100} y={-100} active/>
 
@@ -225,19 +265,11 @@ class MapView extends React.Component<{}, IState> {
           </svg>
         </MapButton>        
 
-        {/* top-left to bottom-right */}
-        <Curve x1={200} y1={200} x2={400} y2={400} arrow arrowSize={15}/>
-
-        {/* bottom-left to top-right */}
-        <Curve x1={500} y1={400} x2={700} y2={200} dashed arrow color="gold"/>
-
-        {/* top-right to bottom-left */ }
-        <Curve x1={400} y1={500} x2={200} y2={700} factor={0.3} color="pink"/>
-
-        {/* bottom-right to top-left */ }
-        <Curve x1={700} y1={700} x2={500} y2={500} factor={0.8} thickness={3} arrow arrowSize={12} color="gold"/>
-
-        <CagesSource cages={this.state.cages} selectedCage={this.state.selectedCage}/>
+        <CurvePopup latitude={this.state.mouseLatitude} longitude={this.state.mouseLongitude} visible={this.state.hover} curve={{color: "gold", animated: true, arrow: true, arrowSize: 12, dashed: true}}>
+          <PopupBody>
+            Hello.
+          </PopupBody>
+        </CurvePopup>
 
         {this.state.selectedCage !== null && this.state.selectedCage.type == 'polygon' && 
           <PolygonEditor 

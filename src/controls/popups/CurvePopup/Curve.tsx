@@ -3,7 +3,7 @@ import * as React from 'react';
 const PADDING = 50;
 const AMIMATION_INTERVAL = 100; // milliseconds
 
-interface ICurveProps {
+interface ICurvePositionProps {
   /** Start point, X-coordinate. */
   x1: number;
   /** Start point, Y-coordinate. */
@@ -12,6 +12,9 @@ interface ICurveProps {
   x2: number;
   /** End point, Y-coordinate. */
   y2: number;
+}
+
+interface ICurveAppearanceProps {
   /** Line color; defaults to white. */
   color?: string;
   /** Spline weighting. Value between 0.0 and 1.0, where 0.5 is a balanced spline. Defaults to 0.5. */
@@ -32,7 +35,9 @@ interface ICurveProps {
  * An illustrative `Curve` is a curved line from `(x1,y1)` to `(x2,y2)`, in 
  * parent coordinates.  
  */
-const Curve = React.memo((props: ICurveProps) => {
+const Curve = React.memo((props: ICurvePositionProps & ICurveAppearanceProps) => {
+  // Curve uses React.memo so that it only rerenders when its props change,
+  // not when the parent's props change.
   const [dashOffset, setDashOffset] = React.useState(0);
 
   const mount = (): number => {
@@ -55,7 +60,7 @@ const Curve = React.memo((props: ICurveProps) => {
   // Set default values:
   const _color = props.color ?? "white";
   const _thickness = props.thickness ?? 2;
-  const _factor = props.factor ?? 0.5;
+  const _factor = props.factor ?? 0.5;        
   const _arrowSize = props.arrowSize ?? 10;
 
   // Render:
@@ -66,8 +71,7 @@ const Curve = React.memo((props: ICurveProps) => {
     <div style={{pointerEvents: "none", position: "absolute", left: (Math.min(x1,x2)) + "px", top: (Math.min(y1,y2)) + "px", width: width + "px", height: height + "px", transform: `scaleX(${x2 < x1 ? -1 : 1}) scaleY(${y2 < y1 ? -1 : 1})`}}>
       {/* curve SVG */}
       <svg 
-        version="1.1" 
-        xmlns="http://www.w3.org/2000/svg"
+        version="1.1" xmlns="http://www.w3.org/2000/svg"
         viewBox={`-${PADDING} -${PADDING} ${width+PADDING*2} ${height+PADDING*2}`}
         width={width + PADDING*2}
         height={height + PADDING*2}
@@ -79,8 +83,7 @@ const Curve = React.memo((props: ICurveProps) => {
       {/* Arrow SVG */}
       {props.arrow && 
         <svg
-          version="1.1" 
-          xmlns="http://www.w3.org/2000/svg"
+          version="1.1" xmlns="http://www.w3.org/2000/svg"
           viewBox={`-${PADDING} -${PADDING} ${_arrowSize+PADDING*2} ${_arrowSize+PADDING*2}`}
           width={_arrowSize + PADDING*2}
           height={_arrowSize + PADDING*2}
@@ -94,4 +97,4 @@ const Curve = React.memo((props: ICurveProps) => {
 });
 
 
-export { Curve, ICurveProps }
+export { Curve, ICurvePositionProps, ICurveAppearanceProps }

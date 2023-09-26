@@ -1,6 +1,6 @@
 {
   "name": "@independent-software/mapbox-ext",
-  "version": "1.0.15",
+  "version": "1.0.17",
   "description": "Extensions for MapboxGL",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -32,7 +32,7 @@
     "@types/mapbox-gl": "^2.7.9",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
-    "@types/styled-components": "^5.1.26",
+    "@types/styled-components": "^4.4.1",
     "express": "^4.18.2",
     "html-webpack-plugin": "^5.5.0",
     "replace-in-file": "^6.3.5",

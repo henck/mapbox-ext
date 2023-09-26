@@ -6,6 +6,8 @@ interface ISkin {
   fill: string;
   /** Border color */
   border: string;
+  /** Border size */
+  bordersize: number;
   /** Disabled color */
   disabled: string;
   /** Hover color */
@@ -14,6 +16,8 @@ interface ISkin {
   active: string;
   /** Border radius */
   radius: number;
+  /** Dropshadow */
+  boxshadow: string;
 }
 
 /**
@@ -22,10 +26,12 @@ interface ISkin {
 const DefaultSkin: ISkin = {
   fill: "#ddd",
   border: "#333",
+  bordersize: 2,
   disabled: "#888",
   hover: "#000",
   active: "rgb(255,215,0,0.8)",
-  radius: 8
+  radius: 8,
+  boxshadow: "0px 0px 6px rgb(255,255,255,0.5)"
 }
 
 /**
@@ -34,10 +40,12 @@ const DefaultSkin: ISkin = {
 const DarkSkin: ISkin = {
   fill: "#333",
   border: "#cfcfcf",
+  bordersize: 2,
   disabled: "#888",
   hover: "#fff",
   active: "rgb(255,215,0,0.8)",
-  radius: 8
+  radius: 8,
+  boxshadow: "0px 0px 6px rgb(255,255,255,0.5)"
 }
 
 export { ISkin, DefaultSkin, DarkSkin }

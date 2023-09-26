@@ -52,10 +52,16 @@ const CagesSource = (props: ICagesSourceProps) => {
   return (
     <Source generateId type="geojson" data={getJSON}>
       <Layer 
-        id="polys" 
+        id="cages" 
+        interactive
         type="fill"
         paint={{
-          'fill-color': 'darkgreen',
+          'fill-color': [
+            'case',
+            ['boolean', ['feature-state', 'hover'], false],
+            'gold',
+            'lightblue'
+            ],      
           'fill-opacity': 0.5
         }}
         />

@@ -56,7 +56,7 @@ const LegendStyled = styled(LegendBase).attrs(p => ({
   /* Appearance */
   padding: 6px 12px 6px 12px;
   box-shadow: 2px 2px 2px rgb(0,0,0,0.5);
-  border: solid 1px ${p => p.skin.border};
+  border: solid ${p => p.skin.bordersize}px ${p => p.skin.border};
   border-radius: ${p => p.skin.radius}px;
   background: ${p => p.skin.fill};
 
