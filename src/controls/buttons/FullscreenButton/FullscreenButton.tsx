@@ -8,7 +8,7 @@ interface IProps {
    * (Optional) Container that should be made fullscreen. If omitted, this
    * will be the map's direct container.
    */
-  container?: HTMLElement;
+  container?: HTMLDivElement;
 }
 
 /**
