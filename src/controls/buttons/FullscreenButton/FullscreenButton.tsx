@@ -1,18 +1,25 @@
 import * as React from 'react';
-import { useMap, ViewState } from 'react-map-gl';
+import { useMap } from 'react-map-gl';
 
 import { IMapButtonProps, MapButton } from '../MapButton';
 
+interface IProps {
+  /** 
+   * (Optional) Container that should be made fullscreen. If omitted, this
+   * will be the map's direct container.
+   */
+  container?: HTMLElement;
+}
+
 /**
  * The `FullscreenButton` toggles the map full-screen when clicked.  
- * The current map ViewState must be passed to this control.
  * 
  * @example
  * ```tsx
- * <FullscreenButton {...this.state.viewState} x={40} y={200} hint={<>Toggle full screen</>}/>
+ * <FullscreenButton x={40} y={200} hint={<>Toggle full screen</>}/>
  * ```
  */
-const FullscreenButton = (p: IMapButtonProps & ViewState) => {
+const FullscreenButton = (p: IMapButtonProps & IProps) => {
   const { current: map } = useMap();
 
   //
@@ -26,7 +33,11 @@ const FullscreenButton = (p: IMapButtonProps & ViewState) => {
 
   const toggle = () => {
     if(document.fullscreenElement === null) {
-      map.getContainer().requestFullscreen();
+      if(p.container) {
+        p.container.requestFullscreen();
+      } else {
+        map.getContainer().requestFullscreen();
+      }
     } else {
       window.document.exitFullscreen();
     }
