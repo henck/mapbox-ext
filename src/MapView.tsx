@@ -213,8 +213,8 @@ class MapView extends React.Component<{}, IState> {
       >
         <CagesSource cages={this.state.cages} selectedCage={this.state.selectedCage}/>
 
-        <Geocoder access_token={ACCESS_TOKEN} x={-200} y={40} searchIcon clearable/>
-        <Geocoder skin={DarkSkin} access_token={ACCESS_TOKEN} x={-520} y={40} searchIcon clearable/>
+        <Geocoder {...this.state.viewState} access_token={ACCESS_TOKEN} x={-200} y={40} searchIcon clearable/>
+        <Geocoder {...this.state.viewState} skin={DarkSkin} access_token={ACCESS_TOKEN} x={-520} y={40} searchIcon clearable/>
 
         <ScaleControl {...this.state.viewState} width={200} x={10} y={-62}/>
         <ZoomInButton  {...this.state.viewState} attachedBottom x={40} y={40} hint={<>Zoom in</>}/>
@@ -230,14 +230,14 @@ class MapView extends React.Component<{}, IState> {
         <CompassButton skin={DarkSkin} {...this.state.viewState} x={40} y={500} hint={<>Reset bearing to north</>} visualizePitch/>
         <FullscreenButton skin={DarkSkin} {...this.state.viewState} x={40} y={550} hint={<>Toggle full screen</>}/>
 
-        <AnimatedLoader x={-100} y={-100} active/>
+        <AnimatedLoader {...this.state.viewState} x={-100} y={-100} active/>
 
         {/*<Graticule adaptive labels degrees={90} {...this.state.viewState}/>*/}
         {/* <Debug {...this.state.viewState} x={-40} y={-40}/> */}
 
         <Rose {...this.state.viewState} x={-20} y={20} visualizePitch/>
 
-        <Legend x={-100} y={-120}>
+        <Legend {...this.state.viewState} x={-100} y={-120}>
           <LegendBox color="green" label="long line of text"/>
           <LegendBox color="red" label="long line of text"/>
         </Legend>

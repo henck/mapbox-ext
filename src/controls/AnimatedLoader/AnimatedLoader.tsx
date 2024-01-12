@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ViewState } from 'react-map-gl';
 import styled, { css, keyframes } from 'styled-components';
 
 const DEFAULT_SIZE  = 40;      // Default control size (px)
@@ -26,7 +27,7 @@ interface IAnimatedLoaderProps {
   color?: string;
 }
 
-class AnimatedLoaderBase extends React.Component<IAnimatedLoaderProps> {
+class AnimatedLoaderBase extends React.Component<IAnimatedLoaderProps & ViewState> {
   render = () => {
     const p = this.props;
     return (
@@ -63,10 +64,10 @@ const AnimatedLoaderstyled = styled(AnimatedLoaderBase)`
   /* Position */
   position: absolute;
   z-index: 100;
-  ${p => p.x >= 0 && css`left:   ${ p.x}px;`}
-  ${p => p.x < 0  && css`right:  ${-p.x}px;`}
-  ${p => p.y >= 0 && css`top:    ${ p.y}px;`}
-  ${p => p.y < 0  && css`bottom: ${-p.y}px;`}  
+  ${p => p.x >= 0 && css`left:   ${p.x + p.padding.left}px;`}
+  ${p => p.x < 0  && css`right:  ${p.padding.right - p.x}px;`}
+  ${p => p.y >= 0 && css`top:    ${p.y + p.padding.top}px;`}
+  ${p => p.y < 0  && css`bottom: ${-p.y - p.padding.bottom}px;`}  
 
   max-width: 200px;
   max-height: 200px;
@@ -94,6 +95,6 @@ const AnimatedLoaderstyled = styled(AnimatedLoaderBase)`
  * <AnimatedLoader x={-50} y={50} active color="green"/>
  * ```
  */
-const AnimatedLoader = (p: IAnimatedLoaderProps) => <AnimatedLoaderstyled {...p}/>
+const AnimatedLoader = (p: IAnimatedLoaderProps & ViewState) => <AnimatedLoaderstyled {...p}/>
 
 export { AnimatedLoader, IAnimatedLoaderProps }

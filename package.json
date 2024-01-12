@@ -1,6 +1,6 @@
 {
   "name": "@independent-software/mapbox-ext",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "Extensions for MapboxGL",
   "main": "dist/index.js",
   "module": "dist/index.js",

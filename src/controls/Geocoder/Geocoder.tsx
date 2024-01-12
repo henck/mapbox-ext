@@ -5,7 +5,7 @@ import { GeocoderApi, IGeocoderFeature } from './GeocoderApi';
 import { GeocoderEntry } from './GeocoderEntry';
 import { GeocoderList } from './GeocoderList';
 import { GeocoderInput } from './GeocoderInput';
-import { useMap } from 'react-map-gl';
+import { ViewState, useMap } from 'react-map-gl';
 import { DefaultSkin, ISkin } from '../../types/Skin';
 
 interface IGeocoderProps {
@@ -29,7 +29,7 @@ interface IGeocoderProps {
   placeholder?: string;
 }
 
-const GeocoderBase = (props: IGeocoderProps) => {
+const GeocoderBase = (props: IGeocoderProps & ViewState) => {
   const wrapperRef = React.useRef(null);
   const { current: map } = useMap();
 
@@ -159,10 +159,10 @@ const GeocoderStyled = styled(GeocoderBase).attrs(p => ({
 }))`
   /* Location */
   position: absolute;
-  ${p => p.x >= 0 && css`left:   ${ p.x}px;`}
-  ${p => p.x < 0  && css`right:  ${-p.x}px;`}
-  ${p => p.y >= 0 && css`top:    ${ p.y}px;`}
-  ${p => p.y < 0  && css`bottom: ${-p.y}px;`}  
+  ${p => p.x >= 0 && css`left:   ${p.x + p.padding.left}px;`}
+  ${p => p.x < 0  && css`right:  ${p.padding.right - p.x}px;`}
+  ${p => p.y >= 0 && css`top:    ${p.y + p.padding.top}px;`}
+  ${p => p.y < 0  && css`bottom: ${-p.y - p.padding.bottom}px;`}  
   z-index: 100;
 
   /* Size */
@@ -190,6 +190,6 @@ const GeocoderStyled = styled(GeocoderBase).attrs(p => ({
  * 
  * @remarks This control is skinnable.
  */
-const Geocoder = (p: IGeocoderProps) => <GeocoderStyled {...p}/>
+const Geocoder = (p: IGeocoderProps & ViewState) => <GeocoderStyled {...p}/>;
 
 export { Geocoder, IGeocoderProps } 

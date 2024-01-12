@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { DefaultSkin, ISkin } from '../../types/Skin';
+import { ViewState } from 'react-map-gl';
 
 interface ILegendProps {
   /** @ignore */
@@ -19,7 +20,7 @@ interface ILegendProps {
   skin?: ISkin;     
 }
 
-const LegendBase = (props: ILegendProps) => {
+const LegendBase = (props: ILegendProps & ViewState) => {
   // Pass skin prop to children:
   const childrenWithProps = React.Children.map(props.children, child => {
     if (React.isValidElement(child)) {
@@ -41,10 +42,10 @@ const LegendStyled = styled(LegendBase).attrs(p => ({
   /* Position */
   position: absolute;
   z-index: 100;
-  ${p => p.x >= 0 && css`left:   ${ p.x}px; margin-right: 32px;`}
-  ${p => p.x < 0  && css`right:  ${-p.x}px; margin-left: 32px;`}
-  ${p => p.y >= 0 && css`top:    ${ p.y}px;`}
-  ${p => p.y < 0  && css`bottom: ${-p.y}px;`}
+  ${p => p.x >= 0 && css`left:   ${p.x + p.padding.left}px; margin-right: 32px;`}
+  ${p => p.x < 0  && css`right:  ${p.padding.right - p.x}px; margin-left: 32px;`}
+  ${p => p.y >= 0 && css`top:    ${p.y + p.padding.top}px;`}
+  ${p => p.y < 0  && css`bottom: ${-p.y - p.padding.bottom}px;`}    
 
   /* Content positioning */
   box-sizing: border-box;
@@ -69,6 +70,6 @@ const LegendStyled = styled(LegendBase).attrs(p => ({
 /**
  * A box with LegendBox entries.
  */
-const Legend = (props: ILegendProps) => <LegendStyled {...props}/>
+const Legend = (props: ILegendProps & ViewState) => <LegendStyled {...props}/>;
 
 export { Legend, ILegendProps }

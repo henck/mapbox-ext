@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ViewState } from 'react-map-gl';
 import styled, { css } from 'styled-components';
 
 import { Hint } from './Hint';
@@ -39,7 +40,7 @@ interface IProps {
   onClick: () => void;
 }
 
-const MapButtonBase = (p: IProps & IMapButtonProps) => {
+const MapButtonBase = (p: IProps & IMapButtonProps & ViewState) => {
   return (
     <div className={p.className} onClick={p.onClick}>
       <Button>
@@ -58,7 +59,7 @@ const MapButtonBase = (p: IProps & IMapButtonProps) => {
     </div>);
 }
 
-const Button = styled('div')`
+const Button = styled.div`
 `
 
 const MapButton: any = styled(MapButtonBase).attrs(p => ({
@@ -69,10 +70,10 @@ const MapButton: any = styled(MapButtonBase).attrs(p => ({
   position: absolute;
   z-index: 100;
   box-sizing: border-box;
-  ${p => p.x >= 0 && css`left:   ${ p.x}px;`}
-  ${p => p.x < 0  && css`right:  ${-p.x}px;`}
-  ${p => p.y >= 0 && css`top:    ${ p.y}px;`}
-  ${p => p.y < 0  && css`bottom: ${-p.y}px;`}  
+  ${p => p.x >= 0 && css`left:   ${p.x + p.padding.left}px;`}
+  ${p => p.x < 0  && css`right:  ${p.padding.right - p.x}px;`}
+  ${p => p.y >= 0 && css`top:    ${p.y + p.padding.top}px;`}
+  ${p => p.y < 0  && css`bottom: ${-p.y - p.padding.bottom}px;`}  
 
   /* Size control */
   width: ${p => p.size}px;
